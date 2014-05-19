@@ -10,4 +10,4 @@ HEADERS += \
     materiais.hpp
 
 OTHER_FILES += \
-    obj_loading_function.pro.user
+    CG_FPS_project.pro.user

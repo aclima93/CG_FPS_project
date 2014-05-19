@@ -8,6 +8,12 @@
 #include "materiais.hpp"
 
 //==================================================================== Definir cores
+
+GLint field_width = 5; // 50
+GLint field_height = 10; // 1000
+GLint wall_height = 1; // 25
+
+#define VIDRO    1.0, 0.0, 1.0, 0.1
 #define AZUL     0.0, 0.0, 1.0, 1.0
 #define VERMELHO 1.0, 0.0, 0.0, 1.0
 #define AMARELO  1.0, 1.0, 0.0, 1.0
@@ -154,65 +160,91 @@ void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
 
 void drawWalls(){
 
-    //parede esquerda1
-    desenhaQuadrado(
-        -field_width/2, wall_height, 0,                         // A
-        -field_width/2, wall_height, -field_height*(0.4f),      // B
-        -field_width/2, 0, 0,                                   // C
-        -field_width/2, 0, -field_height*(0.4f),                // D
-         1, 0, 0,                                               // normal
-         VERDE                                                  // r g b a
-    );
+    GLfloat walls [8][19] = {
 
-    //parede esquerda2
-    desenhaQuadrado(
-        -field_width/2, wall_height, -field_height*(0.45f),      // A
-        -field_width/2, wall_height, -field_height*(0.55f),      // B
-        -field_width/2, 0, -field_height*(0.45f),                // C
-        -field_width/2, 0, -field_height*(0.55f),                // D
-         1, 0, 0,                                                // normal
-         AZUL                                                    // r g b a
-    );
+        {
+            //parede esquerda3
+            -field_width/2, wall_height, 0,                         // A
+            -field_width/2, wall_height, -field_height*(0.4f),      // B
+            -field_width/2, 0, 0,                                   // C
+            -field_width/2, 0, -field_height*(0.4f),                // D
+             1, 0, 0,                                               // normal
+             VERDE                                                  // r g b a
+        },
+        {
+            //vidro esquerda1
+            -field_width/2, wall_height, -field_height*(0.40f),      // A
+            -field_width/2, wall_height, -field_height*(0.45f),      // B
+            -field_width/2, 0, -field_height*(0.40f),                // C
+            -field_width/2, 0, -field_height*(0.45f),                // D
+             1, 0, 0,                                                // normal
+             VIDRO                                                    // r g b a
+        },
+        {
+            //parede esquerda2
+            -field_width/2, wall_height, -field_height*(0.45f),      // A
+            -field_width/2, wall_height, -field_height*(0.55f),      // B
+            -field_width/2, 0, -field_height*(0.45f),                // C
+            -field_width/2, 0, -field_height*(0.55f),                // D
+             1, 0, 0,                                                // normal
+             AZUL                                                    // r g b a
+        },
+        {
+            //vidro esquerda2
+            -field_width/2, wall_height, -field_height*(0.55f),      // A
+            -field_width/2, wall_height, -field_height*(0.60f),      // B
+            -field_width/2, 0, -field_height*(0.55f),                // C
+            -field_width/2, 0, -field_height*(0.60f),                // D
+             1, 0, 0,                                                // normal
+             VIDRO                                                    // r g b a
+        },
+        {
+            //parede esquerda3
+                -field_width/2, wall_height, -field_height*(0.60f),      // top left
+                -field_width/2, wall_height, -field_height,              // top right
+                -field_width/2, 0, -field_height*(0.60f),                // bottom left
+                -field_width/2, 0, -field_height,                        // bottom right
+                 1, 0, 0,                                                // normal
+                 AMARELO                                                 // r g b a
+        },
+        {
+            //parede esquerda4
+            -field_width, wall_height, -field_height*(0.40f),      // A
+            -field_width, wall_height, -field_height*(0.60f),      // B
+            -field_width, 0, -field_height*(0.40f),                // C
+            -field_width, 0, -field_height*(0.60f),                // D
+             1, 0, 0,                                                // normal
+             VIDRO                                                    // r g b a
+        },
+        {
+            //parede esquerda4
+            -field_width, wall_height, -field_height*(0.40f),      // A
+            -field_width, wall_height, -field_height*(0.60f),      // B
+            -field_width, 0, -field_height*(0.40f),                // C
+            -field_width, 0, -field_height*(0.60f),                // D
+             1, 0, 0,                                                // normal
+             VIDRO
+        },
+        {
+            //parede esquerda4
+            -field_width, wall_height, -field_height*(0.40f),      // A
+            -field_width, wall_height, -field_height*(0.60f),      // B
+            -field_width, 0, -field_height*(0.40f),                // C
+            -field_width, 0, -field_height*(0.60f),                // D
+             1, 0, 0,                                                // normal
+             VIDRO
+        }
 
-    //parede esquerda3
-    desenhaQuadrado(
-        -field_width/2, wall_height, -field_height*(0.60f),      // top left
-        -field_width/2, wall_height, -field_height,              // top right
-        -field_width/2, 0, -field_height*(0.60f),                // bottom left
-        -field_width/2, 0, -field_height,                        // bottom right
-         1, 0, 0,                                                // normal
-         AMARELO                                                 // r g b a
-    );
 
-    //parede direita1
-    desenhaQuadrado(
-        field_width/2, wall_height, 0,                         // A
-        field_width/2, wall_height, -field_height*(0.4f),      // B
-        field_width/2, 0, 0,                                   // C
-        field_width/2, 0, -field_height*(0.4f),                // D
-         1, 0, 0,                                               // normal
-         VERDE                                                  // r g b a
-    );
+    };
 
-    //parede direita2
-    desenhaQuadrado(
-        field_width/2, wall_height, -field_height*(0.45f),      // A
-        field_width/2, wall_height, -field_height*(0.55f),      // B
-        field_width/2, 0, -field_height*(0.45f),                // C
-        field_width/2, 0, -field_height*(0.55f),                // D
-         1, 0, 0,                                                // normal
-         AZUL                                                    // r g b a
-    );
-
-    //parede direita3
-    desenhaQuadrado(
-        field_width/2, wall_height, -field_height*(0.60f),      // top left
-        field_width/2, wall_height, -field_height,              // top right
-        field_width/2, 0, -field_height*(0.60f),                // bottom left
-        field_width/2, 0, -field_height,                        // bottom right
-         1, 0, 0,                                                // normal
-         AMARELO                                                 // r g b a
-    );
+    for(int i=0; i<8; i++){
+        desenhaQuadrado(
+            walls[i][0], walls[i][1], walls[i][2], walls[i][3], walls[i][4], walls[i][5], walls[i][6],
+            walls[i][7], walls[i][8], walls[i][9], walls[i][10], walls[i][11], walls[i][12], walls[i][13],
+            walls[i][14], walls[i][15], walls[i][16], walls[i][17], walls[i][18]
+        );
+    }
 
 }
 
@@ -267,12 +299,6 @@ void drawScene()
     //************************************************** Poligono
     //  Construir um poligono de uma dada cor
     //************************************************** Poligono
-
-    /*Desenhar chão*/
-
-    GLint field_width = 5; // 50
-    GLint field_height = 5; // 1000
-    GLint wall_height = 5; // 25
 
 
     //chão
