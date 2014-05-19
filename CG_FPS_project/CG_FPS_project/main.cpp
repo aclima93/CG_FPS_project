@@ -6,6 +6,7 @@
 #include <GL/glu.h>
 
 #include "materiais.hpp"
+#include "RgbImage.h"
 
 //==================================================================== Definir cores
 
@@ -36,7 +37,7 @@ char     texto[30];
 GLfloat  PI = 3.14159;
 GLfloat  rVisao=3.0, aVisao=0.5*PI, incVisao=0.1;
 GLfloat  obsPini[] ={0, 5, 0};
-GLfloat  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
+GLdouble  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
 
 //------------------------------------------------------------ Iluminacao
 GLfloat spot_direction[4]={0.0,0.0,1.0,1.0};
@@ -133,9 +134,35 @@ void init(void)
 //======================================================================== DISPLAY
 void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z)
 {
+    //----
+    car* string_temp = "ich bin ein rübe";
+    string = string_temp;
+
     glRasterPos3f(x,y,z);
     while(*string)
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *string++);
+}
+
+void groundTexture(){
+
+    RgbImage  imag;
+    GLuint    tex;
+    GLuint    texture;
+
+    glGenTextures(1, texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    imag.LoadBmpFile("models_textures/textures.bmp");
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+
+    imag.GetNumCols(),
+    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+    imag.ImageData());
+
 }
 
 void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
@@ -163,8 +190,9 @@ void drawWalls(){
     GLint numWalls = 11;
     GLfloat walls [11][19] = {
 
+        //paredes verticais
         {
-            //parede esquerda3
+            //parede esquerda1
             -field_width/2, wall_height, 0,                         // A
             -field_width/2, wall_height, -field_height*(0.4f),      // B
             -field_width/2, 0, 0,                                   // C
@@ -226,6 +254,8 @@ void drawWalls(){
              1, 0, 0,                                              // normal
              VERMELHO                                              // r g b a
         },
+
+        //paredes horizontais
         {
             //parede esquerda6
             -field_width, wall_height, -field_height*(0.40f),      // A
@@ -267,13 +297,27 @@ void drawWalls(){
 
     };
 
+    //draw left side and right side by symmetry
     for(int i=0; i<numWalls; i++){
-        desenhaQuadrado(
-            walls[i][0], walls[i][1], walls[i][2], walls[i][3], walls[i][4], walls[i][5], walls[i][6],
-            walls[i][7], walls[i][8], walls[i][9], walls[i][10], walls[i][11], walls[i][12], walls[i][13],
-            walls[i][14], walls[i][15], walls[i][16], walls[i][17], walls[i][18]
-        );
+            desenhaQuadrado(
+                walls[i][0], walls[i][1], walls[i][2],
+                walls[i][3], walls[i][4], walls[i][5],
+                walls[i][6], walls[i][7], walls[i][8],
+                walls[i][9], walls[i][10], walls[i][11],
+                walls[i][12], walls[i][13], walls[i][14],
+                walls[i][15], walls[i][16], walls[i][17], walls[i][18]
+            );
+            desenhaQuadrado(
+                - walls[i][0], walls[i][1], walls[i][2],
+                - walls[i][3], walls[i][4], walls[i][5],
+                - walls[i][6], walls[i][7], walls[i][8],
+                - walls[i][9], walls[i][10], walls[i][11],
+                walls[i][12], walls[i][13], walls[i][14],
+                walls[i][15], walls[i][16], walls[i][17], walls[i][18]
+            );
+
     }
+
 
 }
 
@@ -339,6 +383,8 @@ void drawScene()
          1, 0, 0,                           // normal
          VERMELHO                              // r g b a
     );
+
+     groundTexture();
 
     drawWalls();
 
