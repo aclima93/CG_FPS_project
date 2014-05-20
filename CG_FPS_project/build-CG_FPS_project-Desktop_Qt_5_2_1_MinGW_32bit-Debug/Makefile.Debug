@@ -125,7 +125,8 @@ debug/main.o: ../CG_FPS_project/main.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/ming
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/freeglut_std.h \
 		../CG_FPS_project/materiais.hpp \
 		../CG_FPS_project/RgbImage.h \
-		../CG_FPS_project/Camera.hpp
+		../CG_FPS_project/Camera.hpp \
+		../CG_FPS_project/Bullet.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\CG_FPS_project\main.cpp
 
 debug/RgbImage.o: ../CG_FPS_project/RgbImage.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \

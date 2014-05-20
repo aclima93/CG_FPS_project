@@ -1,19 +1,20 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 #include <math.h>
+#include <string.h>
+
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glaux.h>
 
 #include "materiais.hpp"
 #include "RgbImage.h"
 #include "Camera.hpp"
+#include "Bullet.hpp"
 
 //==================================================================== Definir cores
-
-GLfloat field_width = 5; // 50
-GLfloat field_height = 10; // 1000
-GLfloat wall_height = 1; // 25
 
 #define VIDRO    0.0, 0.0, 0.5, 0.1
 #define AZUL     0.0, 0.0, 1.0, 1.0
@@ -24,7 +25,8 @@ GLfloat wall_height = 1; // 25
 #define WHITE    1.0, 1.0, 1.0, 1.0
 #define BLACK    0.0, 0.0, 0.0, 1.0
 #define GRAY1    0.2, 0.2, 0.2, 1.0
-#define GRAY2    0.93, 0.93, 0.93, 1.0
+#define GRAY2    0.9, 0.9, 0.9, 1.0
+
 
 //================================================================================
 //===========================================================Variaveis e constantes
@@ -39,7 +41,6 @@ GLfloat  PI = 3.14159;
 
 //------------------------------------------------------------ Iluminacao
 GLfloat spot_direction[4]={0.0,0.0,1.0,1.0};
-bool foco;
 GLfloat spot_position[]={1,0.25,10};
 GLint increment_spot_position = 5;
 
@@ -57,46 +58,24 @@ GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
-//…………………………………………………………………………………………………………………………………………… Esfera
-GLfloat matAmbiente[] = {1.0,1.0,1.0,1.0};
-GLfloat matDifusa[]   = {1.0,1.0,1.0,1.0};
-GLfloat matEspecular[]= {1.0, 1.0, 1.0, 1.0};
-GLint   especMaterial = 20;
 
+// ------------------------- camera
+float CAMERASPEED = 0.03f;   // Camera Speed
+CCamera objCamera;
 
-//…………………………………………………………………………………………………………………………………………… Color Material
-bool colorMaterial;
-
-//================================================================================
-//=========================================================================== INIT
-//================================================================================
-
-#define CAMERASPEED	0.03f				// The Camera Speed
-
-
-CCamera objCamera; // the camera
+// ------------------------- map sizes
+GLfloat field_width = 5; // 50
+GLfloat field_height = 10; // 1000
+GLfloat wall_height = 1; // 25
 
 // -------------------------- gun specs
-int CLIPSIZE = 5;
+#define CLIPSIZE 5
+#define NUMBULLETS 15
+#define NUMCLIPS 2
 int bulletsInGun = CLIPSIZE;
-int bulletsLeft = CLIPSIZE*2;
-
-void reloadWeapon(){
-
-    if(bulletsLeft){
-
-        int loadingReq = CLIPSIZE - bulletsInGun;
-
-        if(bulletsLeft >= loadingReq){
-            bulletsInGun += loadingReq;
-            bulletsLeft -= loadingReq;
-        }
-        else{
-            bulletsInGun += bulletsLeft;
-            bulletsLeft = 0;
-        }
-    }
-}
+int bulletsLeft = CLIPSIZE * NUMCLIPS;
+int bulletIndex = 0;
+Bullet bullets[NUMBULLETS];
 
 
 void activateLight(void)
@@ -154,9 +133,6 @@ void init(void)
                             // Position      View(target)  Up
     objCamera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
 
-    foco = false;
-    colorMaterial = false;
-    iluminacao = false;
 }
 
 
@@ -164,9 +140,7 @@ void init(void)
 //======================================================================== DISPLAY
 void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z)
 {
-    //----
-    //char* string_temp = "ich bin ein rübe";
-    //string = string_temp;
+    //"ich bin ein rübe"
 
     glRasterPos3f(x,y,z);
     while(*string)
@@ -186,6 +160,22 @@ void drawGrid()
             glVertex3f(i, 0, 500);
         glEnd();
     }
+
+    //============================================Eixos
+    glColor4f(WHITE);
+    glBegin(GL_LINES);
+        glVertex3i(0,0,-xC);
+        glVertex3i(0,0, xC);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3i(0,-xC,0);
+        glVertex3i(0,xC,0);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3i(-xC,0,0);
+        glVertex3i( xC,0,0);
+    glEnd();
+
 }
 
 GLuint groundTexture(){
@@ -401,27 +391,9 @@ void drawScene()
     //grelha no chão
     drawGrid();
 
-    //============================================Eixos
-    if (noite)
-        glColor4f(AMARELO);
-    else
-        glColor4f(BLACK);
-    glBegin(GL_LINES);
-        glVertex3i(0,0,-xC);
-        glVertex3i(0,0, xC);
-    glEnd();
-    glBegin(GL_LINES);
-        glVertex3i(0,-xC,0);
-        glVertex3i(0,xC,0);
-    glEnd();
-    glBegin(GL_LINES);
-        glVertex3i(-xC,0,0);
-        glVertex3i( xC,0,0);
-    glEnd();
-
-    if (foco)
+    /*if (foco)
         glEnable(GL_LIGHT0);
-    else
+    else*/
         glDisable(GL_LIGHT0);
 
     //************************************************** Poligono
@@ -430,21 +402,12 @@ void drawScene()
     //		2. Propriedades materiais (a implementar)
     //************************************************** Poligno
 
-    if (colorMaterial)
-    {
-        glEnable(GL_COLOR_MATERIAL);
-        glColorMaterial(GL_FRONT, GL_AMBIENT);
-        glColorMaterial(GL_FRONT, GL_DIFFUSE);
-        //glColorMaterial(GL_FRONT, GL_SPECULAR); - Nao considerar a componente especular
-    }
-    else
-    {
-        glEnable(GL_COLOR_MATERIAL);
-        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
-        glMaterialfv(GL_FRONT, GL_AMBIENT, esmeraldAmb);
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
-        //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
-    }
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
+    glMaterialfv(GL_FRONT, GL_AMBIENT, esmeraldAmb);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
+    //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
+
 
 
     //chão
@@ -524,15 +487,55 @@ void display(void)
     glutSwapBuffers();
 }
 
-void shootGun(){
-    if(bulletsInGun)
+
+void reloadWeapon(){
+
+    if(bulletsLeft){
+
+        int loadingReq = CLIPSIZE - bulletsInGun;
+
+        if(bulletsLeft >= loadingReq){
+            bulletsInGun += loadingReq;
+            bulletsLeft -= loadingReq;
+        }
+        else{
+            bulletsInGun += bulletsLeft;
+            bulletsLeft = 0;
+        }
+    }
+}
+
+void shootGun(int x, int y, int z){
+
+    if(bulletsInGun){
         bulletsInGun--;
+
+        bullets[bulletIndex].targetX = x;
+        bullets[bulletIndex].targetY = y;
+        bullets[bulletIndex].targetZ = z;
+
+        bullets[bulletIndex].angle = 0; //TODO: calculate(?)
+
+        bullets[bulletIndex].x = objCamera.mPos.x;
+        bullets[bulletIndex].y = objCamera.mPos.y;
+        bullets[bulletIndex].z = objCamera.mPos.z;
+
+        //TODO: add event to keep going
+        bullets[bulletIndex].draw();
+        bulletIndex++;
+
+    }
 }
 
 void mouseClicks(int button, int state, int x, int y) {
+
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        shootGun();
+
+        //TODO: calculate where x and y from screen are in world(?)
+
+        shootGun(x, y, -200);
     }
+
 }
 
 //======================================================= EVENTOS
@@ -540,8 +543,8 @@ void keyboard(unsigned char key, int x, int y)
 {
 
     //using parameters just because
-    x++;
-    y++;
+    if(x && y){
+    }
 
 
     switch (key)
@@ -576,14 +579,6 @@ void keyboard(unsigned char key, int x, int y)
             reloadWeapon();
             break;
 
-        //--------------------------- shoot
-            /*
-        case 'R':
-        case 'r':
-            reloadWeapon();
-            break;
-            */
-
         //--------------------------- Escape
         case 27:
             exit(0);
@@ -594,10 +589,6 @@ void keyboard(unsigned char key, int x, int y)
 
 void updateVisao()
 {
-    /*
-    obsPfin[0] =obsPini[0]+rVisao*cos(aVisao);
-    obsPfin[2] =obsPini[2]-rVisao*sin(aVisao);
-    */
     glutPostRedisplay();
 }
 
@@ -605,26 +596,12 @@ void teclasNotAscii(int key, int x, int y)
 {
 
     //using parameters just because
-    x++;
-    y++;
+    if( !x && !y ){
+    }
 
-    /*
-    if(key == GLUT_KEY_UP) {
-        obsPini[0]=obsPini[0]+incVisao*cos(aVisao);
-        obsPini[2]=obsPini[2]-incVisao*sin(aVisao);
+    switch(key){
     }
-    if(key == GLUT_KEY_DOWN) {
-        obsPini[0]=obsPini[0]-incVisao*cos(aVisao);
-        obsPini[2]=obsPini[2]+incVisao*sin(aVisao);
-    }
-    if(key == GLUT_KEY_LEFT) {
-        aVisao = (aVisao + 0.1) ;
-    }
-    if(key == GLUT_KEY_RIGHT) {
-        aVisao = (aVisao - 0.1) ;
-    }
-    updateVisao();
-    */
+
 }
 
 //======================================================= MAIN
@@ -634,7 +611,7 @@ int main(int argc, char** argv)
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
     glutInitWindowSize (wScreen, hScreen);
     glutInitWindowPosition (0, 0);
-    glutCreateWindow ("CG_FPS_PROJECT : (A, W, S, D) - (Reload, LC)");
+    glutCreateWindow ("CG_FPS_PROJECT : (A, W, S, D) - (R, Left Mouse)");
 
     init();
 

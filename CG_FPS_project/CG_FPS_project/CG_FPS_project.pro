@@ -11,7 +11,8 @@ SOURCES += main.cpp \
 HEADERS += \
     materiais.hpp \
     RgbImage.h \
-    Camera.hpp
+    Camera.hpp \
+    Bullet.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
