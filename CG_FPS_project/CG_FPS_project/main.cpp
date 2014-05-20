@@ -153,7 +153,6 @@ void init(void)
     ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
                             // Position      View(target)  Up
     objCamera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
-    objCamera.Mouse_Move(640,480);
 
     foco = false;
     colorMaterial = false;
@@ -484,14 +483,10 @@ void drawOrientacao()
 
 void display(void)
 {
-    if (noite)
-        glClearColor(GRAY1);
-    else
-        glClearColor(GRAY2);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     //================================================================= Viewport1
+    glClearColor(BLACK);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glViewport (0, hScreen/4, wScreen/4, hScreen/4);
     glMatrixMode(GL_PROJECTION);
@@ -499,6 +494,7 @@ void display(void)
     glOrtho (-xC,xC, -xC,xC, -zC,zC);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
     //gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
     gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
               objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
@@ -510,10 +506,7 @@ void display(void)
 
     //--------------------- Informacao
     glColor3f(1,0,0);
-    if (noite == 1)
-        sprintf(texto,"%d - in gun ; %d - left", bulletsInGun, bulletsLeft);
-    else
-        sprintf(texto,"%d - Dia", noite);
+    sprintf(texto,"%d - in gun ; %d - left", bulletsInGun, bulletsLeft);
     desenhaTexto(texto,-12,1,-6);
 
     //================================================================= Viewport2
@@ -531,6 +524,16 @@ void display(void)
     glutSwapBuffers();
 }
 
+void shootGun(){
+    if(bulletsInGun)
+        bulletsInGun--;
+}
+
+void mouseClicks(int button, int state, int x, int y) {
+    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        shootGun();
+    }
+}
 
 //======================================================= EVENTOS
 void keyboard(unsigned char key, int x, int y)
@@ -572,6 +575,14 @@ void keyboard(unsigned char key, int x, int y)
         case 'r':
             reloadWeapon();
             break;
+
+        //--------------------------- shoot
+            /*
+        case 'R':
+        case 'r':
+            reloadWeapon();
+            break;
+            */
 
         //--------------------------- Escape
         case 27:
@@ -623,13 +634,16 @@ int main(int argc, char** argv)
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
     glutInitWindowSize (wScreen, hScreen);
     glutInitWindowPosition (0, 0);
-    glutCreateWindow ("{CG_FPS  (left,right,up,down) - (FlashLight, NightVision, Reload) - (LC) ");
+    glutCreateWindow ("CG_FPS_PROJECT : (A, W, S, D) - (Reload, LC)");
 
     init();
-    glutSpecialFunc(teclasNotAscii);
+
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
+
     glutKeyboardFunc(keyboard);
+    glutSpecialFunc(teclasNotAscii);
+    glutMouseFunc(mouseClicks);
 
     glutMainLoop();
 
