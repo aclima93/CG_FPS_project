@@ -5,11 +5,13 @@ QT += opengl
 LIBS += -lfreeglut
 
 SOURCES += main.cpp \
-    RgbImage.cpp
+    RgbImage.cpp \
+    Camera.cpp
 
 HEADERS += \
     materiais.hpp \
-    RgbImage.h
+    RgbImage.h \
+    Camera.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
