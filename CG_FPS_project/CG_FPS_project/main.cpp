@@ -7,6 +7,7 @@
 
 #include "materiais.hpp"
 #include "RgbImage.h"
+#include "Camera.hpp"
 
 //==================================================================== Definir cores
 
@@ -35,9 +36,6 @@ char     texto[30];
 
 //------------------------------------------------------------ Observador
 GLfloat  PI = 3.14159;
-GLfloat  rVisao=3.0, aVisao=0.5*PI, incVisao=0.1;
-GLfloat  obsPini[] ={0, 5, 0};
-GLdouble  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
 
 //------------------------------------------------------------ Iluminacao
 GLfloat spot_direction[4]={0.0,0.0,1.0,1.0};
@@ -72,6 +70,33 @@ bool colorMaterial;
 //================================================================================
 //=========================================================================== INIT
 //================================================================================
+
+#define CAMERASPEED	0.03f				// The Camera Speed
+
+
+CCamera objCamera; // the camera
+
+// -------------------------- gun specs
+int CLIPSIZE = 5;
+int bulletsInGun = CLIPSIZE;
+int bulletsLeft = CLIPSIZE*2;
+
+void reloadWeapon(){
+
+    if(bulletsLeft){
+
+        int loadingReq = CLIPSIZE - bulletsInGun;
+
+        if(bulletsLeft >= loadingReq){
+            bulletsInGun += loadingReq;
+            bulletsLeft -= loadingReq;
+        }
+        else{
+            bulletsInGun += bulletsLeft;
+            bulletsLeft = 0;
+        }
+    }
+}
 
 
 void activateLight(void)
@@ -124,6 +149,12 @@ void init(void)
     glEnable(GL_LIGHT0);/*Vamos so trabalhar com uma luz*/
     glEnable(GL_DEPTH_TEST);
 
+
+    ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
+                            // Position      View(target)  Up
+    objCamera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
+    objCamera.Mouse_Move(640,480);
+
     foco = false;
     colorMaterial = false;
     iluminacao = false;
@@ -143,6 +174,21 @@ void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z)
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *string++);
 }
 
+void drawGrid()
+{
+
+    for(float i = -500; i <= 500; i += 5)
+    {
+        glBegin(GL_LINES);
+            glColor3ub(150, 190, 150);
+            glVertex3f(-500, 0, i);
+            glVertex3f(500, 0, i);
+            glVertex3f(i, 0,-500);
+            glVertex3f(i, 0, 500);
+        glEnd();
+    }
+}
+
 GLuint groundTexture(){
 
     RgbImage  imag;
@@ -157,10 +203,10 @@ GLuint groundTexture(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
-
-    imag.GetNumCols(),
-    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-    imag.ImageData());
+        imag.GetNumCols(),
+        imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+        imag.ImageData()
+    );
 
     return texture[0];
 }
@@ -352,6 +398,10 @@ void drawWalls(){
 
 void drawScene()
 {
+
+    //grelha no chão
+    drawGrid();
+
     //============================================Eixos
     if (noite)
         glColor4f(AMARELO);
@@ -425,19 +475,6 @@ GLvoid resize(GLsizei width, GLsizei height)
 
 void drawOrientacao()
 {
-    /*Posicao inicial do observador??*/
-    glPushMatrix();
-        glColor4f(VERDE);
-        glTranslatef (obsPini[0],obsPini[1],obsPini[2]);
-        glutSolidCube(0.75);
-    glPopMatrix();
-
-    /*Posicao final do observador??*/
-    glPushMatrix();
-        glColor4f(LARANJA);
-        glTranslatef (obsPfin[0],obsPfin[1],obsPfin[2]);
-        glutSolidCube(0.5);
-    glPopMatrix();
 
     //****************************************************************************
     //  Direccao do FOCO=lanterna
@@ -462,7 +499,10 @@ void display(void)
     glOrtho (-xC,xC, -xC,xC, -zC,zC);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
+    //gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
+    gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
+              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
+              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
 
     //--------------------- desenha objectos
     drawScene();
@@ -471,7 +511,7 @@ void display(void)
     //--------------------- Informacao
     glColor3f(1,0,0);
     if (noite == 1)
-        sprintf(texto,"%d - Noite", noite);
+        sprintf(texto,"%d - in gun ; %d - left", bulletsInGun, bulletsLeft);
     else
         sprintf(texto,"%d - Dia", noite);
     desenhaTexto(texto,-12,1,-6);
@@ -484,7 +524,8 @@ void display(void)
     gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(obsPini[0], obsPini[1], obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
+
+    objCamera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
 
     drawScene();
     glutSwapBuffers();
@@ -502,70 +543,34 @@ void keyboard(unsigned char key, int x, int y)
 
     switch (key)
     {
-        //--------------------------- Direccao da Lanterna
-        //****************************************************************************
-        //  A lanterna pode-se movimentar usando as teclas 'S', 'D', 'E', 'C'
-        //****************************************************************************
-        case 's':
+        //--------------------------- forward
+        case 'W':
+        case 'w':
+            objCamera.Move_Camera( CAMERASPEED);
+            break;
+
+        //--------------------------- back
         case 'S':
-            spot_position[0] = spot_position[0] - increment_spot_position;/*Esquerda*/
-            activateLight();
+        case 's':
+            objCamera.Move_Camera(-CAMERASPEED);
             break;
-        case 'd':
+
+        //--------------------------- left
+        case 'A':
+        case 'a':
+            objCamera.Strafe_Camera(-CAMERASPEED);
+            break;
+
+        //--------------------------- left
         case 'D':
-            spot_position[0] = spot_position[0] + increment_spot_position;/*Direita*/
-            activateLight();
-            break;
-        case 'e':
-        case 'E':
-            spot_position[2] = spot_position[2] + increment_spot_position;/*Cima*/
-            activateLight();
-            break;
-        case 'c':
-        case 'C':
-            spot_position[2] = spot_position[2] - increment_spot_position;/*Baixo*/
-            activateLight();
+        case 'd':
+            objCamera.Strafe_Camera(CAMERASPEED);
             break;
 
-        //--------------------------- Dia/noite : definir intensidades da luz
-        case 'n':
-        case 'N':
-            noite=!noite;
-            if (noite)
-            {
-                luzGlobalCor[0]=1.0;
-                luzGlobalCor[1]=1.0;
-                luzGlobalCor[2]=1.0;
-            }
-            else
-            {
-                luzGlobalCor[0]=0.3;
-                luzGlobalCor[1]=0.3;
-                luzGlobalCor[2]=0.3;
-            }
-
-            glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
-            glutPostRedisplay();
-            break;
-
-        //--------------------------- Iluminacao da sala
-        case 't':
-        case 'T':
-            /*Alternar entre local e global*/
-            iluminacao = !iluminacao;
-            activateAmbientIllumination();
-            break;
-
-        //--------------------------- Foco
-        case 'f':
-        case 'F':
-            foco = !foco;
-            break;
-
-        //--------------------------- ColorMaterial
-        case 'm':
-        case 'M':
-            colorMaterial = !colorMaterial;
+        //--------------------------- reload
+        case 'R':
+        case 'r':
+            reloadWeapon();
             break;
 
         //--------------------------- Escape
@@ -578,8 +583,10 @@ void keyboard(unsigned char key, int x, int y)
 
 void updateVisao()
 {
+    /*
     obsPfin[0] =obsPini[0]+rVisao*cos(aVisao);
     obsPfin[2] =obsPini[2]-rVisao*sin(aVisao);
+    */
     glutPostRedisplay();
 }
 
@@ -590,7 +597,7 @@ void teclasNotAscii(int key, int x, int y)
     x++;
     y++;
 
-
+    /*
     if(key == GLUT_KEY_UP) {
         obsPini[0]=obsPini[0]+incVisao*cos(aVisao);
         obsPini[2]=obsPini[2]-incVisao*sin(aVisao);
@@ -606,6 +613,7 @@ void teclasNotAscii(int key, int x, int y)
         aVisao = (aVisao - 0.1) ;
     }
     updateVisao();
+    */
 }
 
 //======================================================= MAIN
