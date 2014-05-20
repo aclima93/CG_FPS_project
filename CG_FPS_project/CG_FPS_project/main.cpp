@@ -128,10 +128,17 @@ void init(void)
     glEnable(GL_LIGHT0);/*Vamos so trabalhar com uma luz*/
     glEnable(GL_DEPTH_TEST);
 
+    glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+    glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
+    glClearDepth(1.0f);									// Depth Buffer Setup
+    glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+    glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
 
     ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
-                            // Position      View(target)  Up
-    objCamera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
+                            // Position     View(target)   Up
+    objCamera.Position_Camera(0, 1, 1,      0, 1, 0,        0, 1, 0);
 
 }
 
@@ -388,27 +395,22 @@ void drawWalls(){
 void drawScene()
 {
 
+
+    // use this function for opengl target camera
+    gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
+              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
+              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+
     //grelha no chão
     drawGrid();
 
-    /*if (foco)
-        glEnable(GL_LIGHT0);
-    else*/
-        glDisable(GL_LIGHT0);
-
-    //************************************************** Poligono
-    //  As cores dos objectos devem ser definidas:
-    //		1. Cor usando o glColorMaterial
-    //		2. Propriedades materiais (a implementar)
-    //************************************************** Poligno
+    glDisable(GL_LIGHT0);
 
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
     glMaterialfv(GL_FRONT, GL_AMBIENT, esmeraldAmb);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
     //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
-
-
 
     //chão
     desenhaQuadrado(
@@ -437,10 +439,7 @@ GLvoid resize(GLsizei width, GLsizei height)
 
 void drawOrientacao()
 {
-
-    //****************************************************************************
     //  Direccao do FOCO=lanterna
-    //****************************************************************************
     glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,spot_direction);/*Definir direccao do foco*/
 }
 
@@ -458,10 +457,7 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    //gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
-    gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
-              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
-              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+    gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
 
     //--------------------- desenha objectos
     drawScene();
@@ -481,9 +477,6 @@ void display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    objCamera.Position_Camera(0, 2.5f, 5,	0, 2.5f, 0,   0, 1, 0);
-
-    drawScene();
     glutSwapBuffers();
 }
 
@@ -525,6 +518,25 @@ void shootGun(int x, int y, int z){
         bulletIndex++;
 
     }
+}
+
+void mouseMotion(int x, int y){
+
+    // position inside the window
+    if (y < 0)
+        y = 0;
+    else if (y > 20)
+        y = 20;
+
+
+    objCamera.mView.x = x;
+    objCamera.mView.y = y;
+
+    gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
+              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
+              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+
+
 }
 
 void mouseClicks(int button, int state, int x, int y) {
@@ -579,11 +591,18 @@ void keyboard(unsigned char key, int x, int y)
             reloadWeapon();
             break;
 
+        //--------------------------- reload
+        case 'Q':
+        case 'q':
+            objCamera.mPos.x = 0;
+            objCamera.mPos.y = 0;
+
+            break;
+
         //--------------------------- Escape
         case 27:
             exit(0);
             break;
-
     }
 }
 
@@ -621,6 +640,22 @@ int main(int argc, char** argv)
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(teclasNotAscii);
     glutMouseFunc(mouseClicks);
+    glutMotionFunc(mouseMotion);
+
+    objCamera.mPos.x = 0;
+    objCamera.mPos.y = 0;
+    objCamera.mPos.z = 0;
+
+    objCamera.mView.x = 0;
+    objCamera.mView.y = 0;
+    objCamera.mView.z = 0;
+
+    objCamera.mUp.x = 0;
+    objCamera.mUp.y = 1;
+    objCamera.mUp.z = 0;
+
+    objCamera.Mouse_Move(0,0);
+
 
     glutMainLoop();
 
