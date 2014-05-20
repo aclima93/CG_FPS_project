@@ -14,7 +14,7 @@ GLfloat field_width = 5; // 50
 GLfloat field_height = 10; // 1000
 GLfloat wall_height = 1; // 25
 
-#define VIDRO    1.0, 0.0, 1.0, 0.1
+#define VIDRO    0.0, 0.0, 0.5, 0.1
 #define AZUL     0.0, 0.0, 1.0, 1.0
 #define VERMELHO 1.0, 0.0, 0.0, 1.0
 #define AMARELO  1.0, 1.0, 0.0, 1.0
@@ -30,7 +30,7 @@ GLfloat wall_height = 1; // 25
 
 //------------------------------------------------------------ Sistema Coordenadas
 GLfloat  xC=16.0, zC=15.0;
-GLint    wScreen=800, hScreen=600;
+GLint    wScreen=1350, hScreen=800;
 char     texto[30];
 
 //------------------------------------------------------------ Observador
@@ -135,34 +135,61 @@ void init(void)
 void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z)
 {
     //----
-    car* string_temp = "ich bin ein rübe";
-    string = string_temp;
+    //char* string_temp = "ich bin ein rübe";
+    //string = string_temp;
 
     glRasterPos3f(x,y,z);
     while(*string)
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *string++);
 }
 
-void groundTexture(){
+GLuint groundTexture(){
 
     RgbImage  imag;
-    GLuint    tex;
-    GLuint    texture;
+    GLuint    texture[1];
 
-    glGenTextures(1, texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    imag.LoadBmpFile("models_textures/textures.bmp");
+    glGenTextures(1, &texture[0]);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    imag.LoadBmpFile("textures/ground_tex.bmp");
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexImage2D(GL_TEXTURE_2D, 0, 3,
 
     imag.GetNumCols(),
     imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
     imag.ImageData());
 
+    return texture[0];
+}
+
+
+void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
+                     GLfloat x2, GLfloat y2, GLfloat z2,
+                     GLfloat x3, GLfloat y3, GLfloat z3,
+                     GLfloat x4, GLfloat y4, GLfloat z4,
+                     GLfloat n1, GLfloat n2, GLfloat n3,
+                     GLfloat r, GLfloat g, GLfloat b, GLfloat a,
+                     GLuint texture
+                     ){
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glPushMatrix();
+        glColor4f(r, g, b, a);
+        glBegin(GL_QUADS);
+
+            glNormal3d(n1, n2, n3);
+
+            glTexCoord2f(0.0f,0.0f); glVertex3f(x1, y1, z1); // top left
+            glTexCoord2f(1.0f,0.0f); glVertex3f(x2, y2, z2); // bottom left
+            glTexCoord2f(1.0f,1.0f); glVertex3f(x4, y4, z4); // bottom right
+            glTexCoord2f(0.0f,1.0f); glVertex3f(x3, y3, z3); // top right
+
+        glEnd();
+    glPopMatrix();
 }
 
 void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
@@ -170,16 +197,18 @@ void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
                      GLfloat x3, GLfloat y3, GLfloat z3,
                      GLfloat x4, GLfloat y4, GLfloat z4,
                      GLfloat n1, GLfloat n2, GLfloat n3,
-                     GLfloat r, GLfloat g, GLfloat b, GLfloat a){
+                     GLfloat r, GLfloat g, GLfloat b, GLfloat a
+                     ){
     glPushMatrix();
         glColor4f(r, g, b, a);
         glBegin(GL_QUADS);
+
             glNormal3d(n1, n2, n3);
 
-            glVertex3f(x1, y1, z1);
-            glVertex3f(x2, y2, z2);
-            glVertex3f(x4, y4, z4); // 3 troca com o 4 because Quads suck
-            glVertex3f(x3, y3, z3);
+            glVertex3f(x1, y1, z1); // top left
+            glVertex3f(x2, y2, z2); // bottom left
+            glVertex3f(x4, y4, z4); // bottom right
+            glVertex3f(x3, y3, z3); // top right
 
         glEnd();
     glPopMatrix();
@@ -198,7 +227,7 @@ void drawWalls(){
             -field_width/2, 0, 0,                                   // C
             -field_width/2, 0, -field_height*(0.4f),                // D
              1, 0, 0,                                               // normal
-             VERDE                                                  // r g b a
+             WHITE                                                  // r g b a
         },
         {
             //vidro esquerda1
@@ -216,7 +245,7 @@ void drawWalls(){
             -field_width/2, 0, -field_height*(0.45f),                // C
             -field_width/2, 0, -field_height*(0.55f),                // D
              1, 0, 0,                                                // normal
-             AZUL                                                    // r g b a
+             WHITE                                                    // r g b a
         },
         {
             //vidro esquerda2
@@ -229,12 +258,12 @@ void drawWalls(){
         },
         {
             //parede esquerda3
-                -field_width/2, wall_height, -field_height*(0.60f),      // top left
-                -field_width/2, wall_height, -field_height,              // top right
-                -field_width/2, 0, -field_height*(0.60f),                // bottom left
-                -field_width/2, 0, -field_height,                        // bottom right
-                 1, 0, 0,                                                // normal
-                 AMARELO                                                 // r g b a
+            -field_width/2, wall_height, -field_height*(0.60f),      // top left
+            -field_width/2, wall_height, -field_height,              // top right
+            -field_width/2, 0, -field_height*(0.60f),                // bottom left
+            -field_width/2, 0, -field_height,                        // bottom right
+             1, 0, 0,                                                // normal
+             WHITE                                                // r g b a
         },
         {
             //parede esquerda4
@@ -243,7 +272,7 @@ void drawWalls(){
             -field_width*(0.75f), 0, -field_height*(0.45f),                // C
             -field_width*(0.75f), 0, -field_height*(0.55f),                // D
              1, 0, 0,                                                      // normal
-             VERDE                                                         // r g b a
+             WHITE                                                         // r g b a
         },
         {
             //parede esquerda5
@@ -252,7 +281,7 @@ void drawWalls(){
             -field_width, 0, -field_height*(0.40f),                // C
             -field_width, 0, -field_height*(0.60f),                // D
              1, 0, 0,                                              // normal
-             VERMELHO                                              // r g b a
+             WHITE                                              // r g b a
         },
 
         //paredes horizontais
@@ -263,7 +292,7 @@ void drawWalls(){
             -field_width, 0, -field_height*(0.40f),                // C
             -field_width/2, 0, -field_height*(0.40f),              // D
              1, 0, 0,                                              // normal
-             AZUL                                                  // r g b a
+             WHITE                                                  // r g b a
         },
         {
             //parede esquerda7
@@ -272,7 +301,7 @@ void drawWalls(){
             -field_width*(0.75f), 0, -field_height*(0.45f),                  // C
             -field_width/2, 0, -field_height*(0.45f),                        // D
              1, 0, 0,                                                        // normal
-             AMARELO                                                         // r g b a
+             WHITE                                                         // r g b a
         },
         {
             //parede esquerda8
@@ -281,7 +310,7 @@ void drawWalls(){
             -field_width*(0.75f), 0, -field_height*(0.55f),                  // C
             -field_width/2, 0, -field_height*(0.55f),                        // D
              1, 0, 0,                                                        // normal
-             AMARELO                                                         // r g b a
+             WHITE                                                         // r g b a
         },
         {
             //parede esquerda9
@@ -290,7 +319,7 @@ void drawWalls(){
             -field_width, 0, -field_height*(0.60f),                // C
             -field_width/2, 0, -field_height*(0.60f),              // D
              1, 0, 0,                                              // normal
-             AZUL                                                  // r g b a
+             WHITE                                                  // r g b a
         }
 
 
@@ -369,11 +398,6 @@ void drawScene()
     }
 
 
-    //************************************************** Poligono
-    //  Construir um poligono de uma dada cor
-    //************************************************** Poligono
-
-
     //chão
     desenhaQuadrado(
         -field_width/2, 0, -field_height,   // A
@@ -381,10 +405,9 @@ void drawScene()
         -field_width/2, 0, 0,               // C
          field_width/2, 0, 0,               // D
          1, 0, 0,                           // normal
-         VERMELHO                              // r g b a
+         WHITE,                          // r g b a
+         groundTexture()                    // texture
     );
-
-     groundTexture();
 
     drawWalls();
 
@@ -471,6 +494,12 @@ void display(void)
 //======================================================= EVENTOS
 void keyboard(unsigned char key, int x, int y)
 {
+
+    //using parameters just because
+    x++;
+    y++;
+
+
     switch (key)
     {
         //--------------------------- Direccao da Lanterna
@@ -556,6 +585,12 @@ void updateVisao()
 
 void teclasNotAscii(int key, int x, int y)
 {
+
+    //using parameters just because
+    x++;
+    y++;
+
+
     if(key == GLUT_KEY_UP) {
         obsPini[0]=obsPini[0]+incVisao*cos(aVisao);
         obsPini[2]=obsPini[2]-incVisao*sin(aVisao);
@@ -579,8 +614,8 @@ int main(int argc, char** argv)
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
     glutInitWindowSize (wScreen, hScreen);
-    glutInitWindowPosition (400, 100);
-    glutCreateWindow ("{jh,pm,ja}@dei.uc.pt-CG  (left,right,up,down) - (N,T,F,M) - (s,d-e,c) ");
+    glutInitWindowPosition (0, 0);
+    glutCreateWindow ("{CG_FPS  (left,right,up,down) - (FlashLight, NightVision, Reload) - (LC) ");
 
     init();
     glutSpecialFunc(teclasNotAscii);
