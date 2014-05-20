@@ -14,6 +14,8 @@
 #include "Camera.hpp"
 #include "Bullet.hpp"
 
+#include "main.hpp"
+
 //==================================================================== Definir cores
 
 #define VIDRO    0.0, 0.0, 0.5, 0.1
@@ -34,18 +36,10 @@
 //------------------------------------------------------------ Sistema Coordenadas
 GLfloat  xC=16.0, zC=15.0;
 GLint    wScreen=1350, hScreen=800;
-char     texto[30];
+char     texto[100];
 
-//------------------------------------------------------------ Observador
-GLfloat  PI = 3.14159;
-
-//------------------------------------------------------------ Iluminacao
-GLfloat spot_direction[4]={0.0,0.0,1.0,1.0};
-GLfloat spot_position[]={1,0.25,10};
-GLint increment_spot_position = 5;
 
 //------------------------------------------------------------ Global (ambiente)
-GLint   noite=1;
 GLfloat luzGlobalCor[4]={1.0,1.0,1.0,1.0};
 bool iluminacao;
 
@@ -58,6 +52,12 @@ GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
+
+//------------------------------------------------------------ Observador
+GLfloat  PI = 3.14159;
+GLfloat  rVisao=3.0, aVisao=0.5*PI, incVisao=0.1;
+GLfloat  obsPini[] ={1, 0.25, 0.5*xC};
+GLfloat  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
 
 // ------------------------- camera
 float CAMERASPEED = 0.03f;   // Camera Speed
@@ -80,13 +80,6 @@ Bullet bullets[NUMBULLETS];
 
 void activateLight(void)
 {
-    //…………………………………………………………………………………………………………………………………………… Restantes luzes
-    glLightfv(GL_LIGHT0, GL_POSITION, spot_position);/*Definir posicao do foco*/
-
-    //……………………………………………………………………………………………………………………………Lighting intensity and color
-    glLightfv(GL_LIGHT0, GL_AMBIENT, esmeraldAmb);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, esmeraldDif);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, esmeraldSpec);
 }
 
 void activateAmbientIllumination(void)
@@ -119,14 +112,11 @@ void initLights(void)
 
 void init(void)
 {
-    glClearColor(WHITE);
-    glShadeModel(GL_SMOOTH);
 
     //……………………………………………………………………………………………………………………………Lighting set up
     initLights();
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);/*Vamos so trabalhar com uma luz*/
-    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHT0);                                //luz ambiente
 
     glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
@@ -137,8 +127,9 @@ void init(void)
 
 
     ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
+
                             // Position     View(target)   Up
-    objCamera.Position_Camera(0, 1, 1,      0, 1, 0,        0, 1, 0);
+    //objCamera.Position_Camera(0, 0, 0,      0, 0, -200,        0, 1, 0);
 
 }
 
@@ -226,7 +217,7 @@ void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
             glNormal3d(n1, n2, n3);
 
             glTexCoord2f(0.0f,0.0f); glVertex3f(x1, y1, z1); // top left
-            glTexCoord2f(1.0f,0.0f); glVertex3f(x2, y2, z2); // bottom left
+            glTexCoord2f(0.0f,1.0f); glVertex3f(x2, y2, z2); // bottom left
             glTexCoord2f(1.0f,1.0f); glVertex3f(x4, y4, z4); // bottom right
             glTexCoord2f(0.0f,1.0f); glVertex3f(x3, y3, z3); // top right
 
@@ -397,9 +388,11 @@ void drawScene()
 
 
     // use this function for opengl target camera
+    /*
     gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
               objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
               objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+              */
 
     //grelha no chão
     drawGrid();
@@ -425,7 +418,7 @@ void drawScene()
 
     drawWalls();
 
-    glutPostRedisplay();
+    updateVisao();
 }
 
 
@@ -433,14 +426,13 @@ GLvoid resize(GLsizei width, GLsizei height)
 {
     wScreen=width;
     hScreen=height;
+    glViewport( 0, 0, wScreen,hScreen );
     drawScene();
 }
 
 
 void drawOrientacao()
 {
-    //  Direccao do FOCO=lanterna
-    glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,spot_direction);/*Definir direccao do foco*/
 }
 
 void display(void)
@@ -456,17 +448,12 @@ void display(void)
     glOrtho (-xC,xC, -xC,xC, -zC,zC);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
     gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
 
-    //--------------------- desenha objectos
+
+    //--------------------- desenha objectos no viewport1
     drawScene();
     drawOrientacao();
-
-    //--------------------- Informacao
-    glColor3f(1,0,0);
-    sprintf(texto,"%d - in gun ; %d - left", bulletsInGun, bulletsLeft);
-    desenhaTexto(texto,-12,1,-6);
 
     //================================================================= Viewport2
     glEnable(GL_LIGHTING);
@@ -476,6 +463,17 @@ void display(void)
     gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    /*
+     * gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
+              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
+              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+              */
+    gluLookAt(obsPini[0], obsPini[1], obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
+
+    //--------------------- desenha objectos no viewport2
+    drawScene();
+    drawOrientacao();
 
     glutSwapBuffers();
 }
@@ -501,6 +499,7 @@ void reloadWeapon(){
 void shootGun(int x, int y, int z){
 
     if(bulletsInGun){
+
         bulletsInGun--;
 
         bullets[bulletIndex].targetX = x;
@@ -513,8 +512,6 @@ void shootGun(int x, int y, int z){
         bullets[bulletIndex].y = objCamera.mPos.y;
         bullets[bulletIndex].z = objCamera.mPos.z;
 
-        //TODO: add event to keep going
-        bullets[bulletIndex].draw();
         bulletIndex++;
 
     }
@@ -527,14 +524,21 @@ void mouseMotion(int x, int y){
         y = 0;
     else if (y > 20)
         y = 20;
+    else{
+        obsPfin[1]++;
+    }
 
 
+    /*
     objCamera.mView.x = x;
     objCamera.mView.y = y;
 
     gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
               objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
               objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
+    */
+
+    updateVisao();
 
 
 }
@@ -548,6 +552,8 @@ void mouseClicks(int button, int state, int x, int y) {
         shootGun(x, y, -200);
     }
 
+    updateVisao();
+
 }
 
 //======================================================= EVENTOS
@@ -559,30 +565,37 @@ void keyboard(unsigned char key, int x, int y)
     }
 
 
-    switch (key)
-    {
+    switch (key){
+
         //--------------------------- forward
         case 'W':
         case 'w':
-            objCamera.Move_Camera( CAMERASPEED);
+            //objCamera.Move_Camera( CAMERASPEED);
+            obsPini[0]=obsPini[0]+incVisao*cos(aVisao);
+            obsPini[2]=obsPini[2]-incVisao*sin(aVisao);
+
             break;
 
         //--------------------------- back
         case 'S':
         case 's':
-            objCamera.Move_Camera(-CAMERASPEED);
+            //objCamera.Move_Camera(-CAMERASPEED);
+            obsPini[0]=obsPini[0]-incVisao*cos(aVisao);
+            obsPini[2]=obsPini[2]+incVisao*sin(aVisao);
             break;
 
         //--------------------------- left
         case 'A':
         case 'a':
-            objCamera.Strafe_Camera(-CAMERASPEED);
+            //objCamera.Strafe_Camera(-CAMERASPEED);
+            aVisao = (aVisao + 0.1) ;
             break;
 
         //--------------------------- left
         case 'D':
         case 'd':
-            objCamera.Strafe_Camera(CAMERASPEED);
+            //objCamera.Strafe_Camera(CAMERASPEED);
+            aVisao = (aVisao - 0.1) ;
             break;
 
         //--------------------------- reload
@@ -591,23 +604,53 @@ void keyboard(unsigned char key, int x, int y)
             reloadWeapon();
             break;
 
-        //--------------------------- reload
-        case 'Q':
-        case 'q':
-            objCamera.mPos.x = 0;
-            objCamera.mPos.y = 0;
 
+        // ------------------------------ move vertically for DEBUG
+        //--------------------------- up
+        case 'U':
+        case 'u':
+            obsPini[1]++;
             break;
+        //--------------------------- down
+        case 'J':
+        case 'j':
+            obsPini[1]--;
+            break;
+
 
         //--------------------------- Escape
         case 27:
             exit(0);
             break;
     }
+
+    updateVisao();
+}
+
+void drawBullets(){
+
+    for(int i=0; i<NUMBULLETS; i++){
+
+        // until it reaches it's target
+        if( bullets[i].isActive ){
+
+            bullets[i].draw();
+            if( bullets[i].deleteBullet() ){
+                bullets[i].isActive = !bullets[i].isActive ;
+            }
+        }
+    }
 }
 
 void updateVisao()
 {
+    // ---------------------- remove for FPS
+    obsPfin[0] =obsPini[0]+rVisao*cos(aVisao);
+    obsPfin[2] =obsPini[2]-rVisao*sin(aVisao);
+    // ----------------------------------------
+
+    drawBullets();
+
     glutPostRedisplay();
 }
 
@@ -641,20 +684,6 @@ int main(int argc, char** argv)
     glutSpecialFunc(teclasNotAscii);
     glutMouseFunc(mouseClicks);
     glutMotionFunc(mouseMotion);
-
-    objCamera.mPos.x = 0;
-    objCamera.mPos.y = 0;
-    objCamera.mPos.z = 0;
-
-    objCamera.mView.x = 0;
-    objCamera.mView.y = 0;
-    objCamera.mView.z = 0;
-
-    objCamera.mUp.x = 0;
-    objCamera.mUp.y = 1;
-    objCamera.mUp.z = 0;
-
-    objCamera.Mouse_Move(0,0);
 
 
     glutMainLoop();
