@@ -2,7 +2,19 @@ class Bullet{
     public:
         float x, y, z, angle;
         int targetX, targetY, targetZ;
-        bool isActive = 1;
+        bool isActive;
+
+        Bullet(){
+            isActive = true;
+            x = 0;
+            y = 0;
+            z = 0;
+            angle =0;
+            targetX = 0;
+            targetY = 0;
+            targetZ = 0;
+        }
+        ~Bullet(){}
 
         void draw(){
             glPushMatrix();

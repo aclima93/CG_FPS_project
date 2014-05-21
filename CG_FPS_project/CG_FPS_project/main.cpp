@@ -17,6 +17,8 @@
 
 #include "main.hpp"
 
+#define DEBUG 1
+
 //==================================================================== Definir cores
 
 #define VIDRO    0.0, 0.0, 0.5, 0.1
@@ -56,13 +58,13 @@ GLfloat localAttQua = 0.0;
 
 //------------------------------------------------------------ Observador
 GLfloat  PI = 3.14159;
-GLfloat  rVisao=3.0, aVisao=0.5*PI, incVisao=0.1;
-GLfloat  obsPini[] ={1, 0.25, 0.5*xC};
-GLfloat  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
+//GLfloat  rVisao=3.0, aVisao=0.5*PI, incVisao=0.1;
+//GLfloat  obsPini[] ={1, 0.25, 0.5*xC};
+//GLfloat  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
 
 // ------------------------- camera
 const float g_translation_speed = 0.05;
-const float g_rotation_speed = PI/180*0.2;
+const float g_rotation_speed = PI/180* 0.2;
 Camera g_camera;
 
 // ------------------------- map sizes
@@ -215,9 +217,9 @@ void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
             glNormal3d(n1, n2, n3);
 
             glTexCoord2f(0.0f,0.0f); glVertex3f(x1, y1, z1); // top left
-            glTexCoord2f(0.0f,1.0f); glVertex3f(x2, y2, z2); // bottom left
-            glTexCoord2f(1.0f,1.0f); glVertex3f(x4, y4, z4); // bottom right
-            glTexCoord2f(0.0f,1.0f); glVertex3f(x3, y3, z3); // top right
+            glTexCoord2f(0.0f,100.0f); glVertex3f(x2, y2, z2); // bottom left
+            glTexCoord2f(100.0f,100.0f); glVertex3f(x4, y4, z4); // bottom right
+            glTexCoord2f(0.0f,100.0f); glVertex3f(x3, y3, z3); // top right
 
         glEnd();
     glPopMatrix();
@@ -384,14 +386,6 @@ void drawWalls(){
 void drawScene()
 {
 
-
-    // use this function for opengl target camera
-    /*
-    gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
-              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
-              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
-              */
-
     //grelha no chão
     drawGrid();
 
@@ -424,7 +418,7 @@ GLvoid resize(GLsizei width, GLsizei height)
 {
     wScreen=width;
     hScreen=height;
-    glViewport( 0, 0, wScreen,hScreen );
+    //glViewport( 0, 0, wScreen,hScreen );
     drawScene();
 }
 
@@ -476,6 +470,7 @@ void display(void)
     drawOrientacao();
 
     glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 
@@ -519,6 +514,8 @@ void shootGun(int x, int y, int z){
 
 void mouseMotion(int x, int y){
 
+    if(DEBUG) std::cout << x << " - " << y << "\n";
+
     // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
     // This avoids it being called recursively and hanging up the event loop
     static bool just_warped = false;
@@ -529,7 +526,7 @@ void mouseMotion(int x, int y){
     }
 
     int dx = x - wScreen/2;
-    int dy = y - hScreen/2;
+    int dy = -(y - hScreen/2);
 
     if(dx) {
         g_camera.RotateYaw(g_rotation_speed*dx);
@@ -550,11 +547,13 @@ void mouseMotion(int x, int y){
 
 void mouseClicks(int button, int state, int x, int y) {
 
+    if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
+
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 
         //TODO: calculate where x and y from screen are in world(?)
 
-        shootGun(x, y, -200);
+        shootGun(0, 0, -200);
     }
 
     updateVisao();
@@ -565,10 +564,7 @@ void mouseClicks(int button, int state, int x, int y) {
 void keyboard(unsigned char key, int x, int y)
 {
 
-    //using parameters just because
-    if(x && y){
-    }
-
+    if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
 
     switch (key){
 
@@ -656,14 +652,7 @@ void drawBullets(){
     }
 }
 
-void updateVisao()
-{
-
-    // ---------------------- remove for FPS
-    /*
-    obsPfin[0] =obsPini[0]+rVisao*cos(aVisao);
-    obsPfin[2] =obsPini[2]-rVisao*sin(aVisao);
-    */
+void updateVisao(){
 
     g_camera.Refresh();
 
@@ -684,6 +673,13 @@ void teclasNotAscii(int key, int x, int y)
 
 }
 
+void Timer(int value){
+
+    if(value){}
+
+    glutPostRedisplay();
+}
+
 //======================================================= MAIN
 int main(int argc, char** argv)
 {
@@ -697,6 +693,8 @@ int main(int argc, char** argv)
 
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
+
+    glutTimerFunc(10, Timer, 0);
 
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(teclasNotAscii);
