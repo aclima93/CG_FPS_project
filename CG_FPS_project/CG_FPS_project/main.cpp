@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 
+#include <GL/freeglut.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -60,8 +61,9 @@ GLfloat  obsPini[] ={1, 0.25, 0.5*xC};
 GLfloat  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
 
 // ------------------------- camera
-float CAMERASPEED = 0.03f;   // Camera Speed
-CCamera objCamera;
+const float g_translation_speed = 0.05;
+const float g_rotation_speed = PI/180*0.2;
+Camera g_camera;
 
 // ------------------------- map sizes
 GLfloat field_width = 5; // 50
@@ -126,10 +128,6 @@ void init(void)
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
 
-    ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
-
-                            // Position     View(target)   Up
-    //objCamera.Position_Camera(0, 0, 0,      0, 0, -200,        0, 1, 0);
 
 }
 
@@ -462,14 +460,16 @@ void display(void)
     glLoadIdentity();
     gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
     glMatrixMode(GL_MODELVIEW);
+
+    glutSetCursor(GLUT_CURSOR_NONE);
+    glutWarpPointer(wScreen/2, hScreen/2);
+    gluPerspective (60, (GLfloat)wScreen / (GLfloat)hScreen, 0.1 , 100.0); //set the perspective (angle of sight, width, height, ,depth)
+
     glLoadIdentity();
 
-    /*
-     * gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
-              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
-              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
-              */
-    gluLookAt(obsPini[0], obsPini[1], obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
+    ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
+
+    //gluLookAt(obsPini[0], obsPini[1], obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
 
     //--------------------- desenha objectos no viewport2
     drawScene();
@@ -508,9 +508,9 @@ void shootGun(int x, int y, int z){
 
         bullets[bulletIndex].angle = 0; //TODO: calculate(?)
 
-        bullets[bulletIndex].x = objCamera.mPos.x;
-        bullets[bulletIndex].y = objCamera.mPos.y;
-        bullets[bulletIndex].z = objCamera.mPos.z;
+        bullets[bulletIndex].x = x;
+        bullets[bulletIndex].y = y;
+        bullets[bulletIndex].z = z-200;
 
         bulletIndex++;
 
@@ -519,24 +519,29 @@ void shootGun(int x, int y, int z){
 
 void mouseMotion(int x, int y){
 
-    // position inside the window
-    if (y < 0)
-        y = 0;
-    else if (y > 20)
-        y = 20;
-    else{
-        obsPfin[1]++;
+    // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
+    // This avoids it being called recursively and hanging up the event loop
+    static bool just_warped = false;
+
+    if(just_warped) {
+        just_warped = false;
+        return;
     }
 
+    int dx = x - wScreen/2;
+    int dy = y - hScreen/2;
 
-    /*
-    objCamera.mView.x = x;
-    objCamera.mView.y = y;
+    if(dx) {
+        g_camera.RotateYaw(g_rotation_speed*dx);
+    }
 
-    gluLookAt(objCamera.mPos.x,  objCamera.mPos.y,  objCamera.mPos.z,
-              objCamera.mView.x, objCamera.mView.y, objCamera.mView.z,
-              objCamera.mUp.x,   objCamera.mUp.y,   objCamera.mUp.z);
-    */
+    if(dy) {
+        g_camera.RotatePitch(g_rotation_speed*dy);
+    }
+
+    glutWarpPointer(wScreen/2, hScreen/2);
+
+    just_warped = true;
 
     updateVisao();
 
@@ -570,32 +575,39 @@ void keyboard(unsigned char key, int x, int y)
         //--------------------------- forward
         case 'W':
         case 'w':
-            //objCamera.Move_Camera( CAMERASPEED);
+            g_camera.Move(g_translation_speed);
+            /*
             obsPini[0]=obsPini[0]+incVisao*cos(aVisao);
             obsPini[2]=obsPini[2]-incVisao*sin(aVisao);
-
+            */
             break;
 
         //--------------------------- back
         case 'S':
         case 's':
-            //objCamera.Move_Camera(-CAMERASPEED);
+            g_camera.Move(-g_translation_speed);
+            /*
             obsPini[0]=obsPini[0]-incVisao*cos(aVisao);
             obsPini[2]=obsPini[2]+incVisao*sin(aVisao);
+            */
             break;
 
         //--------------------------- left
         case 'A':
         case 'a':
-            //objCamera.Strafe_Camera(-CAMERASPEED);
-            aVisao = (aVisao + 0.1) ;
+            g_camera.Strafe(g_translation_speed);
+            /*
+            aVisao = (aVisao + 0.1);
+            */
             break;
 
         //--------------------------- left
         case 'D':
         case 'd':
-            //objCamera.Strafe_Camera(CAMERASPEED);
-            aVisao = (aVisao - 0.1) ;
+            g_camera.Strafe(g_translation_speed);
+            /*
+            aVisao = (aVisao - 0.1);
+            */
             break;
 
         //--------------------------- reload
@@ -609,12 +621,14 @@ void keyboard(unsigned char key, int x, int y)
         //--------------------------- up
         case 'U':
         case 'u':
-            obsPini[1]++;
+            g_camera.Fly(g_translation_speed);
+            //obsPini[1]++;
             break;
         //--------------------------- down
         case 'J':
         case 'j':
-            obsPini[1]--;
+            g_camera.Fly(-g_translation_speed);
+            //obsPini[1]--;
             break;
 
 
@@ -644,10 +658,14 @@ void drawBullets(){
 
 void updateVisao()
 {
+
     // ---------------------- remove for FPS
+    /*
     obsPfin[0] =obsPini[0]+rVisao*cos(aVisao);
     obsPfin[2] =obsPini[2]-rVisao*sin(aVisao);
-    // ----------------------------------------
+    */
+
+    g_camera.Refresh();
 
     drawBullets();
 
@@ -684,6 +702,7 @@ int main(int argc, char** argv)
     glutSpecialFunc(teclasNotAscii);
     glutMouseFunc(mouseClicks);
     glutMotionFunc(mouseMotion);
+    glutPassiveMotionFunc(mouseMotion);
 
 
     glutMainLoop();

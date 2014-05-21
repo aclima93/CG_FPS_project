@@ -1,113 +1,117 @@
-/************************************************************
-*	APRON TUTORIALS PRESENTED BY MORROWLAND					*
-*************************************************************
-*	Author					: Ronny Andr� Reierstad			*
-*	Web Page				: www.morrowland.com			*
-*	E-Mail					: apron@morrowland.com			*
-*	Date					: 24.03.2004					*
-************************************************************/
-
-
+#include <stdio.h>
+#include <math.h>
+#include <GL/glut.h>
 #include "Camera.hpp"
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//										THE CCAMERA POSITION CAMERA
-/////////////////////////////////////////////////////////////////////////////////////////////////
-void CCamera::Position_Camera(float pos_x,  float pos_y,  float pos_z,
-                              float view_x, float view_y, float view_z,
-                              float up_x,   float up_y,   float up_z)
+void Camera::Init()
 {
-    mPos	= tVector3(pos_x,  pos_y,  pos_z ); // set position
-    mView	= tVector3(view_x, view_y, view_z); // set view
-    mUp		= tVector3(up_x,   up_y,   up_z  ); // set the up vector
+    m_yaw = 0.0;
+    m_pitch = 0.0;
+
+    SetPos(0, 0, 0);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//										THE CCAMERA MOVE CAMERA
-/////////////////////////////////////////////////////////////////////////////////////////////////
-void CCamera::Move_Camera(float speed)
+void Camera::Refresh()
 {
-    tVector3 vVector = mView - mPos;	// Get the view vector
+    // Camera parameter according to Riegl's co-ordinate system
+    // x/y for flat, z for height
+    m_lx = cos(m_yaw) * cos(m_pitch);
+    m_ly = sin(m_pitch);
+    m_lz = sin(m_yaw) * cos(m_pitch);
 
-    // forward positive cameraspeed and backward negative -cameraspeed.
-    mPos.x  = mPos.x  + vVector.x * speed;
-    mPos.z  = mPos.z  + vVector.z * speed;
-    mView.x = mView.x + vVector.x * speed;
-    mView.z = mView.z + vVector.z * speed;
+    m_strafe_lx = cos(m_yaw - M_PI_2);
+    m_strafe_lz = sin(m_yaw - M_PI_2);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(m_x, m_y, m_z, m_x + m_lx, m_y + m_ly, m_z + m_lz, 0.0,1.0,0.0);
+
+    //printf("Camera: %f %f %f Direction vector: %f %f %f\n", m_x, m_y, m_z, m_lx, m_ly, m_lz);
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//										THE CCAMERA ROTATE VIEW
-/////////////////////////////////////////////////////////////////////////////////////////////////
-void CCamera::Rotate_View(float speed)
+void Camera::SetPos(float x, float y, float z)
 {
-    tVector3 vVector = mView - mPos;	// Get the view vector
+    m_x = x;
+    m_y = y;
+    m_z =z;
 
-    mView.z = (float)(mPos.z + sin(speed)*vVector.x + cos(speed)*vVector.z);
-    mView.x = (float)(mPos.x + cos(speed)*vVector.x - sin(speed)*vVector.z);
+    Refresh();
 }
 
-
-//NEW//////////////////NEW//////////////////NEW//////////////////NEW////////////////
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//										THE CCAMERA STRAFE CAMERA
-/////////////////////////////////////////////////////////////////////////////////////////////////
-void CCamera::Strafe_Camera(float speed)
+void Camera::GetPos(float &x, float &y, float &z)
 {
-    tVector3 vVector = mView - mPos;	// Get the view vector
-    tVector3 vOrthoVector;              // Orthogonal vector for the view vector
-
-    vOrthoVector.x = -vVector.z;
-    vOrthoVector.z =  vVector.x;
-
-    // left positive cameraspeed and right negative -cameraspeed.
-    mPos.x  = mPos.x  + vOrthoVector.x * speed;
-    mPos.z  = mPos.z  + vOrthoVector.z * speed;
-    mView.x = mView.x + vOrthoVector.x * speed;
-    mView.z = mView.z + vOrthoVector.z * speed;
+    x = m_x;
+    y = m_y;
+    z = m_z;
 }
 
-//NEW//////////////////NEW//////////////////NEW//////////////////NEW////////////////
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//										THE CCAMERA MOUSE MOVE
-/////////////////////////////////////////////////////////////////////////////////////////////////
-void CCamera::Mouse_Move(int wndWidth, int wndHeight)
+void Camera::GetDirectionVector(float &x, float &y, float &z)
 {
-    POINT mousePos;
-    int mid_x = wndWidth  >> 1;
-    int mid_y = wndHeight >> 1;
-    float angle_y  = 0.0f;
-    float angle_z  = 0.0f;
-
-    GetCursorPos(&mousePos);	// Get the 2D mouse cursor (x,y) position
-
-    if( (mousePos.x == mid_x) && (mousePos.y == mid_y) ) return;
-
-    SetCursorPos(mid_x, mid_y);	// Set the mouse cursor in the center of the window
-
-    // Get the direction from the mouse cursor, set a resonable maneuvering speed
-    angle_y = (float)( (mid_x - mousePos.x) ) / 1000;
-    angle_z = (float)( (mid_y - mousePos.y) ) / 1000;
-
-    // The higher the value is the faster the camera looks around.
-    mView.y += angle_z * 2;
-
-    // limit the rotation around the x-axis
-    if((mView.y - mPos.y) > 8)  mView.y = mPos.y + 8;
-    if((mView.y - mPos.y) <-8)  mView.y = mPos.y - 8;
-
-    Rotate_View(-angle_y); // Rotate
+    x = m_lx;
+    y = m_ly;
+    z = m_lz;
 }
 
+void Camera::Move(float incr)
+{
+    float lx = cos(m_yaw)*cos(m_pitch);
+    float ly = sin(m_pitch);
+    float lz = sin(m_yaw)*cos(m_pitch);
 
+    m_x = m_x + incr*lx;
+    m_y = m_y + incr*ly;
+    m_z = m_z + incr*lz;
 
-//Ronny Andr� Reierstad
-//www.morrowland.com
-//apron@morrowland.com
+    Refresh();
+}
+
+void Camera::Strafe(float incr)
+{
+    m_x = m_x + incr*m_strafe_lx;
+    m_z = m_z + incr*m_strafe_lz;
+
+    Refresh();
+}
+
+void Camera::Fly(float incr)
+{
+    m_y = m_y + incr;
+
+    Refresh();
+}
+
+void Camera::RotateYaw(float angle)
+{
+    m_yaw += angle;
+
+    Refresh();
+}
+
+void Camera::RotatePitch(float angle)
+{
+    const float limit = 89.0 * M_PI / 180.0;
+
+    m_pitch += angle;
+
+    if(m_pitch < -limit)
+        m_pitch = -limit;
+
+    if(m_pitch > limit)
+        m_pitch = limit;
+
+    Refresh();
+}
+
+void Camera::SetYaw(float angle)
+{
+    m_yaw = angle;
+
+    Refresh();
+}
+
+void Camera::SetPitch(float angle)
+{
+    m_pitch = angle;
+
+    Refresh();
+}

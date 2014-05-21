@@ -13,14 +13,11 @@ class Bullet{
             glPopMatrix();
         }
         bool deleteBullet(){
-            //if( x >= targetX && y >= targetY && z <= targetZ )
-            //    return true;
+            if( x == targetX && y == targetY && z >= targetZ )
+                return true;
 
             //TODO: update coords for next iteration using angle
-            x++;
-            y++;
             z--;
-            angle++;
 
             return false;
         }
