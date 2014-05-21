@@ -217,9 +217,9 @@ void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
             glNormal3d(n1, n2, n3);
 
             glTexCoord2f(0.0f,0.0f); glVertex3f(x1, y1, z1); // top left
-            glTexCoord2f(0.0f,100.0f); glVertex3f(x2, y2, z2); // bottom left
-            glTexCoord2f(100.0f,100.0f); glVertex3f(x4, y4, z4); // bottom right
-            glTexCoord2f(0.0f,100.0f); glVertex3f(x3, y3, z3); // top right
+            glTexCoord2f(0.0f,10.0f); glVertex3f(x2, y2, z2); // bottom left
+            glTexCoord2f(10.0f,10.0f); glVertex3f(x4, y4, z4); // bottom right
+            glTexCoord2f(0.0f,10.0f); glVertex3f(x3, y3, z3); // top right
 
         glEnd();
     glPopMatrix();
@@ -457,20 +457,16 @@ void display(void)
 
     glutSetCursor(GLUT_CURSOR_NONE);
     glutWarpPointer(wScreen/2, hScreen/2);
-    gluPerspective (60, (GLfloat)wScreen / (GLfloat)hScreen, 0.1 , 100.0); //set the perspective (angle of sight, width, height, ,depth)
-
-    glLoadIdentity();
-
-    ShowCursor(FALSE);		// Do NOT Show Mouse Pointer
-
-    //gluLookAt(obsPini[0], obsPini[1], obsPini[2], obsPfin[0], obsPfin[1], obsPfin[2], 0, 1, 0);
 
     //--------------------- desenha objectos no viewport2
     drawScene();
     drawOrientacao();
+//    gluPerspective (60, (GLfloat)wScreen / (GLfloat)hScreen, 0.1 , 100.0); //set the perspective (angle of sight, width, height, ,depth)
+
+    glLoadIdentity();
 
     glutSwapBuffers();
-    glutPostRedisplay();
+
 }
 
 
@@ -665,11 +661,9 @@ void teclasNotAscii(int key, int x, int y)
 {
 
     //using parameters just because
-    if( !x && !y ){
-    }
+    if( x || y ){}
 
-    switch(key){
-    }
+    switch(key){}
 
 }
 
