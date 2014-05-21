@@ -121,12 +121,19 @@ compiler_clean:
 
 ####### Compile
 
-debug/main.o: ../CG_FPS_project/main.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \
+debug/main.o: ../CG_FPS_project/main.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/freeglut.h \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/freeglut_std.h \
-		../CG_FPS_project/materiais.hpp \
-		../CG_FPS_project/RgbImage.h \
+		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/freeglut_ext.h \
+		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \
+		../CG_FPS_project/main.hpp \
 		../CG_FPS_project/Camera.hpp \
-		../CG_FPS_project/Bullet.hpp
+		../CG_FPS_project/Bullet.hpp \
+		../CG_FPS_project/Textures.hpp \
+		../CG_FPS_project/RgbImage.h \
+		../CG_FPS_project/Map.hpp \
+		../CG_FPS_project/Wall.hpp \
+		../CG_FPS_project/Colors.hpp \
+		../CG_FPS_project/materiais.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\CG_FPS_project\main.cpp
 
 debug/RgbImage.o: ../CG_FPS_project/RgbImage.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \
@@ -134,9 +141,9 @@ debug/RgbImage.o: ../CG_FPS_project/RgbImage.cpp ../../../../../../Qt/Qt5.2.1/5.
 		../CG_FPS_project/RgbImage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\RgbImage.o ..\CG_FPS_project\RgbImage.cpp
 
-debug/Camera.o: ../CG_FPS_project/Camera.cpp ../CG_FPS_project/Camera.hpp \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/freeglut_std.h
+debug/Camera.o: ../CG_FPS_project/Camera.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \
+		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/freeglut_std.h \
+		../CG_FPS_project/Camera.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\Camera.o ..\CG_FPS_project\Camera.cpp
 
 ####### Install

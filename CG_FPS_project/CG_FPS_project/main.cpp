@@ -1,3 +1,4 @@
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -10,72 +11,138 @@
 #include <GL/glu.h>
 #include <GL/glaux.h>
 
+#include "main.hpp"
 #include "materiais.hpp"
 #include "RgbImage.h"
 #include "Camera.hpp"
 #include "Bullet.hpp"
-
-#include "main.hpp"
-
-#define DEBUG 1
-
-//==================================================================== Definir cores
-
-#define VIDRO    0.0, 0.0, 0.5, 0.1
-#define AZUL     0.0, 0.0, 1.0, 1.0
-#define VERMELHO 1.0, 0.0, 0.0, 1.0
-#define AMARELO  1.0, 1.0, 0.0, 1.0
-#define VERDE    0.0, 1.0, 0.0, 1.0
-#define LARANJA  0.8, 0.6, 0.1, 1.0
-#define WHITE    1.0, 1.0, 1.0, 1.0
-#define BLACK    0.0, 0.0, 0.0, 1.0
-#define GRAY1    0.2, 0.2, 0.2, 1.0
-#define GRAY2    0.9, 0.9, 0.9, 1.0
+#include "Textures.hpp"
 
 
-//================================================================================
-//===========================================================Variaveis e constantes
 
-//------------------------------------------------------------ Sistema Coordenadas
-GLfloat xC=16.0, zC=15.0;
-GLint wScreen=1350, hScreen=800;
-char texto[100];
+void teclasNotAscii(int key, int x, int y){
+
+    //using parameters just because
+    if( x || y ){}
+
+    switch(key){}
+
+    updateVisao();
+
+}
+
+void mouseMotion(int x, int y){
+
+    //if(DEBUG) std::cout << x << " - " << y << "\n";
+
+    // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
+    // This avoids it being called recursively and hanging up the event loop
+    static bool just_warped = false;
+
+    if(just_warped) {
+        just_warped = false;
+        return;
+    }
+
+    int dx = x - wScreen/2;
+    int dy = -(y - hScreen/2);
+
+    if(dx) {
+        g_camera.RotateYaw(g_rotation_speed*dx);
+    }
+
+    if(dy) {
+        g_camera.RotatePitch(g_rotation_speed*dy);
+    }
+
+    glutWarpPointer(wScreen/2, hScreen/2);
+
+    just_warped = true;
+
+    updateVisao();
+
+}
+
+void mouseClicks(int button, int state, int x, int y) {
+
+    if(button || state || x || y){}
+
+    //if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
+
+    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+
+        //TODO: calculate where x and y from screen are in world(?)
+
+        shootGun(0, 0, 0);
+    }
+
+    updateVisao();
+
+}
+
+void keyboard(unsigned char key, int x, int y){
+
+    if(key||x||y){}
+
+    //if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
+
+    switch (key){
+
+        //--------------------------- forward
+        case 'W':
+        case 'w':
+            g_camera.Move(g_translation_speed);
+            break;
+
+        //--------------------------- back
+        case 'S':
+        case 's':
+            g_camera.Move(-g_translation_speed);
+            break;
+
+        //--------------------------- left
+        case 'A':
+        case 'a':
+            g_camera.Strafe(g_translation_speed);
+            break;
+
+        //--------------------------- left
+        case 'D':
+        case 'd':
+            g_camera.Strafe(-g_translation_speed);
+            break;
+
+        //--------------------------- reload
+        case 'R':
+        case 'r':
+            reloadWeapon();
+            break;
 
 
-//------------------------------------------------------------ Global (ambiente)
-GLfloat luzGlobalCor[4]={1.0,1.0,1.0,1.0};
-bool iluminacao;
 
-/*Definir posicao iluminacao local*/
-GLfloat localCor[4] ={0.1, 0.1, 0.1, 1.0};
-GLfloat localPos[4]={0.7, 1.0, 0.5, 1.0};
+        // ------------------------------ move vertically for DEBUG
+        //--------------------------- up
+        case 'U':
+        case 'u':
+            g_camera.Fly(g_translation_speed);
+            break;
+        //--------------------------- down
+        case 'J':
+        case 'j':
+            g_camera.Fly(-g_translation_speed);
+            break;
 
-/*Atenuacoes iluminacao local*/
-GLfloat localAttCon = 1.0;
-GLfloat localAttLin = 0.05;
-GLfloat localAttQua = 0.0;
 
 
-//------------------------------------------------------------ Observador
-GLfloat PI = 3.1415926535;
-const float g_translation_speed = 0.05;
-const float g_rotation_speed = PI/180* 0.2;
-Camera g_camera;
+        //--------------------------- Escape
+        case 27:
+            exit(0);
+            break;
+    }
 
-// ------------------------- map sizes
-GLfloat field_width = 5; // 50
-GLfloat field_height = 10; // 1000
-GLfloat wall_height = 1; // 25
+    updateVisao();
 
-// -------------------------- gun specs
-#define CLIPSIZE 5
-#define NUMBULLETS 15
-#define NUMCLIPS 2
-
-int bulletsInGun = CLIPSIZE;
-int bulletsLeft = CLIPSIZE * NUMCLIPS;
-int bulletIndex = 0;
-Bullet bullets[NUMBULLETS];
+}
 
 
 void activateLight(void)
@@ -171,212 +238,8 @@ void drawGrid()
 
 }
 
-GLuint groundTexture(){
-
-    RgbImage  imag;
-    GLuint    texture[1];
-
-    glGenTextures(1, &texture[0]);
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    imag.LoadBmpFile("textures/ground_tex.bmp");
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3,
-        imag.GetNumCols(),
-        imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-        imag.ImageData()
-    );
-
-    return texture[0];
-}
 
 
-void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
-                     GLfloat x2, GLfloat y2, GLfloat z2,
-                     GLfloat x3, GLfloat y3, GLfloat z3,
-                     GLfloat x4, GLfloat y4, GLfloat z4,
-                     GLfloat n1, GLfloat n2, GLfloat n3,
-                     GLfloat r, GLfloat g, GLfloat b, GLfloat a,
-                     GLuint texture
-                     ){
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glPushMatrix();
-        glColor4f(r, g, b, a);
-        glBegin(GL_QUADS);
-
-            glNormal3d(n1, n2, n3);
-
-            glTexCoord2f(0.0f,0.0f); glVertex3f(x1, y1, z1); // top left
-            glTexCoord2f(0.0f,10.0f); glVertex3f(x2, y2, z2); // bottom left
-            glTexCoord2f(10.0f,10.0f); glVertex3f(x4, y4, z4); // bottom right
-            glTexCoord2f(0.0f,10.0f); glVertex3f(x3, y3, z3); // top right
-
-        glEnd();
-    glPopMatrix();
-}
-
-void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
-                     GLfloat x2, GLfloat y2, GLfloat z2,
-                     GLfloat x3, GLfloat y3, GLfloat z3,
-                     GLfloat x4, GLfloat y4, GLfloat z4,
-                     GLfloat n1, GLfloat n2, GLfloat n3,
-                     GLfloat r, GLfloat g, GLfloat b, GLfloat a
-                     ){
-    glPushMatrix();
-        glColor4f(r, g, b, a);
-        glBegin(GL_QUADS);
-
-            glNormal3d(n1, n2, n3);
-
-            glVertex3f(x1, y1, z1); // top left
-            glVertex3f(x2, y2, z2); // bottom left
-            glVertex3f(x4, y4, z4); // bottom right
-            glVertex3f(x3, y3, z3); // top right
-
-        glEnd();
-    glPopMatrix();
-}
-
-void drawWalls(){
-
-    GLint numWalls = 11;
-    GLfloat walls [11][19] = {
-
-        //paredes verticais
-        {
-            //parede esquerda1
-            -field_width/2, wall_height, 0,                         // A
-            -field_width/2, wall_height, -field_height*(0.4f),      // B
-            -field_width/2, 0, 0,                                   // C
-            -field_width/2, 0, -field_height*(0.4f),                // D
-             1, 0, 0,                                               // normal
-             WHITE                                                  // r g b a
-        },
-        {
-            //vidro esquerda1
-            -field_width/2, wall_height, -field_height*(0.40f),      // A
-            -field_width/2, wall_height, -field_height*(0.45f),      // B
-            -field_width/2, 0, -field_height*(0.40f),                // C
-            -field_width/2, 0, -field_height*(0.45f),                // D
-             1, 0, 0,                                                // normal
-             VIDRO                                                    // r g b a
-        },
-        {
-            //parede esquerda2
-            -field_width/2, wall_height, -field_height*(0.45f),      // A
-            -field_width/2, wall_height, -field_height*(0.55f),      // B
-            -field_width/2, 0, -field_height*(0.45f),                // C
-            -field_width/2, 0, -field_height*(0.55f),                // D
-             1, 0, 0,                                                // normal
-             WHITE                                                    // r g b a
-        },
-        {
-            //vidro esquerda2
-            -field_width/2, wall_height, -field_height*(0.55f),      // A
-            -field_width/2, wall_height, -field_height*(0.60f),      // B
-            -field_width/2, 0, -field_height*(0.55f),                // C
-            -field_width/2, 0, -field_height*(0.60f),                // D
-             1, 0, 0,                                                // normal
-             VIDRO                                                    // r g b a
-        },
-        {
-            //parede esquerda3
-            -field_width/2, wall_height, -field_height*(0.60f),      // top left
-            -field_width/2, wall_height, -field_height,              // top right
-            -field_width/2, 0, -field_height*(0.60f),                // bottom left
-            -field_width/2, 0, -field_height,                        // bottom right
-             1, 0, 0,                                                // normal
-             WHITE                                                // r g b a
-        },
-        {
-            //parede esquerda4
-            -field_width*(0.75f), wall_height, -field_height*(0.45f),      // A
-            -field_width*(0.75f), wall_height, -field_height*(0.55f),      // B
-            -field_width*(0.75f), 0, -field_height*(0.45f),                // C
-            -field_width*(0.75f), 0, -field_height*(0.55f),                // D
-             1, 0, 0,                                                      // normal
-             WHITE                                                         // r g b a
-        },
-        {
-            //parede esquerda5
-            -field_width, wall_height, -field_height*(0.40f),      // A
-            -field_width, wall_height, -field_height*(0.60f),      // B
-            -field_width, 0, -field_height*(0.40f),                // C
-            -field_width, 0, -field_height*(0.60f),                // D
-             1, 0, 0,                                              // normal
-             WHITE                                              // r g b a
-        },
-
-        //paredes horizontais
-        {
-            //parede esquerda6
-            -field_width, wall_height, -field_height*(0.40f),      // A
-            -field_width/2, wall_height, -field_height*(0.40f),    // B
-            -field_width, 0, -field_height*(0.40f),                // C
-            -field_width/2, 0, -field_height*(0.40f),              // D
-             1, 0, 0,                                              // normal
-             WHITE                                                  // r g b a
-        },
-        {
-            //parede esquerda7
-            -field_width*(0.75f), wall_height, -field_height*(0.45f),        // A
-            -field_width/2, wall_height, -field_height*(0.45f),              // B
-            -field_width*(0.75f), 0, -field_height*(0.45f),                  // C
-            -field_width/2, 0, -field_height*(0.45f),                        // D
-             1, 0, 0,                                                        // normal
-             WHITE                                                         // r g b a
-        },
-        {
-            //parede esquerda8
-            -field_width*(0.75f), wall_height, -field_height*(0.55f),        // A
-            -field_width/2, wall_height, -field_height*(0.55f),              // B
-            -field_width*(0.75f), 0, -field_height*(0.55f),                  // C
-            -field_width/2, 0, -field_height*(0.55f),                        // D
-             1, 0, 0,                                                        // normal
-             WHITE                                                         // r g b a
-        },
-        {
-            //parede esquerda9
-            -field_width, wall_height, -field_height*(0.60f),      // A
-            -field_width/2, wall_height, -field_height*(0.60f),    // B
-            -field_width, 0, -field_height*(0.60f),                // C
-            -field_width/2, 0, -field_height*(0.60f),              // D
-             1, 0, 0,                                              // normal
-             WHITE                                                  // r g b a
-        }
-
-
-
-    };
-
-    //draw left side and right side by symmetry
-    for(int i=0; i<numWalls; i++){
-            desenhaQuadrado(
-                walls[i][0], walls[i][1], walls[i][2],
-                walls[i][3], walls[i][4], walls[i][5],
-                walls[i][6], walls[i][7], walls[i][8],
-                walls[i][9], walls[i][10], walls[i][11],
-                walls[i][12], walls[i][13], walls[i][14],
-                walls[i][15], walls[i][16], walls[i][17], walls[i][18]
-            );
-            desenhaQuadrado(
-                - walls[i][0], walls[i][1], walls[i][2],
-                - walls[i][3], walls[i][4], walls[i][5],
-                - walls[i][6], walls[i][7], walls[i][8],
-                - walls[i][9], walls[i][10], walls[i][11],
-                walls[i][12], walls[i][13], walls[i][14],
-                walls[i][15], walls[i][16], walls[i][17], walls[i][18]
-            );
-
-    }
-
-
-}
 
 void drawScene()
 {
@@ -392,18 +255,7 @@ void drawScene()
     glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
     //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
 
-    //chão
-    desenhaQuadrado(
-        -field_width/2, 0, -field_height,   // A
-         field_width/2, 0, -field_height,   // B
-        -field_width/2, 0, 0,               // C
-         field_width/2, 0, 0,               // D
-         1, 0, 0,                           // normal
-         WHITE,                          // r g b a
-         groundTexture()                    // texture
-    );
-
-    drawWalls();
+    map.drawMap();
 
     updateVisao();
 
@@ -562,127 +414,6 @@ void shootGun(int x, int y, int z){
 
 //======================================================= EVENTOS
 
-void teclasNotAscii(int key, int x, int y){
-
-    //using parameters just because
-    if( x || y ){}
-
-    switch(key){}
-
-    updateVisao();
-
-}
-
-void mouseMotion(int x, int y){
-
-    //if(DEBUG) std::cout << x << " - " << y << "\n";
-
-    // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
-    // This avoids it being called recursively and hanging up the event loop
-    static bool just_warped = false;
-
-    if(just_warped) {
-        just_warped = false;
-        return;
-    }
-
-    int dx = x - wScreen/2;
-    int dy = -(y - hScreen/2);
-
-    if(dx) {
-        g_camera.RotateYaw(g_rotation_speed*dx);
-    }
-
-    if(dy) {
-        g_camera.RotatePitch(g_rotation_speed*dy);
-    }
-
-    glutWarpPointer(wScreen/2, hScreen/2);
-
-    just_warped = true;
-
-    updateVisao();
-
-}
-
-void mouseClicks(int button, int state, int x, int y) {
-
-    if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
-
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-
-        //TODO: calculate where x and y from screen are in world(?)
-
-        shootGun(0, 0, 0);
-    }
-
-    updateVisao();
-
-}
-
-void keyboard(unsigned char key, int x, int y){
-
-    if(key||x||y){}
-
-    //if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
-
-    switch (key){
-
-        //--------------------------- forward
-        case 'W':
-        case 'w':
-            g_camera.Move(g_translation_speed);
-            break;
-
-        //--------------------------- back
-        case 'S':
-        case 's':
-            g_camera.Move(-g_translation_speed);
-            break;
-
-        //--------------------------- left
-        case 'A':
-        case 'a':
-            g_camera.Strafe(g_translation_speed);
-            break;
-
-        //--------------------------- left
-        case 'D':
-        case 'd':
-            g_camera.Strafe(-g_translation_speed);
-            break;
-
-        //--------------------------- reload
-        case 'R':
-        case 'r':
-            reloadWeapon();
-            break;
-
-
-
-        // ------------------------------ move vertically for DEBUG
-        //--------------------------- up
-        case 'U':
-        case 'u':
-            g_camera.Fly(g_translation_speed);
-            break;
-        //--------------------------- down
-        case 'J':
-        case 'j':
-            g_camera.Fly(-g_translation_speed);
-            break;
-
-
-
-        //--------------------------- Escape
-        case 27:
-            exit(0);
-            break;
-    }
-
-    updateVisao();
-
-}
 
 void updateVisao(){
 

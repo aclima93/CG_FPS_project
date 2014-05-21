@@ -1,3 +1,6 @@
+#ifndef BULLET_HPP
+#define BULLET_HPP
+
 class Bullet{
     public:
         float x, y, z, angle;
@@ -19,6 +22,7 @@ class Bullet{
             glPopMatrix();
 
         }
+
         bool deleteBullet(){
             if( x == targetX && y == targetY && z == targetZ )
                 return true;
@@ -29,3 +33,6 @@ class Bullet{
             return false;
         }
 };
+
+
+#endif
