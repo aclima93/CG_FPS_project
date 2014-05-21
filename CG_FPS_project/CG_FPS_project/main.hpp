@@ -13,11 +13,6 @@
 //debug
 #define DEBUG 1
 
-// gun
-#define CLIPSIZE 5
-#define NUMBULLETS 15
-#define NUMCLIPS 2
-
 
 //------------------------------------------------------------ Sistema Coordenadas
 GLfloat xC=16.0, zC=15.0;
@@ -37,23 +32,6 @@ GLfloat localPos[4]={0.7, 1.0, 0.5, 1.0};
 GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
-
-
-//------------------------------------------------------------ Observador
-GLfloat PI = 3.1415926535;
-const float g_translation_speed = 0.05;
-const float g_rotation_speed = PI/180* 0.2;
-Camera g_camera;
-
-
-// -------------------------- gun specs
-int bulletsInGun = CLIPSIZE;
-int bulletsLeft = CLIPSIZE * NUMCLIPS;
-int bulletIndex = 0;
-Bullet bullets[NUMBULLETS];
-
-// ------------------------- map
-Map map;
 
 
 void activateLight(void);

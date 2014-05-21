@@ -34,5 +34,16 @@ class Bullet{
         }
 };
 
+// -------------------------- gun specs
+
+#define CLIPSIZE 5
+#define NUMBULLETS 15
+#define NUMCLIPS 2
+
+int bulletsInGun = CLIPSIZE;
+int bulletsLeft = CLIPSIZE * NUMCLIPS;
+int bulletIndex = 0;
+Bullet bullets[NUMBULLETS];
+
 
 #endif

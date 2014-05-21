@@ -18,6 +18,19 @@
 #include "Bullet.hpp"
 #include "Textures.hpp"
 
+int minutes = 0;
+int seconds = 0;
+int miliseconds = 0;
+const int msecCallback = 10;
+
+float widthHUDBlock = 200;
+float heightHUDBlock = 100;
+float crosshairThickness = 1.0;
+
+float wCenterScreen = wScreen/2;
+float hCenterScreen = hScreen/2;
+
+char timerInfoText[100];
 
 
 void teclasNotAscii(int key, int x, int y){
@@ -44,8 +57,8 @@ void mouseMotion(int x, int y){
         return;
     }
 
-    int dx = x - wScreen/2;
-    int dy = -(y - hScreen/2);
+    int dx = x - wCenterScreen;
+    int dy = -(y - hCenterScreen);
 
     if(dx) {
         g_camera.RotateYaw(g_rotation_speed*dx);
@@ -55,7 +68,7 @@ void mouseMotion(int x, int y){
         g_camera.RotatePitch(g_rotation_speed*dy);
     }
 
-    glutWarpPointer(wScreen/2, hScreen/2);
+    glutWarpPointer(wCenterScreen, hCenterScreen);
 
     just_warped = true;
 
@@ -200,8 +213,6 @@ void init(void)
 //================================================================================
 //======================================================================== DISPLAY
 void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z){
-    //"ich bin ein rübe"
-
     glRasterPos3f(x,y,z);
     while(*string)
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *string++);
@@ -273,13 +284,18 @@ GLvoid resize(GLsizei width, GLsizei height)
 void drawOrientacao(){
 
     // quadrado na posição da cãmara
+
     /*
+    float x, y, z;
+    g_camera.GetPos(x, y, z);
+
     glPushMatrix();
         glColor4f(VERDE);
-        glTranslatef (g_camera.m_x, g_camera.m_y, g_camera.m_z);
+        glTranslatef( x-2, y-2, y-2);
         glutSolidCube(1);
     glPopMatrix();
     */
+
 
 
     //  Direccao do FOCO=lanterna
@@ -287,40 +303,82 @@ void drawOrientacao(){
 
 }
 
-void display(void){
+void drawCrosshair(){
 
 
-    //================================================================= Viewport1 (minimap)
-    glClearColor(BLACK);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    glViewport (0, 0, wScreen/8, hScreen/8);
     glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
     glLoadIdentity();
-    glOrtho (-xC,xC, -xC,xC, -zC,zC);
+    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
     glMatrixMode(GL_MODELVIEW);
+    //glPushMatrix();        ----Not sure if I need this
     glLoadIdentity();
-    gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
+    glDisable(GL_CULL_FACE);
 
-    drawScene(); //--------------------- desenha objectos no viewport1
-    drawOrientacao();
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    // top segment
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+
+        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - 30.0);
+        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - 10.0);
+        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - 10.0);
+        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - 30.0);
+
+    glEnd();
+    // bottom segment
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+
+        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + 30.0);
+        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + 10.0);
+        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + 10.0);
+        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + 30.0);
+
+    glEnd();
+    // right segment
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+
+        glVertex2f(wCenterScreen - 30.0, hCenterScreen - crosshairThickness);
+        glVertex2f(wCenterScreen - 30.0, hCenterScreen + crosshairThickness);
+        glVertex2f(wCenterScreen - 10.0, hCenterScreen + crosshairThickness);
+        glVertex2f(wCenterScreen - 10.0, hCenterScreen - crosshairThickness);
+
+    glEnd();
+    // left segment
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+
+        glVertex2f(wCenterScreen + 30.0, hCenterScreen + crosshairThickness);
+        glVertex2f(wCenterScreen + 30.0, hCenterScreen - crosshairThickness);
+        glVertex2f(wCenterScreen + 10.0, hCenterScreen - crosshairThickness);
+        glVertex2f(wCenterScreen + 10.0, hCenterScreen + crosshairThickness);
+
+    glEnd();
+    // center doghnut
+    int segments = 100;
+    float t;
+    int r = 2;
+    glBegin( GL_TRIANGLE_FAN );
+        glVertex2f(wCenterScreen, hCenterScreen);
+        for( int n = 0; n <= segments; n++ ) {
+            t = 2*M_PI*(float)n/(float)segments;
+            glVertex2f(wCenterScreen + sin(t)*r, hCenterScreen + cos(t)*r);
+        }
+    glEnd();
 
 
-    //================================================================= Viewport2 (game)
-    glEnable(GL_LIGHTING);
-    glViewport (0, 0, wScreen, hScreen);
+    // Making sure we can render 3d again
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
+    glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+    //glPopMatrix();        ----and this?
 
-    glutSetCursor(GLUT_CURSOR_NONE);
-    glutWarpPointer(wScreen/2, hScreen/2);
+}
 
-    drawScene();//--------------------- desenha objectos no viewport2
-    drawOrientacao();
-
-
-    //================================================================= Viewport3 (info box)
+void drawTargetsInfo(){
 
 
     glMatrixMode(GL_PROJECTION);
@@ -336,21 +394,150 @@ void display(void){
 
     glBegin(GL_QUADS);
         glColor3f(1.0f, 0.0f, 0.0);
-        glVertex2f(0.0, 0.0);
-        glVertex2f(100.0, 0.0);
-        glVertex2f(100.0, 100.0);
-        glVertex2f(0.0, 100.0);
+
+        glVertex2f(wScreen - widthHUDBlock, 0.0);
+        glVertex2f(wScreen - widthHUDBlock, heightHUDBlock);
+        glVertex2f(wScreen, heightHUDBlock);
+        glVertex2f(wScreen, 0.0);
+
     glEnd();
 
     glColor3f(0,0,0);
-    sprintf(texto,"%d loaded - %d left", bulletsInGun, bulletsLeft);
-    desenhaTexto(texto,10,10,0);
+    sprintf(texto,"%d:%d:%d", minutes, seconds, miliseconds);
+    desenhaTexto(texto,wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
 
     // Making sure we can render 3d again
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     //glPopMatrix();        ----and this?
+
+}
+
+void drawGunInfo(){
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+    //glPushMatrix();        ----Not sure if I need this
+    glLoadIdentity();
+    glDisable(GL_CULL_FACE);
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+
+        glVertex2f(0.0, 0.0);
+        glVertex2f(widthHUDBlock, 0.0);
+        glVertex2f(widthHUDBlock, heightHUDBlock);
+        glVertex2f(0.0, heightHUDBlock);
+
+    glEnd();
+
+    glColor3f(0,0,0);
+    sprintf(texto,"%d loaded - %d left", bulletsInGun, bulletsLeft);
+    desenhaTexto(texto,0,0,0);
+
+    // Making sure we can render 3d again
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    //glPopMatrix();        ----and this?
+}
+
+void drawMiniMap(){
+
+    glClearColor(BLACK);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glViewport (0, 0, wScreen/8, hScreen/8);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho (-xC,xC, -xC,xC, -zC,zC);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
+
+}
+
+void drawTimeInfo(){
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+    //glPushMatrix();        ----Not sure if I need this
+    glLoadIdentity();
+    glDisable(GL_CULL_FACE);
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+
+        glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
+        glVertex2f(wCenterScreen - widthHUDBlock, heightHUDBlock/2);
+        glVertex2f(wCenterScreen + widthHUDBlock, heightHUDBlock/2);
+        glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
+
+
+    glEnd();
+
+    glColor3f(0,0,0);
+    sprintf(texto,"%d:%d:%d", minutes, seconds, miliseconds);
+    desenhaTexto(texto, wCenterScreen, heightHUDBlock/4 ,0);
+
+    // Making sure we can render 3d again
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    //glPopMatrix();        ----and this?
+
+
+}
+
+void drawHUD(){
+
+    drawGunInfo();
+    drawTimeInfo();
+    drawTargetsInfo();
+    drawCrosshair();
+
+
+}
+
+void display(void){
+
+
+    //================================================================= Viewport1 (minimap)
+    drawMiniMap();
+
+    drawScene(); //--------------------- desenha objectos no viewport1
+    drawOrientacao();
+
+
+    //================================================================= Viewport2 (game)
+    glEnable(GL_LIGHTING);
+    glViewport (0, 0, wScreen, hScreen);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
+    glMatrixMode(GL_MODELVIEW);
+
+    glutSetCursor(GLUT_CURSOR_NONE);
+    glutWarpPointer(wCenterScreen, hCenterScreen);
+
+    drawScene();//--------------------- desenha objectos no viewport2
+    drawOrientacao();
+
+
+    //================================================================= Viewport3 (info box)
+
+
+    drawHUD();
 
 
     //don't delete this!
@@ -428,6 +615,17 @@ void Timer(int value){
 
     if(value){}
 
+    miliseconds += msecCallback;
+
+    if(miliseconds == 1000){
+        miliseconds = 0;
+        seconds++;
+    }
+    if(seconds == 60){
+        seconds = 0;
+        minutes++;
+    }
+
     glutPostRedisplay();
 }
 
@@ -445,7 +643,7 @@ int main(int argc, char** argv){
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
 
-    glutTimerFunc(10, Timer, 0);
+    glutTimerFunc(msecCallback, Timer, 0);
 
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(teclasNotAscii);

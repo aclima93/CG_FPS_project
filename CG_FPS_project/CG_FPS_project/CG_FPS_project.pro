@@ -5,8 +5,7 @@ QT += opengl
 LIBS += -lfreeglut
 
 SOURCES += main.cpp \
-    RgbImage.cpp \
-    Camera.cpp
+    RgbImage.cpp
 
 HEADERS += \
     materiais.hpp \
