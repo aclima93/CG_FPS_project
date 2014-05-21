@@ -37,9 +37,9 @@
 //===========================================================Variaveis e constantes
 
 //------------------------------------------------------------ Sistema Coordenadas
-GLfloat  xC=16.0, zC=15.0;
-GLint    wScreen=1350, hScreen=800;
-char     texto[100];
+GLfloat xC=16.0, zC=15.0;
+GLint wScreen=1350, hScreen=800;
+char texto[100];
 
 
 //------------------------------------------------------------ Global (ambiente)
@@ -57,9 +57,7 @@ GLfloat localAttQua = 0.0;
 
 
 //------------------------------------------------------------ Observador
-GLfloat  PI = 3.1415926535;
-
-// ------------------------- camera
+GLfloat PI = 3.1415926535;
 const float g_translation_speed = 0.05;
 const float g_rotation_speed = PI/180* 0.2;
 Camera g_camera;
@@ -73,6 +71,7 @@ GLfloat wall_height = 1; // 25
 #define CLIPSIZE 5
 #define NUMBULLETS 15
 #define NUMCLIPS 2
+
 int bulletsInGun = CLIPSIZE;
 int bulletsLeft = CLIPSIZE * NUMCLIPS;
 int bulletIndex = 0;
@@ -133,8 +132,7 @@ void init(void)
 
 //================================================================================
 //======================================================================== DISPLAY
-void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z)
-{
+void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z){
     //"ich bin ein rübe"
 
     glRasterPos3f(x,y,z);
@@ -153,8 +151,6 @@ void drawGrid()
             glVertex3f(500, 0, i);
             glVertex3f(i, 0,-500);
             glVertex3f(i, 0, 500);
-            glVertex3f(-500, i, 0);
-            glVertex3f( 500, i, 0);
         glEnd();
     }
 
@@ -410,6 +406,7 @@ void drawScene()
     drawWalls();
 
     updateVisao();
+
 }
 
 
@@ -421,16 +418,30 @@ GLvoid resize(GLsizei width, GLsizei height)
 }
 
 
-void drawOrientacao()
-{
+void drawOrientacao(){
+
+    // quadrado na posição da cãmara
+    /*
+    glPushMatrix();
+        glColor4f(VERDE);
+        glTranslatef (g_camera.m_x, g_camera.m_y, g_camera.m_z);
+        glutSolidCube(1);
+    glPopMatrix();
+    */
+
+
+    //  Direccao do FOCO=lanterna
+    //glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,spot_direction);/*Definir direccao do foco*/
+
 }
 
 void display(void){
 
+
     //================================================================= Viewport1 (minimap)
     glClearColor(BLACK);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    glViewport (0, hScreen/4, wScreen/4, hScreen/4);
+    glViewport (0, 0, wScreen/8, hScreen/8);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho (-xC,xC, -xC,xC, -zC,zC);
@@ -438,14 +449,13 @@ void display(void){
     glLoadIdentity();
     gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
 
-
-    //--------------------- desenha objectos no viewport1
-    drawScene();
+    drawScene(); //--------------------- desenha objectos no viewport1
     drawOrientacao();
+
 
     //================================================================= Viewport2 (game)
     glEnable(GL_LIGHTING);
-    glViewport (wScreen/4, hScreen/4, 0.75*wScreen, 0.75*hScreen);
+    glViewport (0, 0, wScreen, hScreen);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
@@ -454,14 +464,63 @@ void display(void){
     glutSetCursor(GLUT_CURSOR_NONE);
     glutWarpPointer(wScreen/2, hScreen/2);
 
-    //--------------------- desenha objectos no viewport2
-    drawScene();
+    drawScene();//--------------------- desenha objectos no viewport2
     drawOrientacao();
 
+
+    //================================================================= Viewport3 (info box)
+
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+    //glPushMatrix();        ----Not sure if I need this
+    glLoadIdentity();
+    glDisable(GL_CULL_FACE);
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.0);
+        glVertex2f(0.0, 0.0);
+        glVertex2f(100.0, 0.0);
+        glVertex2f(100.0, 100.0);
+        glVertex2f(0.0, 100.0);
+    glEnd();
+
+    glColor3f(0,0,0);
+    sprintf(texto,"%d loaded - %d left", bulletsInGun, bulletsLeft);
+    desenhaTexto(texto,10,10,0);
+
+    // Making sure we can render 3d again
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    //glPopMatrix();        ----and this?
+
+
+    //don't delete this!
     glutSwapBuffers();
 
 }
 
+
+void drawBullets(){
+
+    for(int i=0; i<NUMBULLETS; i++){
+
+        // until it reaches it's target
+        if( bullets[i].isActive ){
+
+            bullets[i].draw();
+            if( bullets[i].deleteBullet() ){
+                bullets[i].isActive = !bullets[i].isActive ;
+            }
+        }
+    }
+}
 
 void reloadWeapon(){
 
@@ -501,9 +560,22 @@ void shootGun(int x, int y, int z){
     }
 }
 
+//======================================================= EVENTOS
+
+void teclasNotAscii(int key, int x, int y){
+
+    //using parameters just because
+    if( x || y ){}
+
+    switch(key){}
+
+    updateVisao();
+
+}
+
 void mouseMotion(int x, int y){
 
-    if(DEBUG) std::cout << x << " - " << y << "\n";
+    //if(DEBUG) std::cout << x << " - " << y << "\n";
 
     // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
     // This avoids it being called recursively and hanging up the event loop
@@ -531,12 +603,9 @@ void mouseMotion(int x, int y){
 
     updateVisao();
 
-
 }
 
 void mouseClicks(int button, int state, int x, int y) {
-
-    if(DEBUG) std::cout << "\n\n\n\n\SOU UM RATO TODO FODIDO!!!!!\n\n\n";
 
     if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
 
@@ -551,11 +620,11 @@ void mouseClicks(int button, int state, int x, int y) {
 
 }
 
-//======================================================= EVENTOS
-void keyboard(unsigned char key, int x, int y)
-{
+void keyboard(unsigned char key, int x, int y){
 
-    if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
+    if(key||x||y){}
+
+    //if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
 
     switch (key){
 
@@ -612,40 +681,16 @@ void keyboard(unsigned char key, int x, int y)
     }
 
     updateVisao();
-}
 
-void drawBullets(){
-
-    for(int i=0; i<NUMBULLETS; i++){
-
-        // until it reaches it's target
-        if( bullets[i].isActive ){
-
-            bullets[i].draw();
-            if( bullets[i].deleteBullet() ){
-                bullets[i].isActive = !bullets[i].isActive ;
-            }
-        }
-    }
 }
 
 void updateVisao(){
 
+    //loop for things that need to be draw continuously
     g_camera.Refresh();
-
     drawBullets();
 
     glutPostRedisplay();
-}
-
-void teclasNotAscii(int key, int x, int y)
-{
-
-    //using parameters just because
-    if( x || y ){}
-
-    switch(key){}
-
 }
 
 void Timer(int value){
@@ -656,8 +701,8 @@ void Timer(int value){
 }
 
 //======================================================= MAIN
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv){
+
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
     glutInitWindowSize (wScreen, hScreen);
