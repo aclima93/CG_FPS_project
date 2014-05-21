@@ -26,7 +26,6 @@ void Camera::Refresh()
     glLoadIdentity();
     gluLookAt(m_x, m_y, m_z, m_x + m_lx, m_y + m_ly, m_z + m_lz, 0.0,1.0,0.0);
 
-    //printf("Camera: %f %f %f Direction vector: %f %f %f\n", m_x, m_y, m_z, m_lx, m_ly, m_lz);
 }
 
 void Camera::SetPos(float x, float y, float z)
@@ -55,11 +54,11 @@ void Camera::GetDirectionVector(float &x, float &y, float &z)
 void Camera::Move(float incr)
 {
     float lx = cos(m_yaw)*cos(m_pitch);
-    float ly = sin(m_pitch);
+    //float ly = sin(m_pitch); // we don't move vertically
     float lz = sin(m_yaw)*cos(m_pitch);
 
     m_x = m_x + incr*lx;
-    m_y = m_y + incr*ly;
+    //m_y = m_y + incr*ly; // we don't move vertically
     m_z = m_z + incr*lz;
 
     Refresh();

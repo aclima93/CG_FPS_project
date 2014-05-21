@@ -6,26 +6,21 @@ class Bullet{
 
         Bullet(){
             isActive = true;
-            x = 0;
-            y = 0;
-            z = 0;
-            angle =0;
-            targetX = 0;
-            targetY = 0;
-            targetZ = 0;
         }
         ~Bullet(){}
 
         void draw(){
+
             glPushMatrix();
                 glRotatef(angle, 0, 0.5, 1);
                 glTranslatef( x, y, z);
                 glColor3f (0.4, 0.4, 1);
-                glutWireSphere(2, 2, 4);
+                glutWireCube(2);
             glPopMatrix();
+
         }
         bool deleteBullet(){
-            if( x == targetX && y == targetY && z >= targetZ )
+            if( x == targetX && y == targetY && z == targetZ )
                 return true;
 
             //TODO: update coords for next iteration using angle

@@ -57,10 +57,7 @@ GLfloat localAttQua = 0.0;
 
 
 //------------------------------------------------------------ Observador
-GLfloat  PI = 3.14159;
-//GLfloat  rVisao=3.0, aVisao=0.5*PI, incVisao=0.1;
-//GLfloat  obsPini[] ={1, 0.25, 0.5*xC};
-//GLfloat  obsPfin[] ={obsPini[0]-rVisao*cos(aVisao), obsPini[1], obsPini[2]-rVisao*sin(aVisao)};
+GLfloat  PI = 3.1415926535;
 
 // ------------------------- camera
 const float g_translation_speed = 0.05;
@@ -156,6 +153,8 @@ void drawGrid()
             glVertex3f(500, 0, i);
             glVertex3f(i, 0,-500);
             glVertex3f(i, 0, 500);
+            glVertex3f(-500, i, 0);
+            glVertex3f( 500, i, 0);
         glEnd();
     }
 
@@ -418,7 +417,6 @@ GLvoid resize(GLsizei width, GLsizei height)
 {
     wScreen=width;
     hScreen=height;
-    //glViewport( 0, 0, wScreen,hScreen );
     drawScene();
 }
 
@@ -427,11 +425,9 @@ void drawOrientacao()
 {
 }
 
-void display(void)
-{
+void display(void){
 
-
-    //================================================================= Viewport1
+    //================================================================= Viewport1 (minimap)
     glClearColor(BLACK);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glViewport (0, hScreen/4, wScreen/4, hScreen/4);
@@ -447,7 +443,7 @@ void display(void)
     drawScene();
     drawOrientacao();
 
-    //================================================================= Viewport2
+    //================================================================= Viewport2 (game)
     glEnable(GL_LIGHTING);
     glViewport (wScreen/4, hScreen/4, 0.75*wScreen, 0.75*hScreen);
     glMatrixMode(GL_PROJECTION);
@@ -461,9 +457,6 @@ void display(void)
     //--------------------- desenha objectos no viewport2
     drawScene();
     drawOrientacao();
-//    gluPerspective (60, (GLfloat)wScreen / (GLfloat)hScreen, 0.1 , 100.0); //set the perspective (angle of sight, width, height, ,depth)
-
-    glLoadIdentity();
 
     glutSwapBuffers();
 
@@ -495,13 +488,13 @@ void shootGun(int x, int y, int z){
 
         bullets[bulletIndex].targetX = x;
         bullets[bulletIndex].targetY = y;
-        bullets[bulletIndex].targetZ = z;
+        bullets[bulletIndex].targetZ = z-200;
 
         bullets[bulletIndex].angle = 0; //TODO: calculate(?)
 
         bullets[bulletIndex].x = x;
         bullets[bulletIndex].y = y;
-        bullets[bulletIndex].z = z-200;
+        bullets[bulletIndex].z = z;
 
         bulletIndex++;
 
@@ -543,13 +536,15 @@ void mouseMotion(int x, int y){
 
 void mouseClicks(int button, int state, int x, int y) {
 
+    if(DEBUG) std::cout << "\n\n\n\n\SOU UM RATO TODO FODIDO!!!!!\n\n\n";
+
     if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
 
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 
         //TODO: calculate where x and y from screen are in world(?)
 
-        shootGun(0, 0, -200);
+        shootGun(0, 0, 0);
     }
 
     updateVisao();
@@ -568,38 +563,24 @@ void keyboard(unsigned char key, int x, int y)
         case 'W':
         case 'w':
             g_camera.Move(g_translation_speed);
-            /*
-            obsPini[0]=obsPini[0]+incVisao*cos(aVisao);
-            obsPini[2]=obsPini[2]-incVisao*sin(aVisao);
-            */
             break;
 
         //--------------------------- back
         case 'S':
         case 's':
             g_camera.Move(-g_translation_speed);
-            /*
-            obsPini[0]=obsPini[0]-incVisao*cos(aVisao);
-            obsPini[2]=obsPini[2]+incVisao*sin(aVisao);
-            */
             break;
 
         //--------------------------- left
         case 'A':
         case 'a':
             g_camera.Strafe(g_translation_speed);
-            /*
-            aVisao = (aVisao + 0.1);
-            */
             break;
 
         //--------------------------- left
         case 'D':
         case 'd':
-            g_camera.Strafe(g_translation_speed);
-            /*
-            aVisao = (aVisao - 0.1);
-            */
+            g_camera.Strafe(-g_translation_speed);
             break;
 
         //--------------------------- reload
@@ -609,19 +590,19 @@ void keyboard(unsigned char key, int x, int y)
             break;
 
 
+
         // ------------------------------ move vertically for DEBUG
         //--------------------------- up
         case 'U':
         case 'u':
             g_camera.Fly(g_translation_speed);
-            //obsPini[1]++;
             break;
         //--------------------------- down
         case 'J':
         case 'j':
             g_camera.Fly(-g_translation_speed);
-            //obsPini[1]--;
             break;
+
 
 
         //--------------------------- Escape
