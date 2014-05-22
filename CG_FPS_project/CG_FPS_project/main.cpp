@@ -14,16 +14,12 @@
 #include <GL/glaux.h>
 
 #include "main.hpp"
-#include "materiais.hpp"
-#include "RgbImage.h"
-#include "Camera.hpp"
-#include "Bullet.hpp"
-#include "Textures.hpp"
 
 int minutes = 0;
 int seconds = 0;
 int miliseconds = 0;
 const int msecCallback = 10;
+const int msecDisplayCallback = msecCallback * 10;
 
 float widthHUDBlock = 200;
 float heightHUDBlock = 100;
@@ -34,10 +30,9 @@ float hCenterScreen = hScreen/2;
 
 char timerInfoText[100];
 
+int numTargetsHit = 0;
 
-
-
-std::vector< std::vector<float> > possiblePositions;
+std::vector< std::vector<float> > possiblePositions(50, std::vector<float>(30));
 
 void drawTargets(){
     for(int i=0; i<NUMTARGETS; i++){
@@ -63,7 +58,8 @@ void createTargets(){
 
         float BB [2][3] = { {aux[pos][0], aux[pos][1]+10, aux[pos][2]}, {aux[pos][0], aux[pos][1]-10, aux[pos][2]} };
 
-        targets[i] = Target( aux[pos][0], aux[pos][1], aux[pos][2], numBB, BB);
+        //targets[i] = Target();
+        targets[i].Init(aux[pos][0], aux[pos][1], aux[pos][2], numBB, BB);
         aux.erase( aux.begin()+ pos );
     }
 
@@ -76,7 +72,7 @@ void teclasNotAscii(int key, int x, int y){
 
     switch(key){}
 
-    updateVisao();
+    glutPostRedisplay();
 
 }
 
@@ -108,7 +104,7 @@ void mouseMotion(int x, int y){
 
     just_warped = true;
 
-    updateVisao();
+    glutPostRedisplay();
 
 }
 
@@ -125,7 +121,7 @@ void mouseClicks(int button, int state, int x, int y) {
         shootGun(0, 0, 0);
     }
 
-    updateVisao();
+    glutPostRedisplay();
 
 }
 
@@ -189,7 +185,7 @@ void keyboard(unsigned char key, int x, int y){
             break;
     }
 
-    updateVisao();
+    glutPostRedisplay();
 
 }
 
@@ -257,7 +253,7 @@ void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z){
 void drawGrid()
 {
 
-    for(float i = -500; i <= 500; i += 5)
+    for(float i = -100; i <= 100; i += 5)
     {
         glBegin(GL_LINES);
             glColor3ub(150, 190, 150);
@@ -285,7 +281,12 @@ void drawGrid()
 
 }
 
+void drawBullets(){
 
+    for(int i=0; i<NUMBULLETS; i++){
+        bullets[i].draw();
+    }
+}
 
 
 void drawScene()
@@ -303,17 +304,19 @@ void drawScene()
     //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
 
     map.drawMap();
+    drawTargets();
 
-    updateVisao();
+    g_camera.Refresh();
+    drawBullets();
 
 }
 
 
-GLvoid resize(GLsizei width, GLsizei height)
-{
+GLvoid resize(GLsizei width, GLsizei height){
+
     wScreen=width;
     hScreen=height;
-    drawScene();
+    glutPostRedisplay();
 }
 
 
@@ -340,18 +343,6 @@ void drawOrientacao(){
 }
 
 void drawCrosshair(){
-
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    //glPushMatrix();        ----Not sure if I need this
-    glLoadIdentity();
-    glDisable(GL_CULL_FACE);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     // top segment
     glBegin(GL_QUADS);
@@ -393,40 +384,25 @@ void drawCrosshair(){
         glVertex2f(wCenterScreen + 10.0, hCenterScreen + crosshairThickness);
 
     glEnd();
+
     // center doghnut
-    int segments = 100;
+    int segments = 5;
     float t;
     int r = 2;
+
     glBegin( GL_TRIANGLE_FAN );
         glVertex2f(wCenterScreen, hCenterScreen);
         for( int n = 0; n <= segments; n++ ) {
-            t = 2*M_PI*(float)n/(float)segments;
+            t = 2*PI*(float)n/(float)segments;
             glVertex2f(wCenterScreen + sin(t)*r, hCenterScreen + cos(t)*r);
         }
     glEnd();
 
 
-    // Making sure we can render 3d again
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    //glPopMatrix();        ----and this?
-
 }
 
 void drawTargetsInfo(){
 
-
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    //glPushMatrix();        ----Not sure if I need this
-    glLoadIdentity();
-    glDisable(GL_CULL_FACE);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     glBegin(GL_QUADS);
         glColor3f(1.0f, 0.0f, 0.0);
@@ -439,29 +415,14 @@ void drawTargetsInfo(){
     glEnd();
 
     glColor3f(0,0,0);
-    sprintf(texto,"%d:%d:%d", minutes, seconds, miliseconds);
+    sprintf(texto,"%d/%d", numTargetsHit, NUMTARGETS);
     desenhaTexto(texto,wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
 
-    // Making sure we can render 3d again
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    //glPopMatrix();        ----and this?
 
 }
 
 void drawGunInfo(){
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    //glPushMatrix();        ----Not sure if I need this
-    glLoadIdentity();
-    glDisable(GL_CULL_FACE);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     glBegin(GL_QUADS);
         glColor3f(1.0f, 0.0f, 0.0);
@@ -475,13 +436,8 @@ void drawGunInfo(){
 
     glColor3f(0,0,0);
     sprintf(texto,"%d loaded - %d left", bulletsInGun, bulletsLeft);
-    desenhaTexto(texto,0,0,0);
+    desenhaTexto(texto, widthHUDBlock/2, heightHUDBlock/2,0);
 
-    // Making sure we can render 3d again
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    //glPopMatrix();        ----and this?
 }
 
 void drawMiniMap(){
@@ -500,16 +456,6 @@ void drawMiniMap(){
 
 void drawTimeInfo(){
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
-    glMatrixMode(GL_MODELVIEW);
-    //glPushMatrix();        ----Not sure if I need this
-    glLoadIdentity();
-    glDisable(GL_CULL_FACE);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     glBegin(GL_QUADS);
         glColor3f(1.0f, 0.0f, 0.0);
@@ -523,24 +469,36 @@ void drawTimeInfo(){
     glEnd();
 
     glColor3f(0,0,0);
-    sprintf(texto,"%d:%d:%d", minutes, seconds, miliseconds);
+    sprintf(texto,"%d:%d:%d", minutes, seconds, miliseconds/10);
     desenhaTexto(texto, wCenterScreen, heightHUDBlock/4 ,0);
-
-    // Making sure we can render 3d again
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    //glPopMatrix();        ----and this?
 
 
 }
 
 void drawHUD(){
 
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
+    glMatrixMode(GL_MODELVIEW);
+    //glPushMatrix();        ----Not sure if I need this
+    glLoadIdentity();
+    glDisable(GL_CULL_FACE);
+
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+
     drawGunInfo();
     drawTimeInfo();
     drawTargetsInfo();
     drawCrosshair();
+
+    // Making sure we can render 3d again
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    //glPopMatrix();        ----and this?
 
 
 }
@@ -581,22 +539,6 @@ void display(void){
 
 }
 
-
-void drawBullets(){
-
-    for(int i=0; i<NUMBULLETS; i++){
-
-        // until it reaches it's target
-        if( bullets[i].isActive ){
-
-            bullets[i].draw();
-            if( bullets[i].deleteBullet() ){
-                bullets[i].isActive = !bullets[i].isActive ;
-            }
-        }
-    }
-}
-
 void reloadWeapon(){
 
     if(bulletsLeft){
@@ -620,15 +562,17 @@ void shootGun(int x, int y, int z){
 
         bulletsInGun--;
 
-        bullets[bulletIndex].targetX = x;
-        bullets[bulletIndex].targetY = y;
-        bullets[bulletIndex].targetZ = z-200;
+        bullets[bulletIndex].isActive = true;
 
         bullets[bulletIndex].angle = 0; //TODO: calculate(?)
 
         bullets[bulletIndex].x = x;
         bullets[bulletIndex].y = y;
         bullets[bulletIndex].z = z;
+
+        bullets[bulletIndex].targetX = x;
+        bullets[bulletIndex].targetY = y;
+        bullets[bulletIndex].targetZ = z-2;
 
         bulletIndex++;
 
@@ -638,18 +582,7 @@ void shootGun(int x, int y, int z){
 //======================================================= EVENTOS
 
 
-void updateVisao(){
-
-    //loop for things that need to be draw continuously
-    g_camera.Refresh();
-    drawBullets();
-
-    glutPostRedisplay();
-}
-
 void Timer(int value){
-
-    if(value){}
 
     miliseconds += msecCallback;
 
@@ -662,11 +595,17 @@ void Timer(int value){
         minutes++;
     }
 
-    glutPostRedisplay();
+    if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
+        glutPostRedisplay(); // flag que chama a função de display na próxima iteração
+    }
+
+    glutTimerFunc(msecCallback, Timer, 0);
 }
 
 //======================================================= MAIN
 int main(int argc, char** argv){
+
+    createTargets();
 
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );

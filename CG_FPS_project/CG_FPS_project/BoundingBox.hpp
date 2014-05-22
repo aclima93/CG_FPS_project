@@ -1,4 +1,11 @@
-#include "GL/gl.h"
+#ifndef BOUNDINGBOX_HPP
+#define BOUNDINGBOX_HPP
+
+#include <GL/freeglut.h>
+#include <GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glaux.h>
 
 class BoundingBox{
 
@@ -6,7 +13,9 @@ class BoundingBox{
 
         float x, y, z;
 
-        BoundingBox(float xx, float yy, float zz){
+        BoundingBox(){}
+
+        void Init(float xx, float yy, float zz){
             x = xx;
             y = yy;
             z = zz;
@@ -18,6 +27,7 @@ class BoundingBox{
                 glBegin(GL_QUADS);		// Draw The Cube Using quads
 
                   glColor3f(1.0f,0.0f,0.0f);	// Color Red
+
                   glVertex3f( x, y,-z);	// Top Right Of The Quad (Top)
                   glVertex3f(-x, y,-z);	// Top Left Of The Quad (Top)
                   glVertex3f(-x, y, z);	// Bottom Left Of The Quad (Top)
@@ -54,3 +64,5 @@ class BoundingBox{
 
 
 };
+
+#endif

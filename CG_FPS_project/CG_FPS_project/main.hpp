@@ -6,6 +6,7 @@
 
 #include <vector>
 
+#include "materiais.hpp"
 #include "Camera.hpp"
 #include "Bullet.hpp"
 #include "Textures.hpp"
@@ -36,7 +37,6 @@ GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
-std::vector<Target> targets;
 Map map;
 
 
