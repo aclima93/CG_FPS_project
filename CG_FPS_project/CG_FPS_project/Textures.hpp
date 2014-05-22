@@ -32,6 +32,4 @@ class Textures{
 
 };
 
-Textures textures;
-
 #endif

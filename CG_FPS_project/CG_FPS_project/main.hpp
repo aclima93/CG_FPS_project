@@ -34,6 +34,9 @@ GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
 
+Map map;
+
+
 void activateLight(void);
 void activateAmbientIllumination(void);
 void initLights(void);

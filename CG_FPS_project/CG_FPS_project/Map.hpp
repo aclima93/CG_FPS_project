@@ -2,11 +2,13 @@
 #define MAP_HPP
 
 #include <GL/gl.h>
+
 #include "Wall.hpp"
 #include "Colors.hpp"
 #include "Textures.hpp"
 
 #define NUMWALLS 11
+#define NUMGROUNDS 2
 
 class Map{
     public:
@@ -15,7 +17,9 @@ class Map{
         float mapLength;
         float mapHeight;
 
-        Wall ground;
+        Textures textures;
+
+        Wall ground[NUMGROUNDS];
 
         Wall walls[NUMWALLS];
 
@@ -26,13 +30,21 @@ class Map{
             mapLength = 10; // 1000
             mapHeight = 1; // 25
 
-            ground.Init(
+            ground[0].Init(
                 -mapWidth/2, 0, -mapLength,   // A
-                 mapWidth/2, 0, -mapLength,   // B
-                -mapWidth/2, 0, 0,               // C
-                 mapWidth/2, 0, 0,               // D
+                -mapWidth/2, 0, 0,   // B
+                 0, 0, -mapLength,               // C
+                 0, 0, 0,               // D
                  1, 0, 0,                           // normal
-                 WHITE                          // r g b a
+                 VERDE                          // r g b a
+            );
+            ground[1].Init(
+                -mapWidth, 0, -mapLength*(0.60f),   // A
+                -mapWidth, 0, -mapLength*(0.40f),   // B
+                -mapWidth/2, 0, -mapLength*(0.60f),               // C
+                -mapWidth/2, 0, -mapLength*(0.40f),               // D
+                 1, 0, 0,                           // normal
+                 VERDE                          // r g b a
             );
 
 
@@ -178,6 +190,35 @@ class Map{
             glPopMatrix();
         }
 
+        void drawGround(){
+
+            //draw left side and right side by symmetry
+            for(int i=0; i<NUMGROUNDS; i++){
+                desenhaQuadrado(
+
+                    ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
+                    ground[i].bottomLeft[0], ground[i].bottomLeft[1], ground[i].bottomLeft[2],
+                    ground[i].topRight[0], ground[i].topRight[1], ground[i].topRight[2],
+                    ground[i].bottomRight[0], ground[i].bottomRight[1], ground[i].bottomRight[2],
+
+                    ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
+                    ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
+                    textures.groundTexture() // no texture
+                );
+                desenhaQuadrado(
+                    - ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
+                    - ground[i].bottomLeft[0], ground[i].bottomLeft[1], ground[i].bottomLeft[2],
+                    - ground[i].topRight[0], ground[i].topRight[1], ground[i].topRight[2],
+                    - ground[i].bottomRight[0], ground[i].bottomRight[1], ground[i].bottomRight[2],
+
+                    ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
+                    ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
+                    textures.groundTexture() // no texture
+                );
+            }
+
+        }
+
         void drawWalls(){
 
             //draw left side and right side by symmetry
@@ -211,28 +252,13 @@ class Map{
 
         void drawMap(){
 
-            //ground
-            desenhaQuadrado(
-
-                - ground.topLeft[0], ground.topLeft[1], ground.topLeft[2],
-                - ground.bottomLeft[0], ground.bottomLeft[1], ground.bottomLeft[2],
-                - ground.topRight[0], ground.topRight[1], ground.topRight[2],
-                - ground.bottomRight[0], ground.bottomRight[1], ground.bottomRight[2],
-
-                ground.normal[0], ground.normal[1], ground.normal[2],
-                ground.color[0], ground.color[1], ground.color[2], ground.color[3],
-                textures.groundTexture() // no texture
-            );
-
+            drawGround();
             drawWalls();
 
         }
 
 
 };
-
-// ------------------------- map
-Map map;
 
 #endif
 
