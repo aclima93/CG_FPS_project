@@ -131,6 +131,8 @@ release/main.o: ../CG_FPS_project/main.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mi
 		../CG_FPS_project/Map.hpp \
 		../CG_FPS_project/Wall.hpp \
 		../CG_FPS_project/Colors.hpp \
+		../CG_FPS_project/Target.hpp \
+		../CG_FPS_project/BoundingBox.hpp \
 		../CG_FPS_project/materiais.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\CG_FPS_project\main.cpp
 

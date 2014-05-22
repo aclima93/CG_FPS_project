@@ -19,7 +19,9 @@ HEADERS += \
     Map.hpp \
     Map.hpp.autosave \
     Wall.hpp \
-    Colors.hpp
+    Colors.hpp \
+    BoundingBox.hpp \
+    Target.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \

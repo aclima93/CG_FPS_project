@@ -5,6 +5,8 @@
 #include <math.h>
 #include <string.h>
 
+#include <vector>
+
 #include <GL/freeglut.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -32,6 +34,40 @@ float hCenterScreen = hScreen/2;
 
 char timerInfoText[100];
 
+
+
+
+std::vector< std::vector<float> > possiblePositions;
+
+void drawTargets(){
+    for(int i=0; i<NUMTARGETS; i++){
+        targets[i].drawTarget();
+    }
+}
+
+void createTargets(){
+
+    for(int i=0; i<50; i++){
+        possiblePositions[i][0] = 0;
+        possiblePositions[i][1] = 0;
+        possiblePositions[i][2] = -i;
+    }
+
+    std::vector< std::vector<float> > aux = possiblePositions;
+
+    int pos;
+    int numBB = 2;
+
+    for(int i=0; i<NUMTARGETS; i++){
+        pos = rand()%aux.size();
+
+        float BB [2][3] = { {aux[pos][0], aux[pos][1]+10, aux[pos][2]}, {aux[pos][0], aux[pos][1]-10, aux[pos][2]} };
+
+        targets[i] = Target( aux[pos][0], aux[pos][1], aux[pos][2], numBB, BB);
+        aux.erase( aux.begin()+ pos );
+    }
+
+}
 
 void teclasNotAscii(int key, int x, int y){
 

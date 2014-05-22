@@ -4,11 +4,14 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 
+#include <vector>
+
 #include "Camera.hpp"
 #include "Bullet.hpp"
 #include "Textures.hpp"
 #include "Map.hpp"
 #include "Colors.hpp"
+#include "Target.hpp"
 
 //debug
 #define DEBUG 1
@@ -33,7 +36,7 @@ GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
-
+std::vector<Target> targets;
 Map map;
 
 
