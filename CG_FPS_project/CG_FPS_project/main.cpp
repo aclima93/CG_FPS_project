@@ -288,6 +288,13 @@ void drawBullets(){
     }
 }
 
+void updateBullets(){
+
+    for(int i=0; i<NUMBULLETS; i++){
+        bullets[i].updatePosition();
+    }
+}
+
 
 void drawScene()
 {
@@ -299,8 +306,8 @@ void drawScene()
 
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
-    glMaterialfv(GL_FRONT, GL_AMBIENT, esmeraldAmb);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
+    //glMaterialfv(GL_FRONT, GL_AMBIENT, esmeraldAmb);
+    //glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
     //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
 
     map.drawMap();
@@ -316,7 +323,6 @@ GLvoid resize(GLsizei width, GLsizei height){
 
     wScreen=width;
     hScreen=height;
-    glutPostRedisplay();
 }
 
 
@@ -562,21 +568,31 @@ void shootGun(int x, int y, int z){
 
         bulletsInGun--;
 
-        bullets[bulletIndex].isActive = true;
+        float dx, dy, dz;
+        g_camera.GetDirectionVector(dx, dy, dz); // bullet direction
 
-        bullets[bulletIndex].angle = 0; //TODO: calculate(?)
+        std::cout << "looking at " << dx << " " << dy << " " << dz << "\n";
 
-        bullets[bulletIndex].x = x;
-        bullets[bulletIndex].y = y;
-        bullets[bulletIndex].z = z;
-
-        bullets[bulletIndex].targetX = x;
-        bullets[bulletIndex].targetY = y;
-        bullets[bulletIndex].targetZ = z-2;
+        bullets[bulletIndex].Init(x, y, z, dx, dy, dz, bulletSpeed, 0, 0, 0, true); // target not yet included
 
         bulletIndex++;
 
     }
+}
+
+void updateGameTimer(){
+
+    miliseconds += msecCallback;
+
+    if(miliseconds == 999){
+        miliseconds = 0;
+        seconds++;
+    }
+    if(seconds == 59){
+        seconds = 0;
+        minutes++;
+    }
+
 }
 
 //======================================================= EVENTOS
@@ -584,22 +600,16 @@ void shootGun(int x, int y, int z){
 
 void Timer(int value){
 
-    miliseconds += msecCallback;
 
-    if(miliseconds == 1000){
-        miliseconds = 0;
-        seconds++;
-    }
-    if(seconds == 60){
-        seconds = 0;
-        minutes++;
-    }
+    updateGameTimer();
+    updateBullets();
 
     if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
+        //std::cout << "chamei o glutpostredisplay no timer\n";
         glutPostRedisplay(); // flag que chama a função de display na próxima iteração
     }
 
-    glutTimerFunc(msecCallback, Timer, 0);
+    glutTimerFunc(msecCallback, Timer, value);
 }
 
 //======================================================= MAIN
@@ -616,6 +626,7 @@ int main(int argc, char** argv){
     init();
 
     glutReshapeFunc(resize);
+
     glutDisplayFunc(display);
 
     glutTimerFunc(msecCallback, Timer, 0);
