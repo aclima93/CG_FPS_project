@@ -13,15 +13,10 @@
 #include "Map.hpp"
 #include "Colors.hpp"
 #include "Target.hpp"
+#include "HUD.hpp"
 
 //debug
 #define DEBUG 1
-
-
-//------------------------------------------------------------ Sistema Coordenadas
-GLfloat xC=16.0, zC=15.0;
-GLint wScreen=1350, hScreen=800;
-char texto[100];
 
 
 //------------------------------------------------------------ Global (ambiente)
@@ -50,7 +45,7 @@ void drawScene();
 GLvoid resize(GLsizei width, GLsizei height);
 void drawOrientacao();
 void display(void);
-void reloadWeapon();
+void reloadGun();
 void shootGun(int x, int y, int z);
 void updateVisao();
 int main(int argc, char** argv);

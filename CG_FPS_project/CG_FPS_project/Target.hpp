@@ -26,7 +26,7 @@ class Target{
 
         Target(){}
         ~Target(){
-            //delete teh boundingboxes
+            //TODO: delete the boundingboxes
         }
 
         void Init(float xx, float yy, float zz, int numBB, float posBB[][3]){

@@ -21,7 +21,8 @@ HEADERS += \
     Wall.hpp \
     Colors.hpp \
     BoundingBox.hpp \
-    Target.hpp
+    Target.hpp \
+    HUD.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
