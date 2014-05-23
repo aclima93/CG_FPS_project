@@ -1,18 +1,4 @@
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
-#include <math.h>
-#include <string.h>
-
-#include <vector>
-
-#include <GL/freeglut.h>
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glaux.h>
-
 #include "main.hpp"
 
 
@@ -26,8 +12,8 @@ void createTargets(){
 
     for(int i=0; i<50; i++){
         possiblePositions[i][0] = 0;
-        possiblePositions[i][1] = 0;
-        possiblePositions[i][2] = -i;
+        possiblePositions[i][1] = 1;
+        possiblePositions[i][2] = -i/4;
     }
 
     std::vector< std::vector<float> > aux = possiblePositions;
@@ -36,11 +22,23 @@ void createTargets(){
     int numBB = 2;
 
     for(int i=0; i<NUMTARGETS; i++){
+
         pos = rand()%aux.size();
 
-        float BB [2][3] = { {aux[pos][0], aux[pos][1]+10, aux[pos][2]}, {aux[pos][0], aux[pos][1]-10, aux[pos][2]} };
+        float **BB;
 
-        //targets[i] = Target();
+        BB = new float *[2];
+        BB[0] = new float[3];
+        BB[1] = new float[3];
+
+        BB[0][0] = aux[pos][0];
+        BB[0][1] = aux[pos][1]+10;
+        BB[0][2] = aux[pos][2];
+
+        BB[1][0] = aux[pos][0];
+        BB[1][1] = aux[pos][1] - 10;
+        BB[1][2] = aux[pos][2];
+
         targets[i].Init(aux[pos][0], aux[pos][1], aux[pos][2], numBB, BB);
         aux.erase( aux.begin()+ pos );
     }

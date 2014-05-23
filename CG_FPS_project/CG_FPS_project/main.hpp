@@ -1,10 +1,18 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
-#include <GL/gl.h>
-#include <GL/glut.h>
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+#include <math.h>
+#include <string.h>
 #include <vector>
+
+#include <GL/freeglut.h>
+#include <GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glaux.h>
 
 #include "materiais.hpp"
 #include "Camera.hpp"

@@ -30,27 +30,32 @@ class Target{
         Target(){}
         ~Target(){
             //TODO: delete the boundingboxes
+            boundingBoxes.clear ();
         }
 
-        void Init(float xx, float yy, float zz, int numBB, float posBB[][3]){
+        void Init(float xx, float yy, float zz, int numBB, float **posBB){
 
             x = xx;
             y = yy;
             z = zz;
 
             numBoundingBoxes = numBB;
+            boundingBoxes.resize( numBB, BoundingBox() );
 
             for(int i=0; i<numBB; i++){
-                //boundingboxes[i] = BoundingBox();
-                //boundingBoxes[i].Init(posBB[i][0], posBB[i][1], posBB[i][2] );
+                //boundingBoxes[i].Init( posBB[i][0], posBB[i][1], posBB[i][2] );
             }
         }
 
         void drawTarget(){
 
             glPushMatrix();
-                glBegin(GL_QUADS);		// Draw The Cube Using quads
+                glTranslatef( x, y, z);
+                glColor3f (1, 0, 0);
+                glutWireCube(1);
 
+                /*
+                glBegin(GL_QUADS);		// Draw The Cube Using quads
 
                     glColor3f(0.0f,1.0f,0.0f);	// Color Blue
                     glVertex3f( x, y,-z);	// Top Right Of The Quad (Top)
@@ -88,8 +93,9 @@ class Target{
                     glVertex3f( x,-y, z);	// Bottom Left Of The Quad (Right)
                     glVertex3f( x,-y,-z);	// Bottom Right Of The Quad (Right)
 
-
                 glEnd();			// End Drawing The Cube
+                */
+
             glPopMatrix();
         }
 
