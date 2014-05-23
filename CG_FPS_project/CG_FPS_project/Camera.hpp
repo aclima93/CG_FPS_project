@@ -5,6 +5,13 @@
 #include <math.h>
 #include <GL/glut.h>
 
+
+//------------------------------------------------------------ Observador
+float PI = 3.1415926535;
+const float g_translation_speed = 0.05;
+const float g_rotation_speed = PI/180* 0.2;
+
+
 class Camera{
     public:
         Camera() { Init(); }
@@ -121,10 +128,5 @@ class Camera{
 
 };
 
-//------------------------------------------------------------ Observador
-float PI = 3.1415926535;
-const float g_translation_speed = 0.05;
-const float g_rotation_speed = PI/180* 0.2;
-Camera g_camera;
 
 #endif

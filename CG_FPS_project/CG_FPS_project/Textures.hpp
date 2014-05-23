@@ -6,6 +6,7 @@
 #include <RgbImage.h>
 
 class Textures{
+
     public:
 
         GLuint groundTexture(){

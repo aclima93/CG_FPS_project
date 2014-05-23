@@ -8,6 +8,19 @@
 #include <GL/glu.h>
 #include <GL/glaux.h>
 
+// -------------------------- gun specs
+
+#define CLIPSIZE 5
+#define NUMBULLETS 15
+#define NUMCLIPS 2
+
+int bulletsInGun = CLIPSIZE;
+int bulletsLeft = CLIPSIZE * NUMCLIPS;
+int bulletIndex = 0;
+float bulletSpeed = 2; //200;
+float maxTravelDistance = 50;
+float maxTravelDistanceSQR = maxTravelDistance*maxTravelDistance;
+
 class Bullet{
     public:
         float x, y, z;
@@ -60,22 +73,10 @@ class Bullet{
             y += vy;
             z += vz;
 
-            //isActive = ( x == targetX && y == targetY && z < targetZ );
+            isActive = ( (x*x) + (y*y) + (z*z) <= maxTravelDistanceSQR  );
         }
 
 };
-
-// -------------------------- gun specs
-
-#define CLIPSIZE 5
-#define NUMBULLETS 15
-#define NUMCLIPS 2
-
-int bulletsInGun = CLIPSIZE;
-int bulletsLeft = CLIPSIZE * NUMCLIPS;
-int bulletIndex = 0;
-float bulletSpeed = 2; //200;
-Bullet bullets[NUMBULLETS];
 
 
 #endif

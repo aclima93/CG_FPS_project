@@ -4,22 +4,21 @@
 #include <GL/glut.h>
 
 GLint wScreen=1350, hScreen=800;
-
-//------------------------------------------------------------ Sistema Coordenadas
-GLfloat xC=16.0, zC=15.0;
+GLfloat xC=16.0, zC=15.0; // Sistema Coordenadas
 
 int minutes = 0;
 int seconds = 0;
 int miliseconds = 0;
+
 const int msecCallback = 10;
 const int msecDisplayCallback = msecCallback * 10;
 
-float widthHUDBlock = 200;
-float heightHUDBlock = 100;
-float crosshairThickness = 1.0;
+const float widthHUDBlock = 200;
+const float heightHUDBlock = 100;
+const float crosshairThickness = 1.0;
 
-float wCenterScreen = wScreen/2;
-float hCenterScreen = hScreen/2;
+const float wCenterScreen = wScreen/2;
+const float hCenterScreen = hScreen/2;
 
 char targetsInfoText[100];
 char timerInfoText[100];
@@ -203,7 +202,5 @@ class HUD{
 
 
 };
-
-HUD hud;
 
 #endif

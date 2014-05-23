@@ -13,6 +13,9 @@
 
 #define NUMTARGETS 10
 #define NUMEXTRAS 3 // balloons
+#define NUMPOSSIBLE 50
+
+std::vector< std::vector<float> > possiblePositions(NUMPOSSIBLE, std::vector<float>(3));
 
 class Target{
 

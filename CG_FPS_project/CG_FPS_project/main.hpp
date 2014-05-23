@@ -18,6 +18,11 @@
 //debug
 #define DEBUG 1
 
+Bullet bullets[NUMBULLETS];
+Camera g_camera;
+HUD hud;
+Map map;
+
 
 //------------------------------------------------------------ Global (ambiente)
 GLfloat luzGlobalCor[4]={1.0,1.0,1.0,1.0};
@@ -32,23 +37,28 @@ GLfloat localAttCon = 1.0;
 GLfloat localAttLin = 0.05;
 GLfloat localAttQua = 0.0;
 
-Map map;
 
-
+void drawTargets();
+void createTargets();
 void activateLight(void);
 void activateAmbientIllumination(void);
 void initLights(void);
 void init(void);
-void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z);
 void drawGrid();
+void drawBullets();
 void drawScene();
 GLvoid resize(GLsizei width, GLsizei height);
 void drawOrientacao();
 void display(void);
+void updateBullets();
 void reloadGun();
 void shootGun(int x, int y, int z);
-void updateVisao();
+void updateGameTimer();
+void Timer(int value);
 int main(int argc, char** argv);
-
+void teclasNotAscii(int key, int x, int y);
+void mouseMotion(int x, int y);
+void mouseClicks(int button, int state, int x, int y);
+void keyboard(unsigned char key, int x, int y);
 
 #endif
