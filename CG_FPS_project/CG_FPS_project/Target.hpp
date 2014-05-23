@@ -14,6 +14,7 @@
 #define NUMTARGETS 10
 #define NUMEXTRAS 3 // balloons
 #define NUMPOSSIBLE 50
+#define NUMBOUNDINGBOXES 6
 
 std::vector< std::vector<float> > possiblePositions(NUMPOSSIBLE, std::vector<float>(3));
 
@@ -25,12 +26,13 @@ class Target{
         int numBoundingBoxes;
         int w, l, h; // to be used?
 
-        std::vector< BoundingBox> boundingBoxes; // array de bounding boxes para detectar as collisions
+        //std::vector< BoundingBox> boundingBoxes; // array de bounding boxes para detectar as collisions
+        BoundingBox boundingBoxes[NUMBOUNDINGBOXES];
 
         Target(){}
         ~Target(){
             //TODO: delete the boundingboxes
-            boundingBoxes.clear ();
+            // boundingBoxes.clear ();
         }
 
         void Init(float xx, float yy, float zz, int numBB, float **posBB){
@@ -39,12 +41,21 @@ class Target{
             y = yy;
             z = zz;
 
+            /*
             numBoundingBoxes = numBB;
             boundingBoxes.resize( numBB, BoundingBox() );
 
             for(int i=0; i<numBB; i++){
                 //boundingBoxes[i].Init( posBB[i][0], posBB[i][1], posBB[i][2] );
             }
+            */
+
+            numBoundingBoxes = NUMBOUNDINGBOXES;
+
+            for(int i=0; i<NUMBOUNDINGBOXES; i++){
+                boundingBoxes[i].Init( i, i, i );
+            }
+
         }
 
         void drawTarget(){

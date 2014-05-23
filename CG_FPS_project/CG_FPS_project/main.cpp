@@ -5,6 +5,7 @@
 void drawTargets(){
     for(int i=0; i<NUMTARGETS; i++){
         targets[i].drawTarget();
+        targets[i].drawBoundingBoxes();
     }
 }
 

@@ -24,6 +24,11 @@ class BoundingBox{
         void drawBoundingBox(){
 
             glPushMatrix();
+
+                glTranslatef( x, y, z);
+                glColor3f (1, 0, 1);
+                glutWireCube(0.2f);
+                /*
                 glBegin(GL_QUADS);		// Draw The Cube Using quads
 
                   glColor3f(1.0f,0.0f,0.0f);	// Color Red
@@ -59,6 +64,7 @@ class BoundingBox{
                   glVertex3f( x,-y,-z);	// Bottom Right Of The Quad (Right)
 
                 glEnd();			// End Drawing The Cube
+                */
             glPopMatrix();
         }
 
