@@ -18,10 +18,13 @@
 //debug
 #define DEBUG 1
 
+// our defined elements
 Bullet bullets[NUMBULLETS];
 Camera g_camera;
 HUD hud;
 Map map;
+Target targets[NUMTARGETS];
+Target extras[NUMTARGETS];
 
 
 //------------------------------------------------------------ Global (ambiente)

@@ -258,14 +258,16 @@ void reloadGun(){
     }
 }
 
-void shootGun(int x, int y, int z){
+void shootGun(){
 
     if(bulletsInGun){
 
         bulletsInGun--;
 
+        float x, y, z;
         float dx, dy, dz;
         g_camera.GetDirectionVector(dx, dy, dz); // bullet direction
+        g_camera.GetPos(x, y, z); // bullet direction
 
         //std::cout << "looking at " << dx << " " << dy << " " << dz << "\n";
 
@@ -388,10 +390,7 @@ void mouseClicks(int button, int state, int x, int y) {
     //if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
 
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-
-        //TODO: calculate where x and y from screen are in world(?)
-
-        shootGun(0, 0, 0);
+        shootGun();
     }
 
     glutPostRedisplay();

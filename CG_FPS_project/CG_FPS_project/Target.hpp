@@ -101,7 +101,4 @@ class Target{
 
 };
 
-Target targets[NUMTARGETS];
-Target extras[NUMTARGETS];
-
 #endif
