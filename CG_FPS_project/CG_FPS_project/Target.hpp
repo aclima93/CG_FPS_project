@@ -35,7 +35,7 @@ class Target{
             // boundingBoxes.clear ();
         }
 
-        void Init(float xx, float yy, float zz, int numBB, float **posBB){
+        void Init(float xx, float yy, float zz, int numBB/*, float **posBB*/){
 
             x = xx;
             y = yy;
@@ -50,10 +50,10 @@ class Target{
             }
             */
 
-            numBoundingBoxes = NUMBOUNDINGBOXES;
+            numBoundingBoxes = numBB;
 
-            for(int i=0; i<NUMBOUNDINGBOXES; i++){
-                boundingBoxes[i].Init( i, i, i );
+            for(int i=0; i<numBB; i++){
+                boundingBoxes[i].Init( x, y, z , 0.1f, 0.2f, 0.3f);
             }
 
         }

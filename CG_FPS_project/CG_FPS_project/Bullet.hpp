@@ -57,7 +57,7 @@ class Bullet{
 
             if(isActive){
                 glPushMatrix();
-                    glRotatef(3.1415926535/2, 1, 0, 1);
+                    //glRotatef(3.1415926535/2, 1, 0, 1);
                     glTranslatef( x, y, z);
                     glColor3f (0.4, 0.4, 1);
                     glutWireCube(0.05f);

@@ -14,18 +14,19 @@ void createTargets(){
     for(int i=0; i<50; i++){
         possiblePositions[i][0] = 0;
         possiblePositions[i][1] = 1;
-        possiblePositions[i][2] = -i/4;
+        possiblePositions[i][2] = -i +20;
     }
 
     std::vector< std::vector<float> > aux = possiblePositions;
 
     int pos;
-    int numBB = 2;
+    int numBB = NUMBOUNDINGBOXES;
 
     for(int i=0; i<NUMTARGETS; i++){
 
-        pos = rand()%aux.size();
+        pos = rand()%aux.size(); // randomly selects one of the available
 
+        /*
         float **BB;
 
         BB = new float *[2];
@@ -39,8 +40,9 @@ void createTargets(){
         BB[1][0] = aux[pos][0];
         BB[1][1] = aux[pos][1] - 10;
         BB[1][2] = aux[pos][2];
+        */
 
-        targets[i].Init(aux[pos][0], aux[pos][1], aux[pos][2], numBB, BB);
+        targets[i].Init(aux[pos][0], aux[pos][1], aux[pos][2], numBB/*, BB*/);
         aux.erase( aux.begin()+ pos );
     }
 
