@@ -32,7 +32,7 @@ Camera g_camera;
 HUD hud;
 Map map;
 Target targets[NUMTARGETS];
-Target extras[NUMTARGETS];
+Target extras[NUMEXTRAS];
 
 
 //------------------------------------------------------------ Global (ambiente)

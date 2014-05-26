@@ -3,7 +3,7 @@
 
 #include <GL/glut.h>
 
-GLint wScreen=1350, hScreen=800;
+GLint wScreen=1366, hScreen=800;
 GLfloat xC=16.0, zC=15.0; // Sistema Coordenadas
 
 int minutes = 0;
@@ -16,6 +16,8 @@ const int msecDisplayCallback = msecCallback * 10;
 const float widthHUDBlock = 200;
 const float heightHUDBlock = 100;
 const float crosshairThickness = 1.0;
+const float crosshairLength = 30.0;
+const float crosshairLengthFourth = crosshairLength/3;
 
 const float wCenterScreen = wScreen/2;
 const float hCenterScreen = hScreen/2;
@@ -25,6 +27,7 @@ char timerInfoText[100];
 char bulletInfoText[100];
 
 int numTargetsHit = 0;
+int numExtrasHit = 0;
 
 class HUD{
 
@@ -44,40 +47,40 @@ class HUD{
             glBegin(GL_QUADS);
                 glColor3f(1.0f, 0.0f, 0.0);
 
-                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - 30.0);
-                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - 10.0);
-                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - 10.0);
-                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - 30.0);
+                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLength);
+                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLengthFourth);
+                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLengthFourth);
+                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLength);
 
             glEnd();
             // bottom segment
             glBegin(GL_QUADS);
                 glColor3f(1.0f, 0.0f, 0.0);
 
-                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + 30.0);
-                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + 10.0);
-                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + 10.0);
-                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + 30.0);
+                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLength);
+                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLengthFourth);
+                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLengthFourth);
+                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLength);
 
             glEnd();
             // right segment
             glBegin(GL_QUADS);
                 glColor3f(1.0f, 0.0f, 0.0);
 
-                glVertex2f(wCenterScreen - 30.0, hCenterScreen - crosshairThickness);
-                glVertex2f(wCenterScreen - 30.0, hCenterScreen + crosshairThickness);
-                glVertex2f(wCenterScreen - 10.0, hCenterScreen + crosshairThickness);
-                glVertex2f(wCenterScreen - 10.0, hCenterScreen - crosshairThickness);
+                glVertex2f(wCenterScreen - crosshairLength, hCenterScreen - crosshairThickness);
+                glVertex2f(wCenterScreen - crosshairLength, hCenterScreen + crosshairThickness);
+                glVertex2f(wCenterScreen - crosshairLengthFourth, hCenterScreen + crosshairThickness);
+                glVertex2f(wCenterScreen - crosshairLengthFourth, hCenterScreen - crosshairThickness);
 
             glEnd();
             // left segment
             glBegin(GL_QUADS);
                 glColor3f(1.0f, 0.0f, 0.0);
 
-                glVertex2f(wCenterScreen + 30.0, hCenterScreen + crosshairThickness);
-                glVertex2f(wCenterScreen + 30.0, hCenterScreen - crosshairThickness);
-                glVertex2f(wCenterScreen + 10.0, hCenterScreen - crosshairThickness);
-                glVertex2f(wCenterScreen + 10.0, hCenterScreen + crosshairThickness);
+                glVertex2f(wCenterScreen + crosshairLength, hCenterScreen + crosshairThickness);
+                glVertex2f(wCenterScreen + crosshairLength, hCenterScreen - crosshairThickness);
+                glVertex2f(wCenterScreen + crosshairLengthFourth, hCenterScreen - crosshairThickness);
+                glVertex2f(wCenterScreen + crosshairLengthFourth, hCenterScreen + crosshairThickness);
 
             glEnd();
 
@@ -112,7 +115,11 @@ class HUD{
 
             glColor3f(0,0,0);
             sprintf(targetsInfoText,"%d/%d", numTargetsHit, NUMTARGETS);
-            desenhaTexto(targetsInfoText,wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
+            desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
+
+            glColor3f(0,0,0);
+            sprintf(targetsInfoText,"%d/%d", numExtrasHit, NUMEXTRAS);
+            desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2 + 10.0, 0);
 
 
         }
@@ -165,7 +172,7 @@ class HUD{
             glEnd();
 
             glColor3f(0,0,0);
-            sprintf(timerInfoText,"%d:%d:%d", minutes, seconds, miliseconds/10);
+            sprintf(timerInfoText,"%d:%d:%d", minutes, seconds, miliseconds);
             desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/4 ,0);
 
 

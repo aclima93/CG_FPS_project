@@ -17,6 +17,7 @@
 #define NUMBOUNDINGBOXES 6
 
 std::vector< std::vector<float> > possiblePositions(NUMPOSSIBLE, std::vector<float>(3));
+std::vector< std::vector<float> > possibleExtraPositions(NUMPOSSIBLE, std::vector<float>(3));
 
 class Target{
 
@@ -35,27 +36,17 @@ class Target{
             // boundingBoxes.clear ();
         }
 
-        void Init(float xx, float yy, float zz, int numBB/*, float **posBB*/){
+        void Init(float xx, float yy, float zz, int numBB, float posBB[][3], float sizesBB[][3]){
 
             x = xx;
             y = yy;
             z = zz;
 
-            /*
-            numBoundingBoxes = numBB;
-            boundingBoxes.resize( numBB, BoundingBox() );
-
-            for(int i=0; i<numBB; i++){
-                //boundingBoxes[i].Init( posBB[i][0], posBB[i][1], posBB[i][2] );
-            }
-            */
-
             numBoundingBoxes = numBB;
 
-            for(int i=0; i<numBB; i++){
-                boundingBoxes[i].Init( i, x+i, y+i, z+i , 0.1f, 0.2f, 0.3f);
+            for(int i=0; i<numBoundingBoxes; i++){
+                boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2]);
             }
-
         }
 
         void drawTarget(){
