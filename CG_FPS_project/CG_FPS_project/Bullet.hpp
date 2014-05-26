@@ -17,7 +17,7 @@
 int bulletsInGun = CLIPSIZE;
 int bulletsLeft = CLIPSIZE * NUMCLIPS;
 int bulletIndex = 0;
-float bulletSpeed = 304; // 303.986 m/s
+float bulletSpeed = 1; //304; // 303.986 m/s
 float maxTravelDistance = 1000;
 float maxTravelDistanceSQR = maxTravelDistance*maxTravelDistance;
 
@@ -55,16 +55,26 @@ class Bullet{
 
         void draw(){
 
-            /*
+
             if(isActive){
+
                 glPushMatrix();
-                    //glRotatef(3.1415926535/2, 1, 0, 1);
+                    glBegin(GL_LINES);
+                        glColor3f(0, 1, 0);     // green
+                        glVertex3f(x, y, z);	// position
+                        glVertex3f(0, 0, 0 );	// origin
+                    glEnd();
+                glPopMatrix();
+
+                /*
+                glPushMatrix();
                     glTranslatef( x, y, z);
                     glColor3f (0.4, 0.4, 1);
                     glutWireCube(0.05f);
                 glPopMatrix();
+                */
             }
-            */
+
 
         }
 

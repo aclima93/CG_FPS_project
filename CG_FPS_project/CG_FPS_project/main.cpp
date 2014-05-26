@@ -51,12 +51,12 @@ void createTargets(){
         posBB[5][0] = aux[pos][0] -1;   posBB[5][1] = aux[pos][1] -2;   posBB[5][2] = aux[pos][2];  // left leg
 
 
-        sizesBB[0][0] = 1.0f;   sizesBB[0][1] = 1.0f;  sizesBB[0][2] = 1.0f;  // head
-        sizesBB[1][0] = 1.0f;   sizesBB[1][1] = 1.0f;  sizesBB[1][2] = 1.0f;  // torso
-        sizesBB[2][0] = 1.0f;   sizesBB[2][1] = 1.0f;  sizesBB[2][2] = 1.0f;  // right arm
-        sizesBB[3][0] = 1.0f;   sizesBB[3][1] = 1.0f;  sizesBB[3][2] = 1.0f;  // left arm
-        sizesBB[4][0] = 1.0f;   sizesBB[4][1] = 1.0f;  sizesBB[4][2] = 1.0f;  // right leg
-        sizesBB[5][0] = 1.0f;   sizesBB[5][1] = 1.0f;  sizesBB[5][2] = 1.0f;  // left leg
+        sizesBB[0][0] = 2.0f;   sizesBB[0][1] = 2.0f;  sizesBB[0][2] = 2.0f;  // head
+        sizesBB[1][0] = 2.0f;   sizesBB[1][1] = 2.0f;  sizesBB[1][2] = 2.0f;  // torso
+        sizesBB[2][0] = 2.0f;   sizesBB[2][1] = 2.0f;  sizesBB[2][2] = 2.0f;  // right arm
+        sizesBB[3][0] = 2.0f;   sizesBB[3][1] = 2.0f;  sizesBB[3][2] = 2.0f;  // left arm
+        sizesBB[4][0] = 2.0f;   sizesBB[4][1] = 2.0f;  sizesBB[4][2] = 2.0f;  // right leg
+        sizesBB[5][0] = 2.0f;   sizesBB[5][1] = 2.0f;  sizesBB[5][2] = 2.0f;  // left leg
 
 
         targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB);
@@ -364,6 +364,10 @@ void checkExtraCollisions(float x, float y, float z, float dx, float dy, float d
     }
 }
 
+void playGunFiringSound(){
+    sound.playSound("sounds/Shells_falls-Marcel-829263474.mp3", 5);
+}
+
 void shootGun(){
 
     if(bulletsInGun){
@@ -382,6 +386,8 @@ void shootGun(){
         if( !checkTargetCollisions(x, y, z, dx, dy, dz) ){
             checkExtraCollisions(x, y, z, dx, dy, dz);
         }
+
+        playGunFiringSound();
 
     }
 }
