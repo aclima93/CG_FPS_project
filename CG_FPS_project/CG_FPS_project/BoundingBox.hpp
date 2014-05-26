@@ -7,6 +7,11 @@
 #include <GL/glu.h>
 #include <GL/glaux.h>
 
+#include <iostream>
+#include <algorithm>
+#include <math.h>
+#include <float.h>
+
 class BoundingBox{
 
     public:
@@ -20,7 +25,7 @@ class BoundingBox{
         BoundingBox(){}
 
         void Init(int idd, float xx, float yy, float zz, float ww, float ll, float hh){
-            id = id;
+            id = idd;
             x = xx;
             y = yy;
             z = zz;
@@ -45,33 +50,32 @@ class BoundingBox{
 
                 glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
 
-                    //glTranslatef(x, y, z);
                     glColor3f(1, 0, 1);	// Color Red
 
-                    glVertex3f(x+ halfW,y+ halfH,z- halfL );	// Top Right Of The Quad (Top)
-                    glVertex3f(x- halfW,y+ halfH,z- halfL);	// Top Left Of The Quad (Top)
-                    glVertex3f(x- halfW,y+ halfH,z+ halfL);	// Bottom Left Of The Quad (Top)
-                    glVertex3f(x+ halfW,y+ halfH,z+ halfL);	// Bottom Right Of The Quad (Top)
+                    glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
+                    glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Top)
+                    glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Bottom Left Of The Quad (Top)
+                    glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Bottom Right Of The Quad (Top)
 
-                    glVertex3f(x+ halfW,y- halfH,z+ halfL);	// Top Right Of The Quad (Bottom)
-                    glVertex3f(x- halfW,y- halfH,z+ halfL);	// Top Left Of The Quad (Bottom)
-                    glVertex3f(x- halfW,y- halfH,z- halfL);	// Bottom Left Of The Quad (Bottom)
-                    glVertex3f(x+ halfW,y- halfH,z- halfL);	// Bottom Right Of The Quad (Bottom)
+                    glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Top Right Of The Quad (Bottom)
+                    glVertex3f(x- halfW, y- halfH, z+ halfL);	// Top Left Of The Quad (Bottom)
+                    glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Bottom)
+                    glVertex3f(x+ halfW, y- halfH, z- halfL);	// Bottom Right Of The Quad (Bottom)
 
-                    glVertex3f(x+ halfW,y+ halfH,z+ halfL);	// Top Right Of The Quad (Front)
-                    glVertex3f(x- halfW,y+ halfH,z+ halfL);	// Top Left Of The Quad (Front)
-                    glVertex3f(x- halfW,y- halfH,z+ halfL);	// Bottom Left Of The Quad (Front)
-                    glVertex3f(x+ halfW,y- halfH,z+ halfL);	// Bottom Right Of The Quad (Front)
+                    glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Front)
+                    glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Left Of The Quad (Front)
+                    glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Left Of The Quad (Front)
+                    glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Front)
 
-                    glVertex3f(x+ halfW,y- halfH,z- halfL);	// Top Right Of The Quad (Back)
-                    glVertex3f(x- halfW,y- halfH,z- halfL);	// Top Left Of The Quad (Back)
-                    glVertex3f(x- halfW,y+ halfH,z- halfL);	// Bottom Left Of The Quad (Back)
-                    glVertex3f(x+ halfW,y+ halfH,z- halfL);	// Bottom Right Of The Quad (Back)
+                    glVertex3f(x+ halfW, y- halfH, z- halfL);	// Top Right Of The Quad (Back)
+                    glVertex3f(x- halfW, y- halfH, z- halfL);	// Top Left Of The Quad (Back)
+                    glVertex3f(x- halfW, y+ halfH, z- halfL);	// Bottom Left Of The Quad (Back)
+                    glVertex3f(x+ halfW, y+ halfH, z- halfL);	// Bottom Right Of The Quad (Back)
 
-                    glVertex3f(x- halfW,y+ halfH,z+ halfL);	// Top Right Of The Quad (Left)
-                    glVertex3f(x- halfW,y+ halfH,z- halfL);	// Top Left Of The Quad (Left)
-                    glVertex3f(x- halfW,y- halfH,z- halfL);	// Bottom Left Of The Quad (Left)
-                    glVertex3f(x- halfW,y- halfH,z+ halfL);	// Bottom Right Of The Quad (Left)
+                    glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Left)
+                    glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Left)
+                    glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Left)
+                    glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Left)
 
                     glVertex3f(x+ halfW,y+ halfH,z- halfL);	// Top Right Of The Quad (Right)
                     glVertex3f(x+ halfW,y+ halfH,z+ halfL);	// Top Left Of The Quad (Right)
@@ -93,20 +97,59 @@ class BoundingBox{
             float yFrac = 1.0f / dy;
             float zFrac = 1.0f / dz;
 
-            // lb is the corner of AABB with minimal coordinates, rt is maximal corner
+            float xMinCorner, yMinCorner, zMinCorner;
+            float xMaxCorner, yMaxCorner, zMaxCorner;
+            float minDistanceToCorner = FLT_MAX;
+            float maxDistanceToCorner = FLT_MIN;
 
-            /// TODO: ver em tempo real qual é o ponto mais afastado e o mais próximo
-            /// (são só quatro pontos e calcular a distância a cada um deles)
+            float distanceToCorner;
+            float xCorner, yCorner, zCorner;
 
-            float t1 = (lb.x - ox)*xFrac;
-            float t2 = (rt.x - ox)*xFrac;
-            float t3 = (lb.y - oy)*yFrac;
-            float t4 = (rt.y - oy)*yFrac;
-            float t5 = (lb.z - oz)*zFrac;
-            float t6 = (rt.z - oz)*zFrac;
+            //find the farthest and closes corner of the AABB
 
-            float tmin = max( max( min(t1, t2), min( t3, t4)), min( t5, t6) );
-            float tmax = min( min( max(t1, t2), max( t3, t4)), max( t5, t6) );
+            for(float i=-1; i<3; i+=2){
+                for(float j=-1; j<3; j+=2){
+                    for(float l=-1; l<3; l+=2){
+
+                        xCorner = x + (i*halfW);
+                        yCorner = y + (j*halfH);
+                        zCorner = z + (l*halfL);
+
+                        distanceToCorner = sqrt(
+                                                  (ox-xCorner)*(ox-xCorner)
+                                                + (oy-yCorner)*(oy-yCorner)
+                                                + (oz-zCorner)*(oz-zCorner)
+                                           );
+
+                        if( distanceToCorner < minDistanceToCorner ){
+                            minDistanceToCorner = distanceToCorner;
+                            xMinCorner = xCorner;
+                            yMinCorner = yCorner;
+                            zMinCorner = zCorner;
+                        }
+
+                        if( distanceToCorner > maxDistanceToCorner ){
+                            maxDistanceToCorner = distanceToCorner;
+                            xMaxCorner = xCorner;
+                            yMaxCorner = yCorner;
+                            zMaxCorner = zCorner;
+                        }
+
+                    }
+                }
+            }
+
+            // check for collision (intersection)
+
+            float t1 = (xMinCorner - ox)*xFrac;
+            float t2 = (xMaxCorner - ox)*xFrac;
+            float t3 = (yMinCorner - oy)*yFrac;
+            float t4 = (yMaxCorner - oy)*yFrac;
+            float t5 = (zMinCorner - oz)*zFrac;
+            float t6 = (zMaxCorner - oz)*zFrac;
+
+            float tmin = std::max( std::max( std::min(t1, t2), std::min( t3, t4)), std::min( t5, t6) );
+            float tmax = std::min( std::min( std::max(t1, t2), std::max( t3, t4)), std::max( t5, t6) );
 
             // if tmax < 0, ray (line) is intersecting AABB, but whole AABB is behing us
             if (tmax < 0)

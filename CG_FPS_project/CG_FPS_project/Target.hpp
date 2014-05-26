@@ -53,7 +53,7 @@ class Target{
             numBoundingBoxes = numBB;
 
             for(int i=0; i<numBB; i++){
-                boundingBoxes[i].Init( x, y, z , 0.1f, 0.2f, 0.3f);
+                boundingBoxes[i].Init( i, x+i, y+i, z+i , 0.1f, 0.2f, 0.3f);
             }
 
         }

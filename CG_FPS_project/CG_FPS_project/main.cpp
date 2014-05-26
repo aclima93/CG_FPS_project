@@ -268,13 +268,26 @@ void shootGun(){
         float x, y, z;
         float dx, dy, dz;
         g_camera.GetDirectionVector(dx, dy, dz); // bullet direction
-        g_camera.GetPos(x, y, z); // bullet direction
+        g_camera.GetPos(x, y, z); // initial position
 
-        //std::cout << "looking at " << dx << " " << dy << " " << dz << "\n";
-
-        bullets[bulletIndex].Init(x, y, z, dx, dy, dz, bulletSpeed, 0, 0, 0, true); // target not yet included
+        bullets[bulletIndex].Init(x, y, z, dx, dy, dz, bulletSpeed, 0, 0, 0, true);
 
         bulletIndex++;
+
+        float distance;
+
+        for(int i=0; i<NUMTARGETS; i++){
+            int jMax = targets[i].numBoundingBoxes;
+            for(int j=0; j<jMax; j++){
+
+                distance = targets[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
+
+                if( distance != -1 ){
+                    std::cout << " Acertei na BB " << j << " do alvo " << i << "\n";
+                }
+
+            }
+        }
 
     }
 }
