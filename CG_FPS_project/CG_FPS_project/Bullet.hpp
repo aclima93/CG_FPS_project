@@ -55,6 +55,7 @@ class Bullet{
 
         void draw(){
 
+            /*
             if(isActive){
                 glPushMatrix();
                     //glRotatef(3.1415926535/2, 1, 0, 1);
@@ -63,6 +64,7 @@ class Bullet{
                     glutWireCube(0.05f);
                 glPopMatrix();
             }
+            */
 
         }
 

@@ -38,12 +38,12 @@ void createTargets(){
 
         pos = rand()%aux.size(); // randomly selects one of the available
 
-        posBB[0][0] = aux2[pos][0];     posBB[0][1] = aux2[pos][1]+10;  posBB[0][2] = aux2[pos][2];  // head
-        posBB[1][0] = aux2[pos][0];     posBB[1][1] = aux2[pos][1];     posBB[1][2] = aux2[pos][2];  // torso
-        posBB[2][0] = aux2[pos][0]+5;   posBB[2][1] = aux2[pos][1];     posBB[2][2] = aux2[pos][2];  // right arm
-        posBB[3][0] = aux2[pos][0]-5;   posBB[3][1] = aux2[pos][1];     posBB[3][2] = aux2[pos][2];  // left arm
-        posBB[4][0] = aux2[pos][0]+5;   posBB[4][1] = aux2[pos][1] -2;  posBB[4][2] = aux2[pos][2];  // right leg
-        posBB[5][0] = aux2[pos][0]-5;   posBB[5][1] = aux2[pos][1] -2;  posBB[5][2] = aux2[pos][2];  // left leg
+        posBB[0][0] = aux[pos][0];      posBB[0][1] = aux[pos][1] +2; posBB[0][2] = aux[pos][2];  // head
+        posBB[1][0] = aux[pos][0];      posBB[1][1] = aux[pos][1];    posBB[1][2] = aux[pos][2];  // torso
+        posBB[2][0] = aux[pos][0] +5;   posBB[2][1] = aux[pos][1];    posBB[2][2] = aux[pos][2];  // right arm
+        posBB[3][0] = aux[pos][0] -5;   posBB[3][1] = aux[pos][1];    posBB[3][2] = aux[pos][2];  // left arm
+        posBB[4][0] = aux[pos][0] +5;   posBB[4][1] = aux[pos][1] -2; posBB[4][2] = aux[pos][2];  // right leg
+        posBB[5][0] = aux[pos][0] -5;   posBB[5][1] = aux[pos][1] -2; posBB[5][2] = aux[pos][2];  // left leg
 
 
         sizesBB[0][0] = 0.1f;   sizesBB[0][1] = 0.2f;  sizesBB[0][2] = 0.3f;  // head
@@ -299,7 +299,7 @@ void shootGun(){
 
         float distance;
 
-        /*
+
 
         for(int i=0; i<NUMTARGETS; i++){
             int jMax = targets[i].numBoundingBoxes;
@@ -331,7 +331,7 @@ void shootGun(){
             }
         }
 
-        */
+
 
 
     }

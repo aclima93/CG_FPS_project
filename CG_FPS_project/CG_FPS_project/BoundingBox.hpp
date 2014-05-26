@@ -41,16 +41,10 @@ class BoundingBox{
 
             glPushMatrix();
 
-                /*
-                glTranslatef( x, y, z);
-                glColor3f (1, 0, 1);
-                glutWireCube(w);
-                */
+                //glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
+                glBegin(GL_QUADS);
 
-
-                glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
-
-                    glColor3f(1, 0, 1);	// Color Red
+                    glColor3f(1, 0, 1);	// Color Pink
 
                     glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
                     glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Top)

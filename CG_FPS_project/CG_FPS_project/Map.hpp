@@ -26,10 +26,12 @@ class Map{
 
         Map(){
 
-            mapWidth = 5; // 50
-            mapLength = 10; // 1000
-            mapHeight = 1; // 25
+            mapWidth = 50; // 5
+            mapLength = 500; // 10
+            mapHeight = 25; // 1
 
+
+            //chão
             ground[0].Init(
                 -mapWidth/2, 0, -mapLength,   // A
                 -mapWidth/2, 0, 0,   // B
@@ -162,7 +164,7 @@ class Map{
                              GLfloat x4, GLfloat y4, GLfloat z4,
                              GLfloat n1, GLfloat n2, GLfloat n3,
                              GLfloat r, GLfloat g, GLfloat b, GLfloat a,
-                             GLuint texture
+                             GLuint texture, int repeat
                              ){
 
             glEnable(GL_TEXTURE_2D);
@@ -176,9 +178,9 @@ class Map{
 
                     if(texture){
                         glTexCoord2f(0.0f,0.0f);
-                        glTexCoord2f(0.0f,10.0f);
-                        glTexCoord2f(10.0f,10.0f);
-                        glTexCoord2f(0.0f,10.0f);
+                        glTexCoord2f(0.0f,repeat*1.0f);
+                        glTexCoord2f(repeat*1.0f, repeat*1.0f);
+                        glTexCoord2f(0.0f, repeat*1.0f);
                     }
 
                     glVertex3f(x1, y1, z1); // top left
@@ -203,7 +205,7 @@ class Map{
 
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    textures.groundTexture() // no texture
+                    textures.groundTexture(), 10 // gournd texture
                 );
                 desenhaQuadrado(
                     - ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
@@ -213,7 +215,7 @@ class Map{
 
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    textures.groundTexture() // no texture
+                    textures.groundTexture(), 10 // ground texture
                 );
             }
 
@@ -231,7 +233,7 @@ class Map{
 
                         walls[i].normal[0], walls[i].normal[1], walls[i].normal[2],
                         walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
-                        0 // no texture
+                        0, 0 // no texture
                     );
                     desenhaQuadrado(
 
@@ -242,7 +244,7 @@ class Map{
 
                         walls[i].normal[0], walls[i].normal[1], walls[i].normal[2],
                         walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
-                        0 // no texture
+                        0, 0 // no texture
                     );
 
             }

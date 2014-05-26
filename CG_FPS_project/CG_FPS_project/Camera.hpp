@@ -8,8 +8,8 @@
 
 //------------------------------------------------------------ Observador
 float PI = 3.1415926535;
-const float g_translation_speed = 0.05;
-const float g_rotation_speed = PI/180* 0.2;
+const float g_translation_speed = 1;//0.05;
+const float g_rotation_speed = PI/180* 0.5;
 
 
 class Camera{

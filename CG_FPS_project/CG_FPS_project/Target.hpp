@@ -27,13 +27,10 @@ class Target{
         int numBoundingBoxes;
         int w, l, h; // to be used?
 
-        //std::vector< BoundingBox> boundingBoxes; // array de bounding boxes para detectar as collisions
         BoundingBox boundingBoxes[NUMBOUNDINGBOXES];
 
         Target(){}
         ~Target(){
-            //TODO: delete the boundingboxes
-            // boundingBoxes.clear ();
         }
 
         void Init(float xx, float yy, float zz, int numBB, float posBB[][3], float sizesBB[][3]){
