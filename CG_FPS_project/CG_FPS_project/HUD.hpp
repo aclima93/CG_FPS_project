@@ -2,6 +2,7 @@
 #define HUD_HPP
 
 #include <GL/glut.h>
+#include <math.h>
 
 GLint wScreen=1366, hScreen=800;
 GLfloat xC=16.0, zC=15.0; // Sistema Coordenadas
@@ -92,7 +93,7 @@ class HUD{
             glBegin( GL_TRIANGLE_FAN );
                 glVertex2f(wCenterScreen, hCenterScreen);
                 for( int n = 0; n <= segments; n++ ) {
-                    t = 2*PI*(float)n/(float)segments;
+                    t = 2*M_PI*(float)n/(float)segments;
                     glVertex2f(wCenterScreen + sin(t)*r, hCenterScreen + cos(t)*r);
                 }
             glEnd();

@@ -17,8 +17,8 @@
 int bulletsInGun = CLIPSIZE;
 int bulletsLeft = CLIPSIZE * NUMCLIPS;
 int bulletIndex = 0;
-float bulletSpeed = 4;
-float maxTravelDistance = 50;
+float bulletSpeed = 304; // 303.986 m/s
+float maxTravelDistance = 1000;
 float maxTravelDistanceSQR = maxTravelDistance*maxTravelDistance;
 
 class Bullet{

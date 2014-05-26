@@ -3,7 +3,7 @@
 
 
 void drawTargets(){
-    for(int i=0; i<NUMTARGETS; i++){
+    for(unsigned int i=0; i<targets.size(); i++){
         targets[i].drawTarget();
         targets[i].drawBoundingBoxes();
     }
@@ -13,12 +13,12 @@ void createTargets(){
 
     for(int i=0; i<NUMPOSSIBLE; i++){
         possiblePositions[i][0] = 0;
-        possiblePositions[i][1] = 1;
-        possiblePositions[i][2] = -i +20;
+        possiblePositions[i][1] = 5;
+        possiblePositions[i][2] = -i*10 ;
 
-        possibleExtraPositions[i][0] = -i +20;
-        possibleExtraPositions[i][1] = 1;
-        possibleExtraPositions[i][2] = 0;
+        possibleExtraPositions[i][0] = 0;
+        possibleExtraPositions[i][1] = 20;
+        possibleExtraPositions[i][2] = -i*10;
     }
 
     std::vector< std::vector<float> > aux = possiblePositions;
@@ -33,39 +33,46 @@ void createTargets(){
     float posBB2[numBB2][3];
     float sizesBB2[numBB2][3];
 
+    float w = 10.0f;
+    float h = 10.0f;
+    float l = 10.0f;
 
-    for(int i=0; i<NUMTARGETS; i++){
 
+    for(unsigned int i=0; i<targets.size(); i++){
+
+        srand(time(NULL));
         pos = rand()%aux.size(); // randomly selects one of the available
 
-        posBB[0][0] = aux[pos][0];      posBB[0][1] = aux[pos][1] +2; posBB[0][2] = aux[pos][2];  // head
-        posBB[1][0] = aux[pos][0];      posBB[1][1] = aux[pos][1];    posBB[1][2] = aux[pos][2];  // torso
-        posBB[2][0] = aux[pos][0] +5;   posBB[2][1] = aux[pos][1];    posBB[2][2] = aux[pos][2];  // right arm
-        posBB[3][0] = aux[pos][0] -5;   posBB[3][1] = aux[pos][1];    posBB[3][2] = aux[pos][2];  // left arm
-        posBB[4][0] = aux[pos][0] +5;   posBB[4][1] = aux[pos][1] -2; posBB[4][2] = aux[pos][2];  // right leg
-        posBB[5][0] = aux[pos][0] -5;   posBB[5][1] = aux[pos][1] -2; posBB[5][2] = aux[pos][2];  // left leg
+        posBB[0][0] = aux[pos][0];      posBB[0][1] = aux[pos][1] +2;   posBB[0][2] = aux[pos][2];  // head
+        posBB[1][0] = aux[pos][0];      posBB[1][1] = aux[pos][1];      posBB[1][2] = aux[pos][2];  // torso
+        posBB[2][0] = aux[pos][0] +2;   posBB[2][1] = aux[pos][1];      posBB[2][2] = aux[pos][2];  // right arm
+        posBB[3][0] = aux[pos][0] -2;   posBB[3][1] = aux[pos][1];      posBB[3][2] = aux[pos][2];  // left arm
+        posBB[4][0] = aux[pos][0] +1;   posBB[4][1] = aux[pos][1] -2;   posBB[4][2] = aux[pos][2];  // right leg
+        posBB[5][0] = aux[pos][0] -1;   posBB[5][1] = aux[pos][1] -2;   posBB[5][2] = aux[pos][2];  // left leg
 
 
-        sizesBB[0][0] = 0.1f;   sizesBB[0][1] = 0.2f;  sizesBB[0][2] = 0.3f;  // head
-        sizesBB[1][0] = 0.1f;   sizesBB[1][1] = 0.2f;  sizesBB[1][2] = 0.3f;  // torso
-        sizesBB[2][0] = 0.1f;   sizesBB[2][1] = 0.2f;  sizesBB[2][2] = 0.3f;  // right arm
-        sizesBB[3][0] = 0.1f;   sizesBB[3][1] = 0.2f;  sizesBB[3][2] = 0.3f;  // left arm
-        sizesBB[4][0] = 0.1f;   sizesBB[4][1] = 0.2f;  sizesBB[4][2] = 0.3f;  // right leg
-        sizesBB[5][0] = 0.1f;   sizesBB[5][1] = 0.2f;  sizesBB[5][2] = 0.3f;  // left leg
+        sizesBB[0][0] = 1.0f;   sizesBB[0][1] = 1.0f;  sizesBB[0][2] = 1.0f;  // head
+        sizesBB[1][0] = 1.0f;   sizesBB[1][1] = 1.0f;  sizesBB[1][2] = 1.0f;  // torso
+        sizesBB[2][0] = 1.0f;   sizesBB[2][1] = 1.0f;  sizesBB[2][2] = 1.0f;  // right arm
+        sizesBB[3][0] = 1.0f;   sizesBB[3][1] = 1.0f;  sizesBB[3][2] = 1.0f;  // left arm
+        sizesBB[4][0] = 1.0f;   sizesBB[4][1] = 1.0f;  sizesBB[4][2] = 1.0f;  // right leg
+        sizesBB[5][0] = 1.0f;   sizesBB[5][1] = 1.0f;  sizesBB[5][2] = 1.0f;  // left leg
 
 
-        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], numBB, posBB, sizesBB);
+        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB);
         aux.erase( aux.begin()+ pos );
+
     }
 
-    for(int i=0; i<NUMEXTRAS; i++){
+    for(unsigned int i=0; i<extras.size(); i++){
 
+        srand(time(NULL));
         pos = rand()%aux2.size(); // randomly selects one of the available
 
         posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1]+10;  posBB2[0][2] = aux2[pos][2];  // head
         sizesBB2[0][0] = 0.1f;   sizesBB2[0][1] = 0.2f;  sizesBB2[0][2] = 0.3f;  // head
 
-        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], numBB2, posBB2, sizesBB2);
+        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2);
         aux2.erase( aux2.begin()+ pos );
     }
 
@@ -121,6 +128,18 @@ void init(void)
 
 
 
+    glutWarpPointer(wCenterScreen, hCenterScreen);
+
+    //camera starting position and orientation
+    g_camera.SetYaw(-M_PI/2);
+    g_camera.SetPitch(0.0);
+    g_camera.SetPos( xStart, yStart, zStart);
+
+
+    createTargets();
+
+
+
 }
 
 
@@ -130,7 +149,7 @@ void init(void)
 void drawGrid()
 {
 
-    for(float i = -100; i <= 100; i += 5)
+    for(float i = -500; i <= 500; i += 5)
     {
         glBegin(GL_LINES);
             glColor3ub(150, 190, 150);
@@ -282,6 +301,69 @@ void reloadGun(){
     }
 }
 
+bool checkTargetCollisions(float x, float y, float z, float dx, float dy, float dz){
+
+    for(int i=0; i<(int)targets.size(); i++){
+
+        //if there's a collision inside this target's outer bounding box check the ones inside
+        if( targets[i].checkCollision(x, y, z, dx, dy, dz) != -1 ){
+
+            std::cout << " Acertei na OUTER BB do alvo " << i << "\n";
+
+            int jMax = targets[i].numBoundingBoxes;
+            float distance;
+
+            for(int j=0; j<jMax; j++){
+
+                distance = targets[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
+
+                if( distance != -1 ){
+                    std::cout << " Acertei na BB " << j << " do alvo " << i << "\n";
+                    numTargetsHit++;
+                    targets.erase( targets.begin()+ i ); // remove this target
+                    bullets[bulletIndex].isActive = false;
+                    return true; // stop the bullet in mid-flight
+
+                }
+
+            }
+
+        }
+    }
+
+    return false;
+
+}
+
+void checkExtraCollisions(float x, float y, float z, float dx, float dy, float dz){
+
+    for(int i=0; i<(int)extras.size(); i++){
+
+        //if there's a collision inside this target's outer bounding box check the ones inside
+        if( extras[i].checkCollision(x, y, z, dx, dy, dz) != -1 ){
+
+            std::cout << " Acertei na OUTER BB do extra " << i << "\n";
+
+            int jMax = extras[i].numBoundingBoxes;
+            float distance;
+
+            for(int j=0; j<jMax; j++){
+
+               distance = extras[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
+
+               if( distance != -1 ){
+                   std::cout << " Acertei na BB " << j << " do extra " << i << "\n";
+                   numExtrasHit++;
+                   extras.erase( extras.begin()+ i ); // remove this target
+                   return ; // stop the bullet in mid-flight
+
+               }
+
+            }
+        }
+    }
+}
+
 void shootGun(){
 
     if(bulletsInGun){
@@ -297,42 +379,9 @@ void shootGun(){
 
         bulletIndex++;
 
-        float distance;
-
-
-
-        for(int i=0; i<NUMTARGETS; i++){
-            int jMax = targets[i].numBoundingBoxes;
-            for(int j=0; j<jMax; j++){
-
-                distance = targets[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
-
-                if( distance != -1 ){
-                    std::cout << " Acertei na BB " << j << " do alvo " << i << "\n";
-                    numTargetsHit++;
-
-                }
-
-            }
+        if( !checkTargetCollisions(x, y, z, dx, dy, dz) ){
+            checkExtraCollisions(x, y, z, dx, dy, dz);
         }
-
-        for(int i=0; i<NUMEXTRAS; i++){
-            int jMax = extras[i].numBoundingBoxes;
-            for(int j=0; j<jMax; j++){
-
-                distance = extras[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
-
-                if( distance != -1 ){
-                    std::cout << " Acertei na BB " << j << " do extra " << i << "\n";
-                    numExtrasHit++;
-
-                }
-
-            }
-        }
-
-
-
 
     }
 }
@@ -368,8 +417,6 @@ void Timer(int value){
 
 //======================================================= MAIN
 int main(int argc, char** argv){
-
-    createTargets();
 
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );

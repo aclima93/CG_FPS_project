@@ -7,6 +7,8 @@
 #include <math.h>
 #include <string.h>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 #include <GL/freeglut.h>
 #include <GL/glut.h>
@@ -31,8 +33,13 @@ Bullet bullets[NUMBULLETS];
 Camera g_camera;
 HUD hud;
 Map map;
-Target targets[NUMTARGETS];
-Target extras[NUMEXTRAS];
+
+float xStart = 0;
+float yStart = 0;
+float zStart = map.mapHeight/2;
+
+std::vector<Target> targets(NUMTARGETS); //Target targets[NUMTARGETS];
+std::vector<Target> extras(NUMEXTRAS); //Target extras[NUMEXTRAS];
 
 
 //------------------------------------------------------------ Global (ambiente)

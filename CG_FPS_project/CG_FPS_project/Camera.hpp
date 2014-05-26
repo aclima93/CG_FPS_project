@@ -7,26 +7,21 @@
 
 
 //------------------------------------------------------------ Observador
-float PI = 3.1415926535;
 const float g_translation_speed = 1;//0.05;
-const float g_rotation_speed = PI/180* 0.5;
-
+const float g_rotation_speed = M_PI/180* 0.5;
+const float limit = 85.0 * M_PI / 180.0;
 
 class Camera{
     public:
-        Camera() { Init(); }
+        Camera(){}
         ~Camera(){}
-
-        void Init(){
-            m_yaw = 0.0;
-            m_pitch = 0.0;
-
-            SetPos(0, 0, 0);
-        }
 
         void Refresh(){
 
-            // Camera parameter according to x/y for flat, z for height
+            // https://developer.valvesoftware.com/w/images/7/7e/Roll_pitch_yaw.gif
+            // Camera parameters according to x/y for flat, z for height
+            // For that coord. system: pich = rotation along yy, yaw = rotation along zz
+
             m_lx = cos(m_yaw) * cos(m_pitch);
             m_ly = sin(m_pitch);
             m_lz = sin(m_yaw) * cos(m_pitch);
@@ -93,7 +88,6 @@ class Camera{
         }
 
         void RotatePitch(float angle){
-            const float limit = 89.0 * M_PI / 180.0;
 
             m_pitch += angle;
 

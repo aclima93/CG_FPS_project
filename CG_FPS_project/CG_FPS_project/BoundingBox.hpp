@@ -39,10 +39,10 @@ class BoundingBox{
 
         void drawBoundingBox(){
 
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
             glPushMatrix();
 
-                //glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
-                glBegin(GL_QUADS);
+                glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
 
                     glColor3f(1, 0, 1);	// Color Pink
 
@@ -80,6 +80,7 @@ class BoundingBox{
 
 
             glPopMatrix();
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
         float checkCollision(float ox, float oy, float oz,  //origin of ray
@@ -99,7 +100,7 @@ class BoundingBox{
             float distanceToCorner;
             float xCorner, yCorner, zCorner;
 
-            //find the farthest and closes corner of the AABB
+            //find the farthest and closest corner of the AABB
 
             for(float i=-1; i<3; i+=2){
                 for(float j=-1; j<3; j+=2){
