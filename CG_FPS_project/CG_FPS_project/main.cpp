@@ -365,7 +365,7 @@ void checkExtraCollisions(float x, float y, float z, float dx, float dy, float d
 }
 
 void playGunFiringSound(){
-    sound.playSound("sounds/Shells_falls-Marcel-829263474.mp3", 5);
+    //sound.playSound(SOUND_SHELL_FALLING);
 }
 
 void shootGun(){

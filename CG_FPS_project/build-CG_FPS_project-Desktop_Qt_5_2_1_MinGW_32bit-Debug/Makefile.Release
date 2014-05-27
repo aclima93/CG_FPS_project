@@ -14,10 +14,10 @@ CXX           = g++
 DEFINES       = -DUNICODE -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -fno-keep-inline-dllexport -O2 -Wall -Wextra $(DEFINES)
 CXXFLAGS      = -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I..\CG_FPS_project -I"..\CG_FPS_project\fmod" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtOpenGL" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtWidgets" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtGui" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtCore" -I"release" -I"." -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++"
+INCPATH       = -I..\CG_FPS_project -I"..\..\..\..\..\..\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtOpenGL" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtWidgets" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtGui" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtCore" -I"release" -I"." -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++"
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,console -mthreads
-LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lfreeglut -LC:/Users/AntónioCarlosLagarto/Documents/CG_FPS_project/CG_FPS_project/CG_FPS_project/fmod/lib/ -lfmod_vc -LC:\Qt\Qt5.2.1\5.2.1\mingw48_32\lib -lQt5OpenGL -lQt5Widgets -lQt5Gui -lQt5Core 
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 "C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\lib\libfmodex.a" -lfreeglut -LC:\Qt\Qt5.2.1\5.2.1\mingw48_32\lib -lQt5OpenGL -lQt5Widgets -lQt5Gui -lQt5Core 
 QMAKE         = C:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\qmake.exe
 IDC           = idc
 IDL           = midl
@@ -136,11 +136,10 @@ release/main.o: ../CG_FPS_project/main.cpp ../CG_FPS_project/main.hpp \
 		../CG_FPS_project/BoundingBox.hpp \
 		../CG_FPS_project/HUD.hpp \
 		../CG_FPS_project/Sound.hpp \
-		../CG_FPS_project/fmod/inc/fmod.h \
-		../CG_FPS_project/fmod/inc/fmod_common.h \
-		../CG_FPS_project/fmod/inc/fmod_codec.h \
-		../CG_FPS_project/fmod/inc/fmod_dsp.h \
-		../CG_FPS_project/fmod/lib/fmod.a
+		../../../../../../Program\ Files\ (x86)/FMOD\ SoundSystem/FMOD\ Programmers\ API\ Windows/api/inc/fmod.h \
+		../../../../../../Program\ Files\ (x86)/FMOD\ SoundSystem/FMOD\ Programmers\ API\ Windows/api/inc/fmod_codec.h \
+		../../../../../../Program\ Files\ (x86)/FMOD\ SoundSystem/FMOD\ Programmers\ API\ Windows/api/inc/fmod_dsp.h \
+		../../../../../../Program\ Files\ (x86)/FMOD\ SoundSystem/FMOD\ Programmers\ API\ Windows/api/inc/fmod_memoryinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\CG_FPS_project\main.cpp
 
 release/RgbImage.o: ../CG_FPS_project/RgbImage.cpp ../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/GL/glut.h \

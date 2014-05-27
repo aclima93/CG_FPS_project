@@ -1,7 +1,9 @@
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
+INCLUDEPATH += "C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc"
 QT += opengl
+LIBS += "C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\lib\libfmodex.a"
 LIBS += -lfreeglut
 
 SOURCES += main.cpp \
@@ -33,11 +35,3 @@ OTHER_FILES += \
     models_textures/textures/ground_tex.jpg \
     NOTA_SOBRE_FICHEIROS.txt
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/fmod/lib/ -lfmod_vc
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/fmod/lib/ -lfmod_vcd
-else:unix: LIBS += -L$$PWD/fmod/lib/ -lfmod_vc
-
-INCLUDEPATH += $$PWD/fmod
-DEPENDPATH += $$PWD/fmod
-
-unix|win32: LIBS += -lfmod_vc
