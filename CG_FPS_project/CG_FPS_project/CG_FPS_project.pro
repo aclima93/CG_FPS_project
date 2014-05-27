@@ -3,7 +3,7 @@ CONFIG += console
 CONFIG -= app_bundle
 INCLUDEPATH += "C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\inc"
 QT += opengl
-LIBS += "C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\lib\libfmodex.a"
+LIBS += "C:\Program Files (x86)\FMOD SoundSystem\FMOD Programmers API Windows\api\lib\fmodex_vc.lib"
 LIBS += -lfreeglut
 
 SOURCES += main.cpp \
@@ -25,7 +25,7 @@ HEADERS += \
     BoundingBox.hpp \
     Target.hpp \
     HUD.hpp \
-    Sound.hpp
+    FMOD.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
@@ -33,5 +33,11 @@ OTHER_FILES += \
     models_textures/textures/ground_tex.bmp \
     models_textures/textures/grass_tex.jpg \
     models_textures/textures/ground_tex.jpg \
-    NOTA_SOBRE_FICHEIROS.txt
+    NOTA_SOBRE_FICHEIROS.txt \
+    fmodex.dll
 
+
+unix|win32: LIBS += -L$$PWD/../../../../../../Program Files (x86)/FMOD SoundSystem/FMOD Programmers API Windows/api/lib/ -lfmodex_vc
+
+INCLUDEPATH += $$PWD/../../../../../../Program Files (x86)/FMOD SoundSystem/FMOD Programmers API Windows/api
+DEPENDPATH += $$PWD/../../../../../../Program Files (x86)/FMOD SoundSystem/FMOD Programmers API Windows/api

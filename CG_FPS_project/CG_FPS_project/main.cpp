@@ -365,7 +365,9 @@ void checkExtraCollisions(float x, float y, float z, float dx, float dy, float d
 }
 
 void playGunFiringSound(){
-    //sound.playSound(SOUND_SHELL_FALLING);
+    FMOD_RESULT result;
+    result = fmodSystem->playSound(FMOD_CHANNEL_FREE, actionSound, false,NULL );
+    FmodErrorCheck(result);
 }
 
 void shootGun(){
@@ -412,6 +414,7 @@ void Timer(int value){
 
     updateGameTimer();
     updateBullets();
+    fmod.fmodSystem->update(); // update sound
 
     if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
         //std::cout << "chamei o glutpostredisplay no timer\n";
