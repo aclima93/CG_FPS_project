@@ -85,7 +85,7 @@ class HUD{
 
             glEnd();
 
-            // center doghnut
+            // center
             int segments = 5;
             float t;
             int r = 2;

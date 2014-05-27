@@ -24,7 +24,7 @@
 #include "Colors.hpp"
 #include "Target.hpp"
 #include "HUD.hpp"
-#include "FMOD.hpp"
+#include "Sounds.hpp"
 
 //debug
 #define DEBUG 1
@@ -34,7 +34,7 @@ Bullet bullets[NUMBULLETS];
 Camera g_camera;
 HUD hud;
 Map map;
-FMOD sound;
+//Sounds sounds;
 
 float xStart = 0;
 float yStart = 0;
