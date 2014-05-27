@@ -40,6 +40,11 @@ float xStart = 0;
 float yStart = 0;
 float zStart = map.mapHeight/2;
 
+int mainMenu;
+bool isMenuActive = false;
+int numGameModes = 5;
+char* gameModes[] = { "Time Attack", "No Bullet Left Behind", "Zen", "Highscores", "Quit Game" };
+
 std::vector<Target> targets(NUMTARGETS); //Target targets[NUMTARGETS];
 std::vector<Target> extras(NUMEXTRAS); //Target extras[NUMEXTRAS];
 
@@ -76,6 +81,8 @@ void shootGun(int x, int y, int z);
 void updateGameTimer();
 void Timer(int value);
 int main(int argc, char** argv);
+void createMainMenu();
+void mainMenuEvents(int value);
 void teclasNotAscii(int key, int x, int y);
 void mouseMotion(int x, int y);
 void mouseClicks(int button, int state, int x, int y);

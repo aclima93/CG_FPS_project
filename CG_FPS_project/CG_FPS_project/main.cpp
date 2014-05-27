@@ -446,12 +446,15 @@ int main(int argc, char** argv){
 
     glutTimerFunc(msecCallback, Timer, 0);
 
+    mainMenu = glutCreateMenu(mainMenuEvents);
+
+    createMainMenu();
+
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(teclasNotAscii);
     glutMouseFunc(mouseClicks);
     glutMotionFunc(mouseMotion);
     glutPassiveMotionFunc(mouseMotion);
-
 
     glutMainLoop();
 
@@ -459,6 +462,54 @@ int main(int argc, char** argv){
 }
 
 // =========================================== EVENTOS
+
+void createMainMenu(){
+
+    for(int i=0; i<numGameModes; i++){
+        glutAddMenuEntry(gameModes[i], i);
+    }
+
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+}
+
+void mainMenuEvents(int value){
+
+    switch(value){
+
+
+        //"Time Attack"
+        case 0:
+
+            break;
+
+        //"No Bullet Left Behind"
+        case 1:
+
+            break;
+
+        //"Zen"
+        case 2:
+
+            break;
+
+        //"Highscores"
+        case 3:
+
+            break;
+
+        //"Quit Game"
+        case 4:
+
+            glutDestroyMenu(mainMenu);
+            exit(0);
+
+            break;
+
+    }
+
+
+}
 
 void teclasNotAscii(int key, int x, int y){
 
@@ -495,7 +546,7 @@ void mouseMotion(int x, int y){
         g_camera.RotatePitch(g_rotation_speed*dy);
     }
 
-    glutWarpPointer(wCenterScreen, hCenterScreen);
+    if( !isMenuActive ) glutWarpPointer(wCenterScreen, hCenterScreen);
 
     just_warped = true;
 
@@ -511,6 +562,10 @@ void mouseClicks(int button, int state, int x, int y) {
 
     if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         shootGun();
+    }
+
+    if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+        isMenuActive = !isMenuActive;
     }
 
     glutPostRedisplay();
@@ -555,6 +610,12 @@ void keyboard(unsigned char key, int x, int y){
             reloadGun();
             break;
 
+
+        //--------------------------- main menu
+        case 'P':
+        case 'p':
+            createMainMenu();
+            break;
 
 
         // ------------------------------ move vertically for DEBUG
