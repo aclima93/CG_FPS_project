@@ -301,7 +301,7 @@ void reloadGun(){
     }
 }
 
-bool checkTargetCollisions(float x, float y, float z, float dx, float dy, float dz){
+int checkTargetCollisions(float x, float y, float z, float dx, float dy, float dz){
 
     for(int i=0; i<(int)targets.size(); i++){
 
@@ -322,7 +322,7 @@ bool checkTargetCollisions(float x, float y, float z, float dx, float dy, float 
                     numTargetsHit++;
                     targets.erase( targets.begin()+ i ); // remove this target
                     bullets[bulletIndex].isActive = false;
-                    return true; // stop the bullet in mid-flight
+                    return j; // stop the bullet in mid-flight
 
                 }
 
@@ -331,11 +331,11 @@ bool checkTargetCollisions(float x, float y, float z, float dx, float dy, float 
         }
     }
 
-    return false;
+    return -1;
 
 }
 
-void checkExtraCollisions(float x, float y, float z, float dx, float dy, float dz){
+int checkExtraCollisions(float x, float y, float z, float dx, float dy, float dz){
 
     for(int i=0; i<(int)extras.size(); i++){
 
@@ -355,13 +355,15 @@ void checkExtraCollisions(float x, float y, float z, float dx, float dy, float d
                    std::cout << " Acertei na BB " << j << " do extra " << i << "\n";
                    numExtrasHit++;
                    extras.erase( extras.begin()+ i ); // remove this target
-                   return ; // stop the bullet in mid-flight
+                   return 1; // stop the bullet in mid-flight
 
                }
 
             }
         }
     }
+
+    return -1;
 }
 
 void shootGun(){
@@ -379,8 +381,15 @@ void shootGun(){
 
         bulletIndex++;
 
-        if( !checkTargetCollisions(x, y, z, dx, dy, dz) ){
-            checkExtraCollisions(x, y, z, dx, dy, dz);
+        int targetBBIndex = checkTargetCollisions(x, y, z, dx, dy, dz);
+
+        if( targetBBIndex != -1){
+            points += targetValues[targetBBIndex];
+        }
+        else{
+            if( checkExtraCollisions(x, y, z, dx, dy, dz) != -1){
+                points += extraValue;
+            }
         }
 
         //sounds.playGunFiringSound();

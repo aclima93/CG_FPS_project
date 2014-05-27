@@ -30,6 +30,10 @@ char bulletInfoText[100];
 int numTargetsHit = 0;
 int numExtrasHit = 0;
 
+int points = 0;
+int targetValues[6] = { 500, 350, 50, 50, 50, 50}; // head, torso, arms and legs
+int extraValue = 750;
+
 class HUD{
 
     public:
@@ -139,8 +143,12 @@ class HUD{
             glEnd();
 
             glColor3f(0,0,0);
-            sprintf(bulletInfoText,"%d loaded - %d left", bulletsInGun, bulletsLeft);
-            desenhaTexto(bulletInfoText, widthHUDBlock/2, heightHUDBlock/2,0);
+            sprintf(bulletInfoText,"%d bullets loaded", bulletsInGun);
+            desenhaTexto(bulletInfoText, widthHUDBlock/4, heightHUDBlock/2-10, 0);
+
+            glColor3f(0,0,0);
+            sprintf(bulletInfoText,"%d bullets left", bulletsLeft);
+            desenhaTexto(bulletInfoText, widthHUDBlock/4, heightHUDBlock/2+10, 0);
 
         }
 
@@ -165,16 +173,20 @@ class HUD{
                 glColor3f(1.0f, 0.0f, 0.0);
 
                 glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
-                glVertex2f(wCenterScreen - widthHUDBlock, heightHUDBlock/2);
-                glVertex2f(wCenterScreen + widthHUDBlock, heightHUDBlock/2);
+                glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
+                glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
                 glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
 
 
             glEnd();
 
             glColor3f(0,0,0);
+            sprintf(timerInfoText,"Points: %d", points);
+            desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 -10 ,0);
+
+            glColor3f(0,0,0);
             sprintf(timerInfoText,"%d:%d:%d", minutes, seconds, miliseconds);
-            desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/4 ,0);
+            desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 +10 ,0);
 
 
         }
