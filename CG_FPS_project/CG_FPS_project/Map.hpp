@@ -14,11 +14,18 @@ const float mapWidth = 50; // 5
 const float mapLength = 500; // 10
 const float mapHeight = 25; // 1
 
+
+const float firstGlassStart = 0.40f;
+const float firstGlassEnd = 0.45f;
+
+const float secondGlassStart = 0.55f;
+const float secondGlassEnd = 0.60f;
+
 class Map{
     public:
 
         //Textures textures;
-        Image image;
+        Images image;
 
         Wall ground[NUMGROUNDS];
 
@@ -37,10 +44,10 @@ class Map{
                  VERDE                          // r g b a
             );
             ground[1].Init(
-                -mapWidth, 0, -mapLength*(0.60f),   // A
-                -mapWidth, 0, -mapLength*(0.40f),   // B
-                -mapWidth/2, 0, -mapLength*(0.60f),               // C
-                -mapWidth/2, 0, -mapLength*(0.40f),               // D
+                -mapWidth, 0, -mapLength*(secondGlassEnd),   // A
+                -mapWidth, 0, -mapLength*(firstGlassStart),   // B
+                -mapWidth/2, 0, -mapLength*(secondGlassEnd),               // C
+                -mapWidth/2, 0, -mapLength*(firstGlassStart),               // D
                  1, 0, 0,                           // normal
                  VERDE                          // r g b a
             );
@@ -52,63 +59,63 @@ class Map{
             walls[0].Init(
                 //parede esquerda1
                 -mapWidth/2, mapHeight, 0,                         // A
-                -mapWidth/2, mapHeight, -mapLength*(0.4f),      // B
+                -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),      // B
                 -mapWidth/2, 0, 0,                                   // C
-                -mapWidth/2, 0, -mapLength*(0.4f),                // D
+                -mapWidth/2, 0, -mapLength*(firstGlassStart),                // D
                  1, 0, 0,                                               // normal
                  WHITE                                                  // r g b a
             );
             walls[1].Init(
                 //vidro esquerda1
-                -mapWidth/2, mapHeight, -mapLength*(0.40f),      // A
-                -mapWidth/2, mapHeight, -mapLength*(0.45f),      // B
-                -mapWidth/2, 0, -mapLength*(0.40f),                // C
-                -mapWidth/2, 0, -mapLength*(0.45f),                // D
+                -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),      // A
+                -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),      // B
+                -mapWidth/2, 0, -mapLength*(firstGlassStart),                // C
+                -mapWidth/2, 0, -mapLength*(firstGlassEnd),                // D
                  1, 0, 0,                                                // normal
                  VIDRO                                                    // r g b a
             );
             walls[2].Init(
                 //parede esquerda2
-                -mapWidth/2, mapHeight, -mapLength*(0.45f),      // A
-                -mapWidth/2, mapHeight, -mapLength*(0.55f),      // B
-                -mapWidth/2, 0, -mapLength*(0.45f),                // C
-                -mapWidth/2, 0, -mapLength*(0.55f),                // D
+                -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),      // A
+                -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),      // B
+                -mapWidth/2, 0, -mapLength*(firstGlassEnd),                // C
+                -mapWidth/2, 0, -mapLength*(secondGlassStart),                // D
                  1, 0, 0,                                                // normal
                  WHITE                                                    // r g b a
             );
             walls[3].Init(
                 //vidro esquerda2
-                -mapWidth/2, mapHeight, -mapLength*(0.55f),      // A
-                -mapWidth/2, mapHeight, -mapLength*(0.60f),      // B
-                -mapWidth/2, 0, -mapLength*(0.55f),                // C
-                -mapWidth/2, 0, -mapLength*(0.60f),                // D
+                -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),      // A
+                -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),      // B
+                -mapWidth/2, 0, -mapLength*(secondGlassStart),                // C
+                -mapWidth/2, 0, -mapLength*(secondGlassEnd),                // D
                  1, 0, 0,                                                // normal
                  VIDRO                                                    // r g b a
             );
             walls[4].Init(
                 //parede esquerda3
-                -mapWidth/2, mapHeight, -mapLength*(0.60f),      // top left
+                -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),      // top left
                 -mapWidth/2, mapHeight, -mapLength,              // top right
-                -mapWidth/2, 0, -mapLength*(0.60f),                // bottom left
+                -mapWidth/2, 0, -mapLength*(secondGlassEnd),                // bottom left
                 -mapWidth/2, 0, -mapLength,                        // bottom right
                  1, 0, 0,                                                // normal
                  WHITE                                                // r g b a
             );
             walls[5].Init(
                 //parede esquerda4
-                -mapWidth*(0.75f), mapHeight, -mapLength*(0.45f),      // A
-                -mapWidth*(0.75f), mapHeight, -mapLength*(0.55f),      // B
-                -mapWidth*(0.75f), 0, -mapLength*(0.45f),                // C
-                -mapWidth*(0.75f), 0, -mapLength*(0.55f),                // D
+                -mapWidth*(0.75f), mapHeight, -mapLength*(firstGlassEnd),      // A
+                -mapWidth*(0.75f), mapHeight, -mapLength*(secondGlassStart),      // B
+                -mapWidth*(0.75f), 0, -mapLength*(firstGlassEnd),                // C
+                -mapWidth*(0.75f), 0, -mapLength*(secondGlassStart),                // D
                  1, 0, 0,                                                      // normal
                  WHITE                                                         // r g b a
             );
             walls[6].Init(
                 //parede esquerda5
-                -mapWidth, mapHeight, -mapLength*(0.40f),      // A
-                -mapWidth, mapHeight, -mapLength*(0.60f),      // B
-                -mapWidth, 0, -mapLength*(0.40f),                // C
-                -mapWidth, 0, -mapLength*(0.60f),                // D
+                -mapWidth, mapHeight, -mapLength*(firstGlassStart),      // A
+                -mapWidth, mapHeight, -mapLength*(secondGlassEnd),      // B
+                -mapWidth, 0, -mapLength*(firstGlassStart),                // C
+                -mapWidth, 0, -mapLength*(secondGlassEnd),                // D
                  1, 0, 0,                                              // normal
                  WHITE                                              // r g b a
             );
@@ -117,37 +124,37 @@ class Map{
             //paredes horizontais
             walls[7].Init(
                 //parede esquerda6
-                -mapWidth, mapHeight, -mapLength*(0.40f),      // A
-                -mapWidth/2, mapHeight, -mapLength*(0.40f),    // B
-                -mapWidth, 0, -mapLength*(0.40f),                // C
-                -mapWidth/2, 0, -mapLength*(0.40f),              // D
+                -mapWidth, mapHeight, -mapLength*(firstGlassStart),      // A
+                -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),    // B
+                -mapWidth, 0, -mapLength*(firstGlassStart),                // C
+                -mapWidth/2, 0, -mapLength*(firstGlassStart),              // D
                  1, 0, 0,                                              // normal
                  WHITE                                                  // r g b a
             );
             walls[8].Init(
                 //parede esquerda7
-                -mapWidth*(0.75f), mapHeight, -mapLength*(0.45f),        // A
-                -mapWidth/2, mapHeight, -mapLength*(0.45f),              // B
-                -mapWidth*(0.75f), 0, -mapLength*(0.45f),                  // C
-                -mapWidth/2, 0, -mapLength*(0.45f),                        // D
+                -mapWidth*(0.75f), mapHeight, -mapLength*(firstGlassEnd),        // A
+                -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),              // B
+                -mapWidth*(0.75f), 0, -mapLength*(firstGlassEnd),                  // C
+                -mapWidth/2, 0, -mapLength*(firstGlassEnd),                        // D
                  1, 0, 0,                                                        // normal
                  WHITE                                                         // r g b a
             );
             walls[9].Init(
                 //parede esquerda8
-                -mapWidth*(0.75f), mapHeight, -mapLength*(0.55f),        // A
-                -mapWidth/2, mapHeight, -mapLength*(0.55f),              // B
-                -mapWidth*(0.75f), 0, -mapLength*(0.55f),                  // C
-                -mapWidth/2, 0, -mapLength*(0.55f),                        // D
+                -mapWidth*(0.75f), mapHeight, -mapLength*(secondGlassStart),        // A
+                -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),              // B
+                -mapWidth*(0.75f), 0, -mapLength*(secondGlassStart),                  // C
+                -mapWidth/2, 0, -mapLength*(secondGlassStart),                        // D
                  1, 0, 0,                                                        // normal
                  WHITE                                                         // r g b a
             );
             walls[10].Init(
                 //parede esquerda9
-                -mapWidth, mapHeight, -mapLength*(0.60f),      // A
-                -mapWidth/2, mapHeight, -mapLength*(0.60f),    // B
-                -mapWidth, 0, -mapLength*(0.60f),                // C
-                -mapWidth/2, 0, -mapLength*(0.60f),              // D
+                -mapWidth, mapHeight, -mapLength*(secondGlassEnd),      // A
+                -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),    // B
+                -mapWidth, 0, -mapLength*(secondGlassEnd),                // C
+                -mapWidth/2, 0, -mapLength*(secondGlassEnd),              // D
                  1, 0, 0,                                              // normal
                  WHITE                                                  // r g b a
             );
@@ -166,17 +173,20 @@ class Map{
             glEnable(GL_TEXTURE_2D);
             glPushMatrix();
 
-                if(texIndex > 0){
+                if(texIndex != -1){
                     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);		//Handles how the texture is applied
                     glBindTexture(GL_TEXTURE_2D, image.texName[texIndex]);
                 }
 
-                glColor4f(r, g, b, a);
                 glBegin(GL_QUADS);
 
+                    glColor4f(r, g, b, a);
                     glNormal3d(n1, n2, n3);
 
-                    if(texIndex > 0){
+                    if(texIndex != -1){
+
+                        std::cout << "a meter a textura!\n";
+
                         glTexCoord2f(0.0f, 0.0f);               glVertex3f(x1, y1, z1); // top left
                         glTexCoord2f(0.0f, repeat*1.0f);        glVertex3f(x2, y2, z2); // bottom left
                         glTexCoord2f(repeat*1.0f, repeat*1.0f); glVertex3f(x4, y4, z4); // bottom right
@@ -207,7 +217,7 @@ class Map{
 
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    2, 1 // ground texture
+                    1, 1 // ground texture
                 );
                 desenhaQuadrado(
                     - ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
@@ -217,7 +227,7 @@ class Map{
 
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    2, 1 // ground texture
+                    1, 1 // ground texture
                 );
             }
 

@@ -131,9 +131,9 @@ void init(void)
     glutWarpPointer(wCenterScreen, hCenterScreen);
 
     //camera starting position and orientation
-    g_camera.SetYaw(-M_PI/2);
-    g_camera.SetPitch(0.0);
-    g_camera.SetPos( xStart, yStart, zStart);
+    camera.SetYaw(-M_PI/2);
+    camera.SetPitch(0.0);
+    camera.SetPos( xStart, yStart, zStart);
 
 
     createTargets();
@@ -201,7 +201,7 @@ void drawScene()
     map.drawMap();
     drawTargets();
 
-    g_camera.Refresh();
+    camera.Refresh();
     drawBullets();
 
 }
@@ -220,7 +220,7 @@ void drawOrientacao(){
 
     /*
     float x, y, z;
-    g_camera.GetPos(x, y, z);
+    camera.GetPos(x, y, z);
 
     glPushMatrix();
         glColor4f(VERDE);
@@ -239,9 +239,8 @@ void drawOrientacao(){
 
 void display(void){
 
-
     //================================================================= Viewport1 (minimap)
-    hud.drawMiniMap();
+    hud.drawMiniMap(xCamera, yCamera, zCamera);
 
     drawScene(); //--------------------- desenha objectos no viewport1
     drawOrientacao();
@@ -286,7 +285,7 @@ void updateBullets(){
 
 void reloadGun(){
 
-    if(bulletsLeft){
+    if( bulletsLeft && bulletsInGun < 5 ){
 
         int loadingReq = 1; //int loadingReq = CLIPSIZE - bulletsInGun;
 
@@ -377,8 +376,8 @@ void shootGun(){
 
         float x, y, z;
         float dx, dy, dz;
-        g_camera.GetDirectionVector(dx, dy, dz); // bullet direction
-        g_camera.GetPos(x, y, z); // initial position
+        camera.GetDirectionVector(dx, dy, dz); // bullet direction
+        camera.GetPos(x, y, z); // initial position
 
         bullets[bulletIndex].Init(x, y, z, dx, dy, dz, bulletSpeed, 0, 0, 0, true);
 
@@ -417,6 +416,8 @@ void updateGameTimer(){
 
 void Timer(int value){
 
+
+    camera.GetPos(xCamera, yCamera, zCamera);
 
     updateGameTimer();
     updateBullets();
@@ -541,11 +542,11 @@ void mouseMotion(int x, int y){
     int dy = -(y - hCenterScreen);
 
     if(dx) {
-        g_camera.RotateYaw(g_rotation_speed*dx);
+        camera.RotateYaw(g_rotation_speed*dx);
     }
 
     if(dy) {
-        g_camera.RotatePitch(g_rotation_speed*dy);
+        camera.RotatePitch(g_rotation_speed*dy);
     }
 
     if( !isMenuActive ) glutWarpPointer(wCenterScreen, hCenterScreen);
@@ -585,25 +586,25 @@ void keyboard(unsigned char key, int x, int y){
         //--------------------------- forward
         case 'W':
         case 'w':
-            g_camera.Move(g_translation_speed);
+            camera.Move(g_translation_speed);
             break;
 
         //--------------------------- back
         case 'S':
         case 's':
-            g_camera.Move(-g_translation_speed);
+            camera.Move(-g_translation_speed);
             break;
 
         //--------------------------- left
         case 'A':
         case 'a':
-            g_camera.Strafe(g_translation_speed);
+            camera.Strafe(g_translation_speed);
             break;
 
         //--------------------------- left
         case 'D':
         case 'd':
-            g_camera.Strafe(-g_translation_speed);
+            camera.Strafe(-g_translation_speed);
             break;
 
         //--------------------------- reload
@@ -624,12 +625,12 @@ void keyboard(unsigned char key, int x, int y){
         //--------------------------- up
         case 'U':
         case 'u':
-            g_camera.Fly(g_translation_speed);
+            camera.Fly(g_translation_speed);
             break;
         //--------------------------- down
         case 'J':
         case 'j':
-            g_camera.Fly(-g_translation_speed);
+            camera.Fly(-g_translation_speed);
             break;
 
 

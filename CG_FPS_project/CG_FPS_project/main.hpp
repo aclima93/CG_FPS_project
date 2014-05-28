@@ -31,7 +31,7 @@
 
 // our defined elements
 Bullet bullets[NUMBULLETS];
-Camera g_camera;
+Camera camera;
 HUD hud;
 Map map;
 Sounds sounds;
@@ -39,6 +39,11 @@ Sounds sounds;
 float xStart = 0;
 float yStart = 0;
 float zStart = mapHeight/2;
+
+float xCamera;
+float yCamera;
+float zCamera;
+
 
 int mainMenu;
 bool isMenuActive = false;

@@ -22,7 +22,7 @@
 
 const char* imageName[] = {BULLET_SHELL_IMAGE, GROUND_IMAGE, BULLET_SHELL_IMAGE};
 
-class Image{
+class Images{
 
     public:
 
@@ -39,10 +39,10 @@ class Image{
         ILuint ilTexName[numImages];						//DevIL images objects
         ILubyte *imageData[numImages];                      //DevIL image data
 
-        Image(){
+        Images(){
             Init();
         }
-        ~Image(){
+        ~Images(){
 
             // deleting an image.
             for(int i=0; i<numImages; i++){

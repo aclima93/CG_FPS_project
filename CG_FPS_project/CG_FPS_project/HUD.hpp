@@ -18,7 +18,7 @@ const float widthHUDBlock = 200;
 const float heightHUDBlock = 100;
 const float crosshairThickness = 1.0;
 const float crosshairLength = 30.0;
-const float crosshairLengthFourth = crosshairLength/3;
+const float crosshairLengthFrac = crosshairLength/3;
 
 const float wCenterScreen = wScreen/2;
 const float hCenterScreen = hScreen/2;
@@ -56,8 +56,8 @@ class HUD{
                 glColor3f(1.0f, 0.0f, 0.0);
 
                 glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLength);
-                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLengthFourth);
-                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLengthFourth);
+                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLengthFrac);
+                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLengthFrac);
                 glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLength);
 
             glEnd();
@@ -66,8 +66,8 @@ class HUD{
                 glColor3f(1.0f, 0.0f, 0.0);
 
                 glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLength);
-                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLengthFourth);
-                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLengthFourth);
+                glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLengthFrac);
+                glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLengthFrac);
                 glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLength);
 
             glEnd();
@@ -77,8 +77,8 @@ class HUD{
 
                 glVertex2f(wCenterScreen - crosshairLength, hCenterScreen - crosshairThickness);
                 glVertex2f(wCenterScreen - crosshairLength, hCenterScreen + crosshairThickness);
-                glVertex2f(wCenterScreen - crosshairLengthFourth, hCenterScreen + crosshairThickness);
-                glVertex2f(wCenterScreen - crosshairLengthFourth, hCenterScreen - crosshairThickness);
+                glVertex2f(wCenterScreen - crosshairLengthFrac, hCenterScreen + crosshairThickness);
+                glVertex2f(wCenterScreen - crosshairLengthFrac, hCenterScreen - crosshairThickness);
 
             glEnd();
             // left segment
@@ -87,8 +87,8 @@ class HUD{
 
                 glVertex2f(wCenterScreen + crosshairLength, hCenterScreen + crosshairThickness);
                 glVertex2f(wCenterScreen + crosshairLength, hCenterScreen - crosshairThickness);
-                glVertex2f(wCenterScreen + crosshairLengthFourth, hCenterScreen - crosshairThickness);
-                glVertex2f(wCenterScreen + crosshairLengthFourth, hCenterScreen + crosshairThickness);
+                glVertex2f(wCenterScreen + crosshairLengthFrac, hCenterScreen - crosshairThickness);
+                glVertex2f(wCenterScreen + crosshairLengthFrac, hCenterScreen + crosshairThickness);
 
             glEnd();
 
@@ -155,17 +155,17 @@ class HUD{
 
         }
 
-        void drawMiniMap(){
+        void drawMiniMap(float x, float y, float z){
 
             glClearColor(BLACK);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
             glViewport (0, 0, wScreen/8, hScreen/8);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho (-xC,xC, -xC,xC, -zC,zC);
+            glOrtho(-xC,xC, -xC,xC, -zC,zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-            gluLookAt( 0, 10,0, 0,0,0, 0, 0, -1);
+            gluLookAt( x, y + 10, z, x, y, z, 0, 0, -1);
 
         }
 
@@ -180,6 +180,15 @@ class HUD{
                 glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
                 glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
 
+            glEnd();
+
+            glBegin(GL_QUADS);
+                glColor3f(1.0f, 0.0f, 0.0);
+
+                glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
+                glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
+                glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
+                glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
 
             glEnd();
 
@@ -194,6 +203,7 @@ class HUD{
 
         }
 
+        //everything except the minimap
         void drawHUD(){
 
             glMatrixMode(GL_PROJECTION);
