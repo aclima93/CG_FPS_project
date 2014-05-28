@@ -149,7 +149,7 @@ void init(void)
 void drawGrid()
 {
 
-    for(float i = -500; i <= 500; i += 5)
+    for(float i = -100; i <= 100; i += 5)
     {
         glBegin(GL_LINES);
             glColor3ub(150, 190, 150);
@@ -384,11 +384,11 @@ void shootGun(){
         int targetBBIndex = checkTargetCollisions(x, y, z, dx, dy, dz);
 
         if( targetBBIndex != -1){
-            points += targetValues[targetBBIndex];
+            score += targetValues[targetBBIndex];
         }
         else{
             if( checkExtraCollisions(x, y, z, dx, dy, dz) != -1){
-                points += extraValue;
+                score += extraValue;
             }
         }
 
@@ -402,11 +402,11 @@ void updateGameTimer(){
 
     miliseconds += msecCallback;
 
-    if(miliseconds == 999){
+    if(miliseconds > 999){
         miliseconds = 0;
         seconds++;
     }
-    if(seconds == 59){
+    if(seconds > 59){
         seconds = 0;
         minutes++;
     }

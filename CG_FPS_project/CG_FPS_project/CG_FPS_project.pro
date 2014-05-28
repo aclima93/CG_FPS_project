@@ -23,7 +23,8 @@ HEADERS += \
     BoundingBox.hpp \
     Target.hpp \
     HUD.hpp \
-    Sounds.hpp
+    Sounds.hpp \
+    Images.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
@@ -35,15 +36,28 @@ OTHER_FILES += \
     fmodex.dll
 
 
-INCLUDEPATH += C:\\"Program Files (x86)"\\"FMOD SoundSystem"\\"FMOD Programmers API Windows"\api\inc
-INCLUDEPATH += C:\\"Program Files (x86)"\\"FMOD SoundSystem"\\"FMOD Programmers API Windows"\api\lib
 
-LIBS += C:\\"Program Files (x86)"\\"FMOD SoundSystem"\\"FMOD Programmers API Windows"\api\lib\fmodex_vc.lib
+#INCLUDEPATH += C:\\"Program Files (x86)"\\"FMOD SoundSystem"\\"FMOD Programmers API Windows"\api\inc
+#INCLUDEPATH += C:\\"Program Files (x86)"\\"FMOD SoundSystem"\\"FMOD Programmers API Windows"\api\lib
 
-unix|win32: LIBS += -L$$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/api/lib/ -lfmodex_vc
+#LIBS += C:\\"Program Files (x86)"\\"FMOD SoundSystem"\\"FMOD Programmers API Windows"\api\lib\fmodex_vc.lib
 
-INCLUDEPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/api
-DEPENDPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/api
+#unix|win32: LIBS += -L$$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/api/lib/ -lfmodex_vc
 
-INCLUDEPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
-DEPENDPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
+#INCLUDEPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/api
+#DEPENDPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/api
+
+#INCLUDEPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
+#DEPENDPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
+
+
+# DevIL library .lib files
+LIBS += -lDevIL
+LIBS += -lILU
+LIBS += -lILUT
+
+# Path to the DevIL library
+#LIBS += -L"C:/Users/AntónioCarlosLagarto/Desktop/DevIL-SDK-x86-1.7.8/lib"
+
+# Path to header files directory
+#INCLUDEPATH += "C:/Users/AntónioCarlosLagarto/Desktop/DevIL-SDK-x86-1.7.8/include/IL"

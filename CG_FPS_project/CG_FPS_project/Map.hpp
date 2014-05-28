@@ -6,18 +6,20 @@
 #include "Wall.hpp"
 #include "Colors.hpp"
 #include "Textures.hpp"
+#include "Images.hpp"
 
 #define NUMWALLS 11
 #define NUMGROUNDS 2
 
+const float mapWidth = 50; // 5
+const float mapLength = 500; // 10
+const float mapHeight = 25; // 1
+
 class Map{
     public:
 
-        float mapWidth;
-        float mapLength;
-        float mapHeight;
-
-        Textures textures;
+        //Textures textures;
+        Image image;
 
         Wall ground[NUMGROUNDS];
 
@@ -25,11 +27,6 @@ class Map{
 
 
         Map(){
-
-            mapWidth = 50; // 5
-            mapLength = 500; // 10
-            mapHeight = 25; // 1
-
 
             //chão
             ground[0].Init(
@@ -164,29 +161,35 @@ class Map{
                              GLfloat x4, GLfloat y4, GLfloat z4,
                              GLfloat n1, GLfloat n2, GLfloat n3,
                              GLfloat r, GLfloat g, GLfloat b, GLfloat a,
-                             GLuint texture, int repeat
+                             int texIndex, int repeat
                              ){
 
             glEnable(GL_TEXTURE_2D);
-            if(texture)
-                glBindTexture(GL_TEXTURE_2D, texture);
             glPushMatrix();
+
+                if(texIndex > 0){
+                    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);		//Handles how the texture is applied
+                    glBindTexture(GL_TEXTURE_2D, image.texName[texIndex]);
+                }
+
                 glColor4f(r, g, b, a);
                 glBegin(GL_QUADS);
 
                     glNormal3d(n1, n2, n3);
 
-                    if(texture){
-                        glTexCoord2f(0.0f,0.0f);
-                        glTexCoord2f(0.0f,repeat*1.0f);
-                        glTexCoord2f(repeat*1.0f, repeat*1.0f);
-                        glTexCoord2f(0.0f, repeat*1.0f);
+                    if(texIndex > 0){
+                        glTexCoord2f(0.0f, 0.0f);               glVertex3f(x1, y1, z1); // top left
+                        glTexCoord2f(0.0f, repeat*1.0f);        glVertex3f(x2, y2, z2); // bottom left
+                        glTexCoord2f(repeat*1.0f, repeat*1.0f); glVertex3f(x4, y4, z4); // bottom right
+                        glTexCoord2f(repeat*1.0f, 0.0f);        glVertex3f(x3, y3, z3); // top right
+                    }
+                    else{
+                        glVertex3f(x1, y1, z1); // top left
+                        glVertex3f(x2, y2, z2); // bottom left
+                        glVertex3f(x4, y4, z4); // bottom right
+                        glVertex3f(x3, y3, z3); // top right
                     }
 
-                    glVertex3f(x1, y1, z1); // top left
-                    glVertex3f(x2, y2, z2); // bottom left
-                    glVertex3f(x4, y4, z4); // bottom right
-                    glVertex3f(x3, y3, z3); // top right
 
                 glEnd();
             glPopMatrix();
@@ -205,7 +208,7 @@ class Map{
 
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    textures.groundTexture(), 10 // gournd texture
+                    2, 1 // ground texture
                 );
                 desenhaQuadrado(
                     - ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
@@ -215,7 +218,7 @@ class Map{
 
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    textures.groundTexture(), 10 // ground texture
+                    2, 1 // ground texture
                 );
             }
 
@@ -233,7 +236,7 @@ class Map{
 
                         walls[i].normal[0], walls[i].normal[1], walls[i].normal[2],
                         walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
-                        0, 0 // no texture
+                        -1, 0 // no texture
                     );
                     desenhaQuadrado(
 
@@ -244,7 +247,7 @@ class Map{
 
                         walls[i].normal[0], walls[i].normal[1], walls[i].normal[2],
                         walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
-                        0, 0 // no texture
+                        -1, 0 // no texture
                     );
 
             }

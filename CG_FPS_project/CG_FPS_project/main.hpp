@@ -25,6 +25,7 @@
 #include "Target.hpp"
 #include "HUD.hpp"
 #include "Sounds.hpp"
+#include "Images.hpp"
 
 //debug
 #define DEBUG 1
@@ -38,7 +39,7 @@ Map map;
 
 float xStart = 0;
 float yStart = 0;
-float zStart = map.mapHeight/2;
+float zStart = mapHeight/2;
 
 int mainMenu;
 bool isMenuActive = false;

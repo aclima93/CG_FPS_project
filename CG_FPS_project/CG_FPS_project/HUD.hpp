@@ -26,11 +26,14 @@ const float hCenterScreen = hScreen/2;
 char targetsInfoText[100];
 char timerInfoText[100];
 char bulletInfoText[100];
+char extrasInfoText[100];
+char scoreInfoText[100];
+char clipsInfoText[100];
 
 int numTargetsHit = 0;
 int numExtrasHit = 0;
 
-int points = 0;
+int score = 0;
 int targetValues[6] = { 500, 350, 50, 50, 50, 50}; // head, torso, arms and legs
 int extraValue = 750;
 
@@ -123,8 +126,8 @@ class HUD{
             desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
 
             glColor3f(0,0,0);
-            sprintf(targetsInfoText,"%d/%d", numExtrasHit, NUMEXTRAS);
-            desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2 + 10.0, 0);
+            sprintf(extrasInfoText,"%d/%d", numExtrasHit, NUMEXTRAS);
+            desenhaTexto(extrasInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2 + 10.0, 0);
 
 
         }
@@ -147,8 +150,8 @@ class HUD{
             desenhaTexto(bulletInfoText, widthHUDBlock/4, heightHUDBlock/2-10, 0);
 
             glColor3f(0,0,0);
-            sprintf(bulletInfoText,"%d bullets left", bulletsLeft);
-            desenhaTexto(bulletInfoText, widthHUDBlock/4, heightHUDBlock/2+10, 0);
+            sprintf(clipsInfoText,"%d bullets left", bulletsLeft);
+            desenhaTexto(clipsInfoText, widthHUDBlock/4, heightHUDBlock/2+10, 0);
 
         }
 
@@ -181,12 +184,12 @@ class HUD{
             glEnd();
 
             glColor3f(0,0,0);
-            sprintf(timerInfoText,"Points: %d", points);
+            sprintf(timerInfoText,"Score: %d", score);
             desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 -10 ,0);
 
             glColor3f(0,0,0);
-            sprintf(timerInfoText,"%d:%d:%d", minutes, seconds, miliseconds);
-            desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 +10 ,0);
+            sprintf(scoreInfoText,"%d:%d:%d", minutes, seconds, miliseconds);
+            desenhaTexto(scoreInfoText, wCenterScreen, heightHUDBlock/3 +10 ,0);
 
 
         }
