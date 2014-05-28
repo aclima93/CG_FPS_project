@@ -298,6 +298,9 @@ void reloadGun(){
             bulletsInGun += bulletsLeft;
             bulletsLeft = 0;
         }
+
+        sounds.playReloadSound(loadingReq);
+
     }
 }
 
