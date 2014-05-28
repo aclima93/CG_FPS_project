@@ -392,8 +392,7 @@ void shootGun(){
             }
         }
 
-        //sounds.playGunFiringSound();
-        //sounds.function();
+        sounds.playGunFiringSound();
 
     }
 }
@@ -404,10 +403,10 @@ void updateGameTimer(){
 
     if(miliseconds > 999){
         miliseconds = 0;
-        seconds++;
+        secs++;
     }
-    if(seconds > 59){
-        seconds = 0;
+    if(secs > 59){
+        secs = 0;
         minutes++;
     }
 

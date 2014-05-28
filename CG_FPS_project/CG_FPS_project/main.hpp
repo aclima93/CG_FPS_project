@@ -19,7 +19,6 @@
 #include "materiais.hpp"
 #include "Camera.hpp"
 #include "Bullet.hpp"
-#include "Textures.hpp"
 #include "Map.hpp"
 #include "Colors.hpp"
 #include "Target.hpp"
@@ -35,7 +34,7 @@ Bullet bullets[NUMBULLETS];
 Camera g_camera;
 HUD hud;
 Map map;
-//Sounds sounds;
+Sounds sounds;
 
 float xStart = 0;
 float yStart = 0;
@@ -44,7 +43,7 @@ float zStart = mapHeight/2;
 int mainMenu;
 bool isMenuActive = false;
 int numGameModes = 5;
-char* gameModes[] = { "Time Attack", "No Bullet Left Behind", "Zen", "Highscores", "Quit Game" };
+const char* gameModes[] = { "Time Attack", "No Bullet Left Behind", "Zen", "Highscores", "Quit Game" };
 
 std::vector<Target> targets(NUMTARGETS); //Target targets[NUMTARGETS];
 std::vector<Target> extras(NUMEXTRAS); //Target extras[NUMEXTRAS];

@@ -5,7 +5,6 @@
 
 #include "Wall.hpp"
 #include "Colors.hpp"
-#include "Textures.hpp"
 #include "Images.hpp"
 
 #define NUMWALLS 11
@@ -168,7 +167,7 @@ class Map{
             glPushMatrix();
 
                 if(texIndex > 0){
-                    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);		//Handles how the texture is applied
+                    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);		//Handles how the texture is applied
                     glBindTexture(GL_TEXTURE_2D, image.texName[texIndex]);
                 }
 

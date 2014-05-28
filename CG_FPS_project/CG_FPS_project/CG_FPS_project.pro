@@ -4,18 +4,13 @@ CONFIG -= app_bundle
 QT += opengl
 LIBS += -lfreeglut
 
-SOURCES += main.cpp \
-    RgbImage.cpp
+SOURCES += main.cpp
 
 HEADERS += \
     materiais.hpp \
-    RgbImage.h \
     Camera.hpp \
     Bullet.hpp \
     main.hpp \
-    Textures.hpp \
-    main.cpp.autosave \
-    main.hpp.autosave \
     Map.hpp \
     Map.hpp.autosave \
     Wall.hpp \
@@ -32,8 +27,7 @@ OTHER_FILES += \
     models_textures/textures/ground_tex.bmp \
     models_textures/textures/grass_tex.jpg \
     models_textures/textures/ground_tex.jpg \
-    NOTA_SOBRE_FICHEIROS.txt \
-    fmodex.dll
+    NOTA_SOBRE_FICHEIROS.txt
 
 
 
@@ -50,6 +44,19 @@ OTHER_FILES += \
 #INCLUDEPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
 #DEPENDPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
 
+# FMOD library .libfiles
+LIBS += -lfmodex_vc
+LIBS += -lfmodexL_vc
+
+# SFML library .libfiles
+LIBS += -lsfml-audio
+LIBS += -lsfml-audio-d
+LIBS += -lsfml-audio-s
+LIBS += -lsfml-audio-s-d
+#LIBS += -lopenall32
+#LIBS += -lsfml-audio-2
+#LIBS += -lsfml-audio-2-d
+#LIBS += -llibsndfile-1
 
 # DevIL library .lib files
 LIBS += -lDevIL

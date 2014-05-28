@@ -8,7 +8,7 @@ GLint wScreen=1366, hScreen=800;
 GLfloat xC=16.0, zC=15.0; // Sistema Coordenadas
 
 int minutes = 0;
-int seconds = 0;
+int secs = 0;
 int miliseconds = 0;
 
 const int msecCallback = 10;
@@ -188,7 +188,7 @@ class HUD{
             desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 -10 ,0);
 
             glColor3f(0,0,0);
-            sprintf(scoreInfoText,"%d:%d:%d", minutes, seconds, miliseconds);
+            sprintf(scoreInfoText,"%d:%d:%d", minutes, secs, miliseconds);
             desenhaTexto(scoreInfoText, wCenterScreen, heightHUDBlock/3 +10 ,0);
 
 

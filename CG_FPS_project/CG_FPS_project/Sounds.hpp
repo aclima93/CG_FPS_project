@@ -9,26 +9,30 @@
 #include <conio.h>
 #include <math.h>
 
-/*
-#include "fmod.h"
-#include "fmod.hpp"
-#include "fmod_codec.h"
-#include "fmod_dsp.h"
-#include "fmod_errors.h"
-#include "fmod_memoryinfo.h"
-#include "fmod_output.h"
+
+#include <FMOD/fmod.h>
+#include <FMOD/fmod.hpp>
+#include <FMOD/fmod_codec.h>
+#include <FMOD/fmod_dsp.h>
+#include <FMOD/fmod_errors.h>
+#include <FMOD/fmod_memoryinfo.h>
+#include <FMOD/fmod_output.h>
+
+#include <SFML/Audio.hpp>
 
 using namespace std;
 using namespace FMOD;
+using namespace sf;
 
-const char* SOUND_SHELL_FALLING = "sounds/Shells_falls-Marcel-829263474.mp3";
-const char* SONG_BACKGROUND = "sounds/Robbie Williams - Let Me Entertain You.mp3";
+#define SOUND_SHELL_FALLING "sounds/Shells_falls-Marcel-829263474.wav"
+#define SONG_BACKGROUND "sounds/Robbie Williams - Let Me Entertain You.wav"
 
 
 class Sounds{
 
 
-    private:
+    public:
+    /*
         System *fmodSystem;	// the global variable for talking to FMOD
         Sound *music, *actionSound;
         Channel *musicChannel;
@@ -101,9 +105,65 @@ class Sounds{
             playSound( );
         }
 
+        */
+
+    void playSound()
+    {
+        // Load a sound buffer from a wav file
+        sf::SoundBuffer buffer;
+        if (!buffer.loadFromFile(SOUND_SHELL_FALLING)){
+            cout << "fail sound...\n";
+            return;
+        }
+
+        // Create a sound instance and play it
+        sf::Sound sound(buffer);
+        sound.play();
+
+
+        // Loop while the sound is playing
+        while (sound.getStatus() == sf::Sound::Playing)
+        {
+            // Leave some CPU time for other processes
+            //sf::sleep(sf::milliseconds(100));
+
+        }
+
+    }
+
+
+    void playMusic()
+    {
+        // Load an ogg music file
+        sf::Music music;
+        if (!music.openFromFile(SONG_BACKGROUND)){
+            cout << "fail song...\n";
+            return;
+        }
+
+        // Play it
+        //music.play();
+
+
+        // Loop while the music is playing
+        while (music.getStatus() == sf::Music::Playing)
+        {
+            // Leave some CPU time for other processes
+            //sf::sleep(sf::milliseconds(100));
+
+        }
+
+    }
+
+
+
+        void playGunFiringSound(){
+            playSound();
+            playMusic();
+        }
+
 
 };
 
-*/
 
 #endif
