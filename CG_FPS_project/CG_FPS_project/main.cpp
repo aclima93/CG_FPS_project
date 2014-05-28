@@ -288,8 +288,7 @@ void reloadGun(){
 
     if(bulletsLeft){
 
-        //int loadingReq = CLIPSIZE - bulletsInGun;
-        int loadingReq = 1;
+        int loadingReq = 1; //int loadingReq = CLIPSIZE - bulletsInGun;
 
         if(bulletsLeft >= loadingReq){
             bulletsInGun += loadingReq;

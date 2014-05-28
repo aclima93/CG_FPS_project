@@ -48,17 +48,6 @@ class Wall{
 
         }
 
-        ~Wall(){
-            /*
-            delete [] topLeft;
-            delete [] topRight;
-            delete [] bottomLeft;
-            delete [] bottomRight;
-            delete [] normal;
-            delete [] color;
-            */
-        }
-
 };
 
 #endif

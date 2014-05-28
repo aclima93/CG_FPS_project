@@ -10,6 +10,9 @@
 #include <cstdlib>
 #include <ctime>
 
+//debug
+#define DEBUG 1
+
 #include <GL/freeglut.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -25,9 +28,6 @@
 #include "HUD.hpp"
 #include "Sounds.hpp"
 #include "Images.hpp"
-
-//debug
-#define DEBUG 1
 
 // our defined elements
 Bullet bullets[NUMBULLETS];
