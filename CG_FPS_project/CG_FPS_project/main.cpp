@@ -288,7 +288,8 @@ void reloadGun(){
 
     if(bulletsLeft){
 
-        int loadingReq = CLIPSIZE - bulletsInGun;
+        //int loadingReq = CLIPSIZE - bulletsInGun;
+        int loadingReq = 1;
 
         if(bulletsLeft >= loadingReq){
             bulletsInGun += loadingReq;
@@ -299,7 +300,7 @@ void reloadGun(){
             bulletsLeft = 0;
         }
 
-        sounds.playReloadSound(loadingReq);
+        sounds.playReloadSound();
 
     }
 }

@@ -79,11 +79,8 @@ class Sounds{
             playSound(0); //shell falls
         }
 
-        void playReloadSound( int num){
-            for(int i=0; i<num; i++){
-                playSound(4);
-                usleep( 500000 ); // 500000 microseconds
-            }
+        void playReloadSound(){
+            playSound(4);
             playSound(6);
         }
 
