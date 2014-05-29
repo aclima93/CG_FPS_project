@@ -70,7 +70,7 @@ void createTargets(){
         pos = rand()%aux2.size(); // randomly selects one of the available
 
         posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1]+10;  posBB2[0][2] = aux2[pos][2];  // head
-        sizesBB2[0][0] = 0.1f;   sizesBB2[0][1] = 0.2f;  sizesBB2[0][2] = 0.3f;  // head
+        sizesBB2[0][0] = 2.0f;   sizesBB2[0][1] = 2.0f;  sizesBB2[0][2] = 2.0f;  // head
 
         extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2);
         aux2.erase( aux2.begin()+ pos );
@@ -184,8 +184,28 @@ void drawBullets(){
     }
 }
 
-void drawScene()
-{
+void drawFog(){
+
+    GLfloat fogColor[] = {0.5f, 0.5f, 0.5f, 1};
+    //GLfloat distanceFromOrigin = sqrt( xCamera*xCamera + yCamera*yCamera + zCamera*zCamera );
+    glEnable(GL_FOG);
+    glFogfv(GL_FOG_COLOR, fogColor);
+
+    glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogf(GL_FOG_START, 15.0f);
+    glFogf(GL_FOG_END, 40.0f);
+    glHint (GL_FOG_HINT, GL_FASTEST);
+
+    /*
+    glFogi(GL_FOG_MODE, GL_EXP2);
+    glFogf(GL_FOG_DENSITY, 0.05f);
+    glHint (GL_FOG_HINT, GL_FASTEST);
+    */
+
+}
+
+void drawScene(){
+
 
     //grelha no chão
     drawGrid();
@@ -198,10 +218,12 @@ void drawScene()
     //glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
     //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
 
+    drawFog();
+
     map.drawMap();
     drawTargets();
 
-    camera.Refresh();
+    camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
     drawBullets();
 
 }

@@ -23,6 +23,8 @@ const float crosshairLengthFrac = crosshairLength/3;
 const float wCenterScreen = wScreen/2;
 const float hCenterScreen = hScreen/2;
 
+float minimapViewHeight = 10;
+
 char targetsInfoText[100];
 char timerInfoText[100];
 char bulletInfoText[100];
@@ -165,7 +167,7 @@ class HUD{
             glOrtho(-xC,xC, -xC,xC, -zC,zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-            gluLookAt( x, y + 10, z, x, y, z, 0, 0, -1);
+            gluLookAt( x, minimapViewHeight, z, x, y, z, 0, 0, -1);
 
         }
 

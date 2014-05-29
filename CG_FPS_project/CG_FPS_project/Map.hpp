@@ -185,8 +185,6 @@ class Map{
 
                     if(texIndex != -1){
 
-                        std::cout << "a meter a textura!\n";
-
                         glTexCoord2f(0.0f, 0.0f);               glVertex3f(x1, y1, z1); // top left
                         glTexCoord2f(0.0f, repeat*1.0f);        glVertex3f(x2, y2, z2); // bottom left
                         glTexCoord2f(repeat*1.0f, repeat*1.0f); glVertex3f(x4, y4, z4); // bottom right
