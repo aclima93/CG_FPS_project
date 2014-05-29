@@ -149,7 +149,7 @@ void init(void)
 void drawGrid()
 {
 
-    for(float i = -100; i <= 100; i += 5)
+    for(float i = -300; i <= 300; i += 5)
     {
         glBegin(GL_LINES);
             glColor3ub(150, 190, 150);
@@ -161,7 +161,7 @@ void drawGrid()
     }
 
     //============================================Eixos
-    glColor4f(WHITE);
+    glColor4f(AZUL);
     glBegin(GL_LINES);
         glVertex3i(0,0,-xC);
         glVertex3i(0,0, xC);
@@ -186,14 +186,17 @@ void drawBullets(){
 
 void drawFog(){
 
+    /*
+
     GLfloat fogColor[] = {0.5f, 0.5f, 0.5f, 1};
     //GLfloat distanceFromOrigin = sqrt( xCamera*xCamera + yCamera*yCamera + zCamera*zCamera );
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, fogColor);
 
     glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, 15.0f);
-    glFogf(GL_FOG_END, 40.0f);
+    glFogi(xCamera, yCamera);//GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);        // Set Fog Based On Vertice Coordinates
+    glFogf(GL_FOG_START, 0.0f);
+    glFogf(GL_FOG_END, 30.0f);
     glHint (GL_FOG_HINT, GL_FASTEST);
 
     /*
@@ -201,6 +204,7 @@ void drawFog(){
     glFogf(GL_FOG_DENSITY, 0.05f);
     glHint (GL_FOG_HINT, GL_FASTEST);
     */
+
 
 }
 

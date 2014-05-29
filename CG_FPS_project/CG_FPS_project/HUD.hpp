@@ -5,8 +5,7 @@
 #include <math.h>
 
 GLint wScreen=1366, hScreen=800;
-GLfloat xC=16.0, zC=15.0; // Sistema Coordenadas
-
+GLfloat xC=50.0, yC=50.0, zC=50.0; // Sistema Coordenadas
 int minutes = 0;
 int secs = 0;
 int miliseconds = 0;
@@ -23,7 +22,7 @@ const float crosshairLengthFrac = crosshairLength/3;
 const float wCenterScreen = wScreen/2;
 const float hCenterScreen = hScreen/2;
 
-float minimapViewHeight = 10;
+float minimapViewHeight = 20;
 
 char targetsInfoText[100];
 char timerInfoText[100];
@@ -164,10 +163,11 @@ class HUD{
             glViewport (0, 0, wScreen/8, hScreen/8);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(-xC,xC, -xC,xC, -zC,zC);
+            glOrtho(-xC, xC, -yC, yC, zC, -zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-            gluLookAt( x, minimapViewHeight, z, x, y, z, 0, 0, -1);
+                      //onde está           para onde está a olhar     vector up
+            gluLookAt( x, minimapViewHeight, z,          x, 0, z,                   0, 0, -1);
 
         }
 
