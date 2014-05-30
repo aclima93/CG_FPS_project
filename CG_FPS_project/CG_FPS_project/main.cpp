@@ -2,144 +2,13 @@
 #include "main.hpp"
 
 
-void drawExtras(){
-    for(unsigned int i=0; i<extras.size(); i++){
-        extras[i].drawTarget();
-        extras[i].drawBoundingBoxes();
-    }
-}
-
-void drawTargets(){
-    for(unsigned int i=0; i<targets.size(); i++){
-        targets[i].drawTarget();
-        targets[i].drawBoundingBoxes();
-    }
-}
-
-void createTargetsAndExtras(){
-
-    for(int i=0; i<NUMPOSSIBLE; i++){
-        possiblePositions[i][0] = 0;
-        possiblePositions[i][1] = 5;
-        possiblePositions[i][2] = -i*10 ;
-
-        possibleExtraPositions[i][0] = 0;
-        possibleExtraPositions[i][1] = 20;
-        possibleExtraPositions[i][2] = -i*10;
-    }
-
-    std::vector< std::vector<float> > aux = possiblePositions;
-    std::vector< std::vector<float> > aux2 = possibleExtraPositions;
-
-    int pos;
-    int numBB = NUMBOUNDINGBOXES;
-    float posBB[numBB][3];
-    float sizesBB[numBB][3];
-
-    int numBB2 = 1;
-    float posBB2[numBB2][3];
-    float sizesBB2[numBB2][3];
-
-    float w = 10.0f;
-    float h = 10.0f;
-    float l = 10.0f;
+#include "ModelsTargetsExtras.hpp"
+#include "Events.hpp"
+#include "Physics.hpp"
+#include "Lights.hpp"
 
 
-    for(unsigned int i=0; i<targets.size(); i++){
 
-        srand(time(NULL));
-        pos = rand()%aux.size(); // randomly selects one of the available
-
-        posBB[0][0] = aux[pos][0];      posBB[0][1] = aux[pos][1] +2;   posBB[0][2] = aux[pos][2];  // head
-        posBB[1][0] = aux[pos][0];      posBB[1][1] = aux[pos][1];      posBB[1][2] = aux[pos][2];  // torso
-        posBB[2][0] = aux[pos][0] +2;   posBB[2][1] = aux[pos][1];      posBB[2][2] = aux[pos][2];  // right arm
-        posBB[3][0] = aux[pos][0] -2;   posBB[3][1] = aux[pos][1];      posBB[3][2] = aux[pos][2];  // left arm
-        posBB[4][0] = aux[pos][0] +1;   posBB[4][1] = aux[pos][1] -2;   posBB[4][2] = aux[pos][2];  // right leg
-        posBB[5][0] = aux[pos][0] -1;   posBB[5][1] = aux[pos][1] -2;   posBB[5][2] = aux[pos][2];  // left leg
-
-
-        sizesBB[0][0] = 2.0f;   sizesBB[0][1] = 2.0f;  sizesBB[0][2] = 2.0f;  // head
-        sizesBB[1][0] = 2.0f;   sizesBB[1][1] = 2.0f;  sizesBB[1][2] = 2.0f;  // torso
-        sizesBB[2][0] = 2.0f;   sizesBB[2][1] = 2.0f;  sizesBB[2][2] = 2.0f;  // right arm
-        sizesBB[3][0] = 2.0f;   sizesBB[3][1] = 2.0f;  sizesBB[3][2] = 2.0f;  // left arm
-        sizesBB[4][0] = 2.0f;   sizesBB[4][1] = 2.0f;  sizesBB[4][2] = 2.0f;  // right leg
-        sizesBB[5][0] = 2.0f;   sizesBB[5][1] = 2.0f;  sizesBB[5][2] = 2.0f;  // left leg
-
-
-        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB);
-        aux.erase( aux.begin()+ pos );
-
-    }
-
-    for(unsigned int i=0; i<extras.size(); i++){
-
-        srand(time(NULL));
-        pos = rand()%aux2.size(); // randomly selects one of the available
-
-        posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1];  posBB2[0][2] = aux2[pos][2];  // head
-        sizesBB2[0][0] = 2.0f;   sizesBB2[0][1] = 2.0f;  sizesBB2[0][2] = 2.0f;  // head
-
-        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2);
-        aux2.erase( aux2.begin()+ pos );
-    }
-
-}
-
-void createModels(){
-    for(int i=0; i<NUMMODELS; i++){
-        models[i].Init( "Test\\test.obj", "Test\\grass_tex.bmp", -5, 0, -i-5 );
-    }
-}
-
-void drawModels(){
-    for(int i=0; i<NUMMODELS; i++){
-        models[i].drawModel();
-    }
-}
-
-
-//……………………………………………………………………………………………………………………………………………………… Iluminacao
-void initLights(void){
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glEnable(GL_CULL_FACE);
-
-
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
-    //Iluminacao global
-    if( dayTime){
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
-    }
-    if( nightTime){
-
-        for(int i=0; i<numLights; i++){
-
-            glEnable(GL_LIGHT0+i);
-
-            glLightfv(GL_LIGHT0+i, GL_AMBIENT, light_ambient[i]);
-            glLightfv(GL_LIGHT0+i, GL_DIFFUSE, light_diffuse[i]);
-            glLightfv(GL_LIGHT0+i, GL_SPECULAR, light_specular[i]);
-            glLightfv(GL_LIGHT0+i, GL_POSITION, localPos[i]);
-        }
-
-    }
-
-
-    /*
-    //Iluminacao local
-    glLightfv(GL_LIGHT0, GL_POSITION, localPos);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
-    glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
-    glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION, localAttLin);
-    glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
-    */
-
-
-}
 
 void init(void)
 {
@@ -215,58 +84,6 @@ void drawBullets(){
     }
 }
 
-void drawFog(){
-
-    /*
-
-    GLfloat fogColor[] = {0.5f, 0.5f, 0.5f, 1};
-    //GLfloat distanceFromOrigin = sqrt( xCamera*xCamera + yCamera*yCamera + zCamera*zCamera );
-    glEnable(GL_FOG);
-    glFogfv(GL_FOG_COLOR, fogColor);
-
-    glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogi(xCamera, yCamera);//GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);        // Set Fog Based On Vertice Coordinates
-    glFogf(GL_FOG_START, 0.0f);
-    glFogf(GL_FOG_END, 30.0f);
-    glHint (GL_FOG_HINT, GL_FASTEST);
-
-
-    //glFogi(GL_FOG_MODE, GL_EXP2);
-    //glFogf(GL_FOG_DENSITY, 0.05f);
-    //glHint (GL_FOG_HINT, GL_FASTEST);
-    */
-
-
-}
-
-void draw_esfera1( )
-{
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat1);
-    glPushMatrix();
-        glTranslatef(0, 2, 0);
-        glutSolidSphere(raioEsf, 250, 250);
-    glPopMatrix();
-}
-
-void draw_esfera2( )
-{
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat2);
-    glPushMatrix();
-        glTranslatef(-raioEsf, 2, -raioEsf);
-        glutSolidSphere(raioEsf, 250, 250);
-    glPopMatrix();
-}
-
-void draw_local_lights( ){
-
-    for(int i=0; i<numLights; i++){
-        glPushMatrix();
-            glColor3f( localCor[0], localCor[1], localCor[2] );
-            glTranslatef( localPos[i][0], localPos[i][1], localPos[i][2] );
-            glutSolidSphere( raioEsf, 5, 5 );
-        glPopMatrix();
-    }
-}
 
 void drawScene(){
 
@@ -308,26 +125,6 @@ GLvoid resize(GLsizei width, GLsizei height){
 }
 
 
-void drawOrientacao(){
-
-    // quadrado na posição da cãmara
-
-    glPushMatrix();
-        glColor4f(VERMELHO);
-        glTranslatef( xCamera, yCamera+3, zCamera);
-        glutSolidCube(1);
-    glPopMatrix();
-
-    if(nightTime){
-        //  Direccao do FOCO=lanterna
-        float dx, dy, dz;
-        camera.GetDirectionVector(dx, dy, dz);
-        GLfloat spotDirection[] = {dx, dy, dz};
-        glEnable(GL_LIGHT0+numLights);
-        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection);/*Definir direccao do foco*/
-    }
-
-}
 
 
 void display(void){
@@ -337,7 +134,7 @@ void display(void){
     hud.drawMiniMap(xCamera, yCamera, zCamera);
 
     drawScene(); //--------------------- desenha objectos no viewport1
-    drawOrientacao();
+    drawFlashlightLight();
 
 
     //================================================================= Viewport2 (game)
@@ -352,7 +149,7 @@ void display(void){
     glutWarpPointer(wCenterScreen, hCenterScreen);
 
     drawScene();//--------------------- desenha objectos no viewport2
-    drawOrientacao();
+    drawFlashlightLight();
 
     //================================================================= Viewport3 (HUD)
     hud.drawHUD();
@@ -364,135 +161,6 @@ void display(void){
 }
 
 
-// =========================================== Physics
-
-void updateBullets(){
-
-    for(int i=0; i<NUMBULLETS; i++){
-        bullets[i].updatePosition();
-    }
-}
-
-
-void reloadGun(){
-
-    if( bulletsLeft && bulletsInGun < 5 ){
-
-        int loadingReq = 1; //int loadingReq = CLIPSIZE - bulletsInGun;
-
-        if(bulletsLeft >= loadingReq){
-            bulletsInGun += loadingReq;
-            bulletsLeft -= loadingReq;
-        }
-        else{
-            bulletsInGun += bulletsLeft;
-            bulletsLeft = 0;
-        }
-
-        sounds.playReloadSound();
-
-    }
-    else{
-        //play sound of loaded gun
-        sounds.playCannotReloadSound();
-    }
-}
-
-int checkTargetCollisions(float x, float y, float z, float dx, float dy, float dz){
-
-    for(int i=0; i<(int)targets.size(); i++){
-
-        //if there's a collision inside this target's outer bounding box check the ones inside
-        if( targets[i].checkCollision(x, y, z, dx, dy, dz) != -1 ){
-
-            std::cout << " Acertei na OUTER BB do alvo " << i << "\n";
-
-            int jMax = targets[i].numBoundingBoxes;
-            float distance;
-
-            for(int j=0; j<jMax; j++){
-
-                distance = targets[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
-
-                if( distance != -1 ){
-                    std::cout << " Acertei na BB " << j << " do alvo " << i << "\n";
-                    numTargetsHit++;
-                    targets.erase( targets.begin()+ i ); // remove this target
-                    bullets[bulletIndex].isActive = false;
-                    return j; // stop the bullet in mid-flight
-
-                }
-
-            }
-
-        }
-    }
-
-    return -1;
-
-}
-
-int checkExtraCollisions(float x, float y, float z, float dx, float dy, float dz){
-
-    for(int i=0; i<(int)extras.size(); i++){
-
-        //if there's a collision inside this target's outer bounding box check the ones inside
-        if( extras[i].checkCollision(x, y, z, dx, dy, dz) != -1 ){
-
-            std::cout << " Acertei na OUTER BB do extra " << i << "\n";
-
-            int jMax = extras[i].numBoundingBoxes;
-            float distance;
-
-            for(int j=0; j<jMax; j++){
-
-               distance = extras[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
-
-               if( distance != -1 ){
-                   std::cout << " Acertei na BB " << j << " do extra " << i << "\n";
-                   numExtrasHit++;
-                   extras.erase( extras.begin()+ i ); // remove this target
-                   return 1; // stop the bullet in mid-flight
-
-               }
-
-            }
-        }
-    }
-
-    return -1;
-}
-
-void shootGun(){
-
-    if(bulletsInGun){
-
-        bulletsInGun--;
-
-        float x, y, z;
-        float dx, dy, dz;
-        camera.GetDirectionVector(dx, dy, dz); // bullet direction
-        camera.GetPos(x, y, z); // initial position
-
-        bullets[bulletIndex].Init(x, y, z, dx, dy, dz, bulletSpeed, 0, 0, 0, true);
-
-        bulletIndex++;
-
-        int targetBBIndex = checkTargetCollisions(x, y, z, dx, dy, dz);
-
-        if( targetBBIndex != -1){
-            score += targetValues[targetBBIndex];
-        }
-        else{
-            if( checkExtraCollisions(x, y, z, dx, dy, dz) != -1){
-                score += extraValue;
-            }
-        }
-
-        sounds.playGunFiringSound();
-
-    }
-}
 
 void updateGameTimer(){
 

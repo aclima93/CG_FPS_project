@@ -219,7 +219,6 @@ class HUD{
             glDisable(GL_CULL_FACE);
             glClear(GL_DEPTH_BUFFER_BIT);
 
-
             drawGunInfo();
             drawTimeInfo();
             drawTargetsInfo();

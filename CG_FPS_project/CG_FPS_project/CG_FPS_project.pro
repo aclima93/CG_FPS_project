@@ -22,7 +22,11 @@ HEADERS += \
     Sounds.hpp \
     Images.hpp \
     RgbImage.h \
-    Model.hpp
+    Model.hpp \
+    Events.hpp \
+    Lights.hpp \
+    ModelsTargetsExtras.hpp \
+    Physics.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
