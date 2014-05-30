@@ -40,7 +40,7 @@ class Map{
                 -mapWidth/2, 0, 0,   // B
                  0, 0, -mapLength,               // C
                  0, 0, 0,               // D
-                 1, 0, 0,                           // normal
+                 0, 1, 0,                           // normal
                  VERDE                          // r g b a
             );
             ground[1].Init(
@@ -48,7 +48,7 @@ class Map{
                 -mapWidth, 0, -mapLength*(firstGlassStart),   // B
                 -mapWidth/2, 0, -mapLength*(secondGlassEnd),               // C
                 -mapWidth/2, 0, -mapLength*(firstGlassStart),               // D
-                 1, 0, 0,                           // normal
+                 0, 1, 0,                           // normal
                  VERDE                          // r g b a
             );
 
@@ -107,7 +107,7 @@ class Map{
                 -mapWidth*(0.75f), mapHeight, -mapLength*(secondGlassStart),      // B
                 -mapWidth*(0.75f), 0, -mapLength*(firstGlassEnd),                // C
                 -mapWidth*(0.75f), 0, -mapLength*(secondGlassStart),                // D
-                 1, 0, 0,                                                      // normal
+                 -1, 0, 0,                                                      // normal
                  WHITE                                                         // r g b a
             );
             walls[6].Init(
@@ -128,7 +128,7 @@ class Map{
                 -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),    // B
                 -mapWidth, 0, -mapLength*(firstGlassStart),                // C
                 -mapWidth/2, 0, -mapLength*(firstGlassStart),              // D
-                 1, 0, 0,                                              // normal
+                 0, 0, -1,                                              // normal
                  WHITE                                                  // r g b a
             );
             walls[8].Init(
@@ -137,7 +137,7 @@ class Map{
                 -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),              // B
                 -mapWidth*(0.75f), 0, -mapLength*(firstGlassEnd),                  // C
                 -mapWidth/2, 0, -mapLength*(firstGlassEnd),                        // D
-                 1, 0, 0,                                                        // normal
+                 0, 0, 1,                                                        // normal
                  WHITE                                                         // r g b a
             );
             walls[9].Init(
@@ -146,7 +146,7 @@ class Map{
                 -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),              // B
                 -mapWidth*(0.75f), 0, -mapLength*(secondGlassStart),                  // C
                 -mapWidth/2, 0, -mapLength*(secondGlassStart),                        // D
-                 1, 0, 0,                                                        // normal
+                 0, 0, -1,                                                        // normal
                  WHITE                                                         // r g b a
             );
             walls[10].Init(
@@ -155,7 +155,7 @@ class Map{
                 -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),    // B
                 -mapWidth, 0, -mapLength*(secondGlassEnd),                // C
                 -mapWidth/2, 0, -mapLength*(secondGlassEnd),              // D
-                 1, 0, 0,                                              // normal
+                 0, 0, 1,                                              // normal
                  WHITE                                                  // r g b a
             );
 
@@ -252,7 +252,7 @@ class Map{
                         - walls[i].topRight[0], walls[i].topRight[1], walls[i].topRight[2],
                         - walls[i].bottomRight[0], walls[i].bottomRight[1], walls[i].bottomRight[2],
 
-                        walls[i].normal[0], walls[i].normal[1], walls[i].normal[2],
+                        -walls[i].normal[0], -walls[i].normal[1], -walls[i].normal[2],
                         walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
                         -1, 0 // no texture
                     );

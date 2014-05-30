@@ -169,6 +169,8 @@ class HUD{
                       //onde está           para onde está a olhar     vector up
             gluLookAt( x, minimapViewHeight, z,          x, 0, z,                   0, 0, -1);
 
+            if(y){}
+
         }
 
         void drawTimeInfo(){
@@ -213,10 +215,8 @@ class HUD{
             glLoadIdentity();
             glOrtho(0.0, wScreen, hScreen, 0.0, -1.0, 10.0);
             glMatrixMode(GL_MODELVIEW);
-            //glPushMatrix();        ----Not sure if I need this
             glLoadIdentity();
             glDisable(GL_CULL_FACE);
-
             glClear(GL_DEPTH_BUFFER_BIT);
 
 
@@ -229,7 +229,6 @@ class HUD{
             glMatrixMode(GL_PROJECTION);
             glPopMatrix();
             glMatrixMode(GL_MODELVIEW);
-            //glPopMatrix();        ----and this?
 
 
         }

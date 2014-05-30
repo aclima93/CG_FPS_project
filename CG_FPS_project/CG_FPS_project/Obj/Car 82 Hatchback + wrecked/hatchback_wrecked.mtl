@@ -1,0 +1,32 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl 4carz1024.tga.002
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.480000 0.480000 0.480000
+Ks 0.900000 0.900000 0.900000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Da Vinci\Desktop\compressed files\compressed files\Car 82 Hatchback + wrecked\Car 82 Hatchback + wrecked\4carz1024.tga
+
+newmtl 4carz1024.tga.002_NONE
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.480000 0.480000 0.480000
+Ks 0.900000 0.900000 0.900000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\Da Vinci\\Desktop\\compressed files\\compressed files\\Car 82 Hatchback + wrecked\\Car 82 Hatchback + wrecked\\4carz1024.tga
+
+newmtl 4carz1024_glass.tga.002
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.480000 0.480000 0.480000
+Ks 0.900000 0.900000 0.900000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\Da Vinci\Desktop\compressed files\compressed files\Car 82 Hatchback + wrecked\Car 82 Hatchback + wrecked\4carz1024_glass.tga

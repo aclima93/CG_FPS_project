@@ -84,6 +84,10 @@ class Sounds{
             playSound(6);
         }
 
+        void playCannotReloadSound(){
+            playSound(4);
+        }
+
 
 };
 

@@ -4,7 +4,8 @@ CONFIG -= app_bundle
 QT += opengl
 LIBS += -lfreeglut
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    RgbImage.cpp
 
 HEADERS += \
     materiais.hpp \
@@ -19,7 +20,9 @@ HEADERS += \
     Target.hpp \
     HUD.hpp \
     Sounds.hpp \
-    Images.hpp
+    Images.hpp \
+    RgbImage.h \
+    Model.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \

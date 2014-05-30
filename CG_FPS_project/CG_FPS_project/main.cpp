@@ -2,6 +2,13 @@
 #include "main.hpp"
 
 
+void drawExtras(){
+    for(unsigned int i=0; i<extras.size(); i++){
+        extras[i].drawTarget();
+        extras[i].drawBoundingBoxes();
+    }
+}
+
 void drawTargets(){
     for(unsigned int i=0; i<targets.size(); i++){
         targets[i].drawTarget();
@@ -9,7 +16,7 @@ void drawTargets(){
     }
 }
 
-void createTargets(){
+void createTargetsAndExtras(){
 
     for(int i=0; i<NUMPOSSIBLE; i++){
         possiblePositions[i][0] = 0;
@@ -69,7 +76,7 @@ void createTargets(){
         srand(time(NULL));
         pos = rand()%aux2.size(); // randomly selects one of the available
 
-        posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1]+10;  posBB2[0][2] = aux2[pos][2];  // head
+        posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1];  posBB2[0][2] = aux2[pos][2];  // head
         sizesBB2[0][0] = 2.0f;   sizesBB2[0][1] = 2.0f;  sizesBB2[0][2] = 2.0f;  // head
 
         extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2);
@@ -78,37 +85,60 @@ void createTargets(){
 
 }
 
-
-void activateLight(void)
-{
-}
-
-void activateAmbientIllumination(void)
-{
-
-    if (iluminacao)
-    {
-        /*Iluminacao local*/
-        glLightfv(GL_LIGHT0, GL_POSITION, localPos);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
-        glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
-        glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION, localAttLin);
-        glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
-    }
-    else
-    {
-        /*Iluminacao global*/
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);/*Activar modelo ambiente global*/
+void createModels(){
+    for(int i=0; i<NUMMODELS; i++){
+        models[i].Init( "Test\\test.obj", "Test\\grass_tex.bmp", -5, 0, -i-5 );
     }
 }
+
+void drawModels(){
+    for(int i=0; i<NUMMODELS; i++){
+        models[i].drawModel();
+    }
+}
+
 
 //……………………………………………………………………………………………………………………………………………………… Iluminacao
-void initLights(void)
-{
-    //…………………………………………………………………………………………………………………………………………… Ambiente
-    activateAmbientIllumination();
+void initLights(void){
 
-    activateLight();
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
+
+
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+    //Iluminacao global
+    if( dayTime){
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
+    }
+    if( nightTime){
+
+        for(int i=0; i<numLights; i++){
+
+            glEnable(GL_LIGHT0+i);
+
+            glLightfv(GL_LIGHT0+i, GL_AMBIENT, light_ambient[i]);
+            glLightfv(GL_LIGHT0+i, GL_DIFFUSE, light_diffuse[i]);
+            glLightfv(GL_LIGHT0+i, GL_SPECULAR, light_specular[i]);
+            glLightfv(GL_LIGHT0+i, GL_POSITION, localPos[i]);
+        }
+
+    }
+
+
+    /*
+    //Iluminacao local
+    glLightfv(GL_LIGHT0, GL_POSITION, localPos);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
+    glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
+    glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION, localAttLin);
+    glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
+    */
+
+
 }
 
 void init(void)
@@ -116,8 +146,6 @@ void init(void)
 
     //……………………………………………………………………………………………………………………………Lighting set up
     initLights();
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);                                //luz ambiente
 
     glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
     glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
@@ -136,7 +164,8 @@ void init(void)
     camera.SetPos( xStart, yStart, zStart);
 
 
-    createTargets();
+    createTargetsAndExtras();
+    createModels();
 
 
 
@@ -160,6 +189,7 @@ void drawGrid()
         glEnd();
     }
 
+    /*
     //============================================Eixos
     glColor4f(AZUL);
     glBegin(GL_LINES);
@@ -174,6 +204,7 @@ void drawGrid()
         glVertex3i(-xC,0,0);
         glVertex3i( xC,0,0);
     glEnd();
+    */
 
 }
 
@@ -199,36 +230,73 @@ void drawFog(){
     glFogf(GL_FOG_END, 30.0f);
     glHint (GL_FOG_HINT, GL_FASTEST);
 
-    /*
-    glFogi(GL_FOG_MODE, GL_EXP2);
-    glFogf(GL_FOG_DENSITY, 0.05f);
-    glHint (GL_FOG_HINT, GL_FASTEST);
+
+    //glFogi(GL_FOG_MODE, GL_EXP2);
+    //glFogf(GL_FOG_DENSITY, 0.05f);
+    //glHint (GL_FOG_HINT, GL_FASTEST);
     */
 
 
 }
 
+void draw_esfera1( )
+{
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat1);
+    glPushMatrix();
+        glTranslatef(0, 2, 0);
+        glutSolidSphere(raioEsf, 250, 250);
+    glPopMatrix();
+}
+
+void draw_esfera2( )
+{
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat2);
+    glPushMatrix();
+        glTranslatef(-raioEsf, 2, -raioEsf);
+        glutSolidSphere(raioEsf, 250, 250);
+    glPopMatrix();
+}
+
+void draw_local_lights( ){
+
+    for(int i=0; i<numLights; i++){
+        glPushMatrix();
+            glColor3f( localCor[0], localCor[1], localCor[2] );
+            glTranslatef( localPos[i][0], localPos[i][1], localPos[i][2] );
+            glutSolidSphere( raioEsf, 5, 5 );
+        glPopMatrix();
+    }
+}
+
 void drawScene(){
 
+    draw_local_lights(); // fuck, que atraso tão grande x]
 
     //grelha no chão
     drawGrid();
 
-    glDisable(GL_LIGHT0);
 
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
-    //glMaterialfv(GL_FRONT, GL_AMBIENT, esmeraldAmb);
-    //glMaterialfv(GL_FRONT, GL_DIFFUSE, esmeraldDif);
-    //glMaterialfv(GL_FRONT, GL_SPECULAR, esmeraldSpec); - Nao considerar a componente especular
+
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    draw_esfera2();
+    glBlendFunc(GL_ONE, GL_ZERO);
+    draw_esfera1();
+
+
+
+
 
     drawFog();
-
     map.drawMap();
     drawTargets();
-
-    camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
+    drawExtras();
+    drawModels();
     drawBullets();
+    camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
+
 
 }
 
@@ -244,26 +312,26 @@ void drawOrientacao(){
 
     // quadrado na posição da cãmara
 
-    /*
-    float x, y, z;
-    camera.GetPos(x, y, z);
-
     glPushMatrix();
-        glColor4f(VERDE);
-        glTranslatef( x-2, y-2, y-2);
+        glColor4f(VERMELHO);
+        glTranslatef( xCamera, yCamera+3, zCamera);
         glutSolidCube(1);
     glPopMatrix();
-    */
 
-
-
-    //  Direccao do FOCO=lanterna
-    //glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION,spot_direction);/*Definir direccao do foco*/
+    if(nightTime){
+        //  Direccao do FOCO=lanterna
+        float dx, dy, dz;
+        camera.GetDirectionVector(dx, dy, dz);
+        GLfloat spotDirection[] = {dx, dy, dz};
+        glEnable(GL_LIGHT0+numLights);
+        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection);/*Definir direccao do foco*/
+    }
 
 }
 
 
 void display(void){
+
 
     //================================================================= Viewport1 (minimap)
     hud.drawMiniMap(xCamera, yCamera, zCamera);
@@ -277,7 +345,7 @@ void display(void){
     glViewport (0, 0, wScreen, hScreen);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(99.0, wScreen/hScreen, 0.1, 1000.0);
+    gluPerspective(100.0, wScreen/hScreen, 0.1, 1000.0);
     glMatrixMode(GL_MODELVIEW);
 
     glutSetCursor(GLUT_CURSOR_NONE);
@@ -286,10 +354,7 @@ void display(void){
     drawScene();//--------------------- desenha objectos no viewport2
     drawOrientacao();
 
-
     //================================================================= Viewport3 (HUD)
-
-
     hud.drawHUD();
 
 
@@ -326,6 +391,10 @@ void reloadGun(){
 
         sounds.playReloadSound();
 
+    }
+    else{
+        //play sound of loaded gun
+        sounds.playCannotReloadSound();
     }
 }
 
@@ -448,8 +517,6 @@ void Timer(int value){
     updateGameTimer();
     updateBullets();
 
-    // update sound
-
     if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
         //std::cout << "chamei o glutpostredisplay no timer\n";
         glutPostRedisplay(); // flag que chama a função de display na próxima iteração
@@ -475,9 +542,9 @@ int main(int argc, char** argv){
 
     glutTimerFunc(msecCallback, Timer, 0);
 
-    mainMenu = glutCreateMenu(mainMenuEvents);
+    //mainMenu = glutCreateMenu(mainMenuEvents);
 
-    createMainMenu();
+    //createMainMenu();
 
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(teclasNotAscii);
@@ -488,186 +555,5 @@ int main(int argc, char** argv){
     glutMainLoop();
 
     return 0;
-}
-
-// =========================================== EVENTOS
-
-void createMainMenu(){
-
-    for(int i=0; i<numGameModes; i++){
-        glutAddMenuEntry(gameModes[i], i);
-    }
-
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
-
-}
-
-void mainMenuEvents(int value){
-
-    switch(value){
-
-
-        //"Time Attack"
-        case 0:
-
-            break;
-
-        //"No Bullet Left Behind"
-        case 1:
-
-            break;
-
-        //"Zen"
-        case 2:
-
-            break;
-
-        //"Highscores"
-        case 3:
-
-            break;
-
-        //"Quit Game"
-        case 4:
-
-            glutDestroyMenu(mainMenu);
-            exit(0);
-
-            break;
-
-    }
-
-
-}
-
-void teclasNotAscii(int key, int x, int y){
-
-    //using parameters just because
-    if( x || y ){}
-
-    switch(key){}
-
-    glutPostRedisplay();
-
-}
-
-void mouseMotion(int x, int y){
-
-    //if(DEBUG) std::cout << x << " - " << y << "\n";
-
-    // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
-    // This avoids it being called recursively and hanging up the event loop
-    static bool just_warped = false;
-
-    if(just_warped) {
-        just_warped = false;
-        return;
-    }
-
-    int dx = x - wCenterScreen;
-    int dy = -(y - hCenterScreen);
-
-    if(dx) {
-        camera.RotateYaw(g_rotation_speed*dx);
-    }
-
-    if(dy) {
-        camera.RotatePitch(g_rotation_speed*dy);
-    }
-
-    if( !isMenuActive ) glutWarpPointer(wCenterScreen, hCenterScreen);
-
-    just_warped = true;
-
-    glutPostRedisplay();
-
-}
-
-void mouseClicks(int button, int state, int x, int y) {
-
-    if(button || state || x || y){}
-
-    //if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
-
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        shootGun();
-    }
-
-    if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-        isMenuActive = !isMenuActive;
-    }
-
-    glutPostRedisplay();
-
-}
-
-void keyboard(unsigned char key, int x, int y){
-
-    if(key||x||y){}
-
-    //if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
-
-    switch (key){
-
-        //--------------------------- forward
-        case 'W':
-        case 'w':
-            camera.Move(g_translation_speed);
-            break;
-
-        //--------------------------- back
-        case 'S':
-        case 's':
-            camera.Move(-g_translation_speed);
-            break;
-
-        //--------------------------- left
-        case 'A':
-        case 'a':
-            camera.Strafe(g_translation_speed);
-            break;
-
-        //--------------------------- left
-        case 'D':
-        case 'd':
-            camera.Strafe(-g_translation_speed);
-            break;
-
-        //--------------------------- reload
-        case 'R':
-        case 'r':
-            reloadGun();
-            break;
-
-
-        //--------------------------- main menu
-        case 'P':
-        case 'p':
-            createMainMenu();
-            break;
-
-
-        // ------------------------------ move vertically for DEBUG
-        //--------------------------- up
-        case 'U':
-        case 'u':
-            camera.Fly(g_translation_speed);
-            break;
-        //--------------------------- down
-        case 'J':
-        case 'j':
-            camera.Fly(-g_translation_speed);
-            break;
-
-
-
-        //--------------------------- Escape
-        case 27:
-            exit(0);
-            break;
-    }
-
-    glutPostRedisplay();
-
 }
 
