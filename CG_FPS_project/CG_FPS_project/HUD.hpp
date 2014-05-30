@@ -234,7 +234,10 @@ class HUD{
                 drawGunInfo();
                 drawTimeInfo();
                 drawTargetsInfo();
-                drawCrosshair();
+                glPushMatrix();
+                    glTranslatef(0, -crosshairLength, 0);
+                    drawCrosshair();
+                glPopMatrix();
 
                 // Making sure we can render 3d again
                 glMatrixMode(GL_PROJECTION);
