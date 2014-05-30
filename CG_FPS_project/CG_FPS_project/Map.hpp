@@ -4,6 +4,7 @@
 #include <GL/gl.h>
 
 #include "Wall.hpp"
+#include "Ground.hpp"
 #include "Colors.hpp"
 #include "Images.hpp"
 
@@ -27,7 +28,7 @@ class Map{
         //Textures textures;
         Images image;
 
-        Wall ground[NUMGROUNDS];
+        Ground ground[NUMGROUNDS];
 
         Wall walls[NUMWALLS];
 

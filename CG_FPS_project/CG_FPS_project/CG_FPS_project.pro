@@ -26,7 +26,8 @@ HEADERS += \
     Events.hpp \
     Lights.hpp \
     ModelsTargetsExtras.hpp \
-    Physics.hpp
+    Physics.hpp \
+    Ground.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \

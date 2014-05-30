@@ -200,7 +200,7 @@ class Model{
 
             glPushMatrix();
 
-                glColor3f(1, 1, 1);
+                glColor3f(1, 1, 1); // white so it doesn't affect the texture
                 glTranslatef(x, y, z);
                 glScalef(xScale, yScale, zScale);
 
