@@ -129,6 +129,9 @@ release/main.o: ../CG_FPS_project/main.cpp ../CG_FPS_project/main.hpp \
 		../CG_FPS_project/Bullet.hpp \
 		../CG_FPS_project/Map.hpp \
 		../CG_FPS_project/Wall.hpp \
+		../CG_FPS_project/Model.hpp \
+		../CG_FPS_project/RgbImage.h \
+		../CG_FPS_project/Ground.hpp \
 		../CG_FPS_project/Colors.hpp \
 		../CG_FPS_project/Images.hpp \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/config.h \
@@ -175,8 +178,6 @@ release/main.o: ../CG_FPS_project/main.cpp ../CG_FPS_project/main.hpp \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/SFML/Audio/SoundBuffer.hpp \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/SFML/Audio/SoundBufferRecorder.hpp \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/SFML/Audio/SoundRecorder.hpp \
-		../CG_FPS_project/Model.hpp \
-		../CG_FPS_project/RgbImage.h \
 		../CG_FPS_project/ModelsTargetsExtras.hpp \
 		../CG_FPS_project/Events.hpp \
 		../CG_FPS_project/Physics.hpp \

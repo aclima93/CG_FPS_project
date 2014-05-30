@@ -31,8 +31,8 @@ class Model{
         int *f;
         int f_size;
 
-        float x, y, z;
-        float xScale, yScale, zScale;
+        const char* filename;
+        const char* texturename;
 
         GLuint  texture[2];
         RgbImage imag;
@@ -46,29 +46,26 @@ class Model{
             delete [] f;
         }
 
-        void Init(const char* objFile, const char* textureFile, float xx, float yy, float zz, float xs, float ys, float zs){
-            x = xx;
-            y = yy;
-            z = zz;
-            xScale = xs;
-            yScale = ys;
-            zScale = zs;
+        void Init(const char* objFile, const char* textureFile){
+
             f_size = 0;
-            loadingFileObj(objFile); // Read data
-            createTexture(textureFile); // Passar os dados do .obj para openGL
+            filename = objFile;
+            texturename = textureFile;
+            loadingFileObj(); // Read data
+            createTexture(); // Passar os dados do .obj para openGL
         }
 
         /* Fazer a leitura do ficheiro .obj para os arrays correspondentes */
-        void loadingFileObj(const char *fileName){
+        void loadingFileObj(){
 
             if(debug){
-                printf("Caminho: %s\n", fileName);
+                printf("Caminho: %s\n", filename);
             }
 
             /* Open file */
             //ifstream myFile(fileName, ios::in);
             ifstream myFile;
-            myFile.open(fileName);
+            myFile.open(filename);
 
             if(debug){
                 cout << "First round MY_FILE: " << myFile << endl;
@@ -76,7 +73,7 @@ class Model{
 
             /* Caso nao tenha encontrado o nome do ficheiro ou nao consiga abrir, imprime uma mensagem de erro */
             if (myFile.fail()){
-                cerr << "Cannot open " << fileName << endl;
+                cerr << "Cannot open " << filename << endl;
                 exit(1);
             }
 
@@ -180,7 +177,7 @@ class Model{
         }
 
 
-        void createTexture(const char* filename){
+        void createTexture(){
             glGenTextures(1, &texture[0]);
             glBindTexture(GL_TEXTURE_2D, texture[0]);
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
@@ -188,7 +185,7 @@ class Model{
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-            imag.LoadBmpFile(filename);
+            imag.LoadBmpFile(texturename);
             glTexImage2D(GL_TEXTURE_2D, 0, 3,
                 imag.GetNumCols(),
                 imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
@@ -196,13 +193,13 @@ class Model{
         }
 
         /* Funcao para converter os dados do ficheiro .obj em openGl */
-        void drawModel(){
+        void drawModel(float x, float y, float z, float xs, float ys, float zs, float r, float g, float b){
 
             glPushMatrix();
 
-                glColor3f(1, 1, 1); // white so it doesn't affect the texture
+                glColor3f(r, g, b); // white so it doesn't affect the texture
                 glTranslatef(x, y, z);
-                glScalef(xScale, yScale, zScale);
+                glScalef(xs, ys, zs);
 
 
                 int aux_num;
