@@ -11,7 +11,7 @@
 #define NUMWALLS 11
 #define NUMGROUNDS 2
 
-const float mapWidth = 50; // 5
+const float mapWidth = 100; // 5
 const float mapLength = 500; // 10
 const float mapHeight = 25; // 1
 
@@ -24,6 +24,109 @@ const float firstGlassEnd = 0.45f;
 
 const float secondGlassStart = 0.55f;
 const float secondGlassEnd = 0.60f;
+
+
+// walls and shits
+
+#define numWallParams 11
+
+#define numGlassWalls 2
+float glassWalls[][numWallParams] = {
+    {
+        //vidro esquerda1
+        -mapWidth/2, 0, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
+         wallScale,
+         90,
+         VIDRO                                                    // r g b a
+    },
+    {
+        //vidro esquerda2
+        -mapWidth/2, 0, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
+         wallScale,
+         90,
+         VIDRO                                                    // r g b a
+    }
+};
+
+
+#define numVerticalWalls 5
+float verticalWalls[][numWallParams]= {
+
+    //-----------------
+    //paredes verticais
+    {
+        //parede esquerda1
+        -mapWidth/2, 0, -mapLength*(firstGlassStart/2),
+         wallScale,
+         90,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda2
+        -mapWidth/2, 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
+         wallScale,
+         90,
+         WHITE                                                    // r g b a
+    },
+    {
+        //parede esquerda3
+        -mapWidth/2, 0, -mapLength*((mapLength + secondGlassEnd)/2 ),
+         wallScale,
+         90,
+         WHITE                                                // r g b a
+    },
+    {
+        //parede esquerda4
+        -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
+         wallScale,
+         -90,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda5
+        -mapWidth, 0, -mapLength*( (firstGlassStart + secondGlassEnd)/2 ),
+         wallScale,
+         90,
+         WHITE                                              // r g b a
+    }
+};
+
+#define numHorizontalWalls 4
+float horizontalWalls[][numWallParams] = {
+
+    //-------------------
+    //paredes horizontais
+    {
+        //parede esquerda6
+        -(mapWidth + mapWidth/2)/2, 0, -mapLength*(firstGlassStart),
+         wallScale,
+         180,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda7
+        -(mapWidth*(0.75f) + mapWidth/2)/2, 0, -mapLength*(firstGlassEnd),
+         wallScale,
+         0,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda8
+        -(mapWidth*(0.75f) + mapWidth/2)/2, 0, -mapLength*(secondGlassStart),
+         wallScale,
+         180,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda9
+        -(mapWidth + mapWidth/2)/2, 0, -mapLength*(secondGlassEnd),
+         wallScale,
+         0,
+         WHITE                                                  // r g b a
+    }
+};
+
+
 
 class Map{
     public:
@@ -57,6 +160,30 @@ class Map{
             );
 
 
+            int i;
+            for(i=0; i<numHorizontalWalls; i++){
+                walls[i].Init( horizontalWalls[i][0], horizontalWalls[i][1], horizontalWalls[i][2], horizontalWalls[i][3],
+                               horizontalWalls[i][4], horizontalWalls[i][5], horizontalWalls[i][6], horizontalWalls[i][7],
+                               horizontalWalls[i][8], horizontalWalls[i][9], horizontalWalls[i][10],
+                               concreteWallModel, concreteWallTexture
+                        );
+            }
+            for(int j=0; j<numVerticalWalls; j++){
+                walls[i].Init( verticalWalls[j][0], verticalWalls[j][1], verticalWalls[j][2], verticalWalls[j][3],
+                               verticalWalls[j][4], verticalWalls[j][5], verticalWalls[j][6], verticalWalls[j][7],
+                               verticalWalls[j][8], verticalWalls[j][9], verticalWalls[j][10],
+                               concreteWallModel, concreteWallTexture);
+                i++;
+            }
+            for(int k=0; k<numGlassWalls; k++){
+                walls[i].Init( glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
+                               glassWalls[k][4], glassWalls[k][5], glassWalls[k][6], glassWalls[k][7],
+                               glassWalls[k][8], glassWalls[k][9], glassWalls[k][10],
+                               concreteWallModel, concreteWallTexture );
+                i++;
+            }
+
+            /*
             //-----------------
             //paredes verticais
             walls[0].Init(
@@ -150,6 +277,7 @@ class Map{
                  WHITE,                                                  // r g b a
                  concreteWallModel, concreteWallTexture
             );
+            */
 
         }
 

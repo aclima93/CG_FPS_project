@@ -85,7 +85,7 @@ void drawScene(){
     draw_local_lights(); // fuck, que atraso tão grande x]
 
     //grelha no chão
-    drawGrid();
+    //drawGrid();
 
 
     glEnable(GL_COLOR_MATERIAL);

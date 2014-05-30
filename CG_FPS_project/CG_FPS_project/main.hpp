@@ -41,7 +41,7 @@ Model walls[NUMMODELS*2];
 
 float xStart = 0;
 float yStart = mapHeight/2;
-float zStart = 0;
+float zStart = -7.5;
 
 float xCamera;
 float yCamera;
