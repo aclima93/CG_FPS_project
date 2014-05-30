@@ -92,3 +92,10 @@ void drawModels(){
         models[i].drawModel();
     }
 }
+
+void drawBullets(){
+
+    for(int i=0; i<NUMBULLETS; i++){
+        bullets[i].draw();
+    }
+}

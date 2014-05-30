@@ -7,8 +7,8 @@ void initLights(void){
     glEnable(GL_CULL_FACE);
 
 
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    //glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    //glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
     //Iluminacao global
     if( dayTime){
@@ -41,21 +41,21 @@ void initLights(void){
 
 }
 
-void draw_esfera1( )
-{
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat1);
+void draw_esfera1( ){
+
     glPushMatrix();
-        glTranslatef(0, 2, 0);
-        glutSolidSphere(raioEsf, 250, 250);
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat1);
+        glTranslatef(-raioEsf, 5, -raioEsf);
+        glutSolidSphere(raioEsf, 50, 50);
     glPopMatrix();
 }
 
-void draw_esfera2( )
-{
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat2);
+void draw_esfera2( ){
+
     glPushMatrix();
-        glTranslatef(-raioEsf, 2, -raioEsf);
-        glutSolidSphere(raioEsf, 250, 250);
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat2);
+        glTranslatef(0, 5, 0);
+        glutSolidSphere(raioEsf, 50, 50);
     glPopMatrix();
 }
 
@@ -87,7 +87,14 @@ void drawFlashlightLight(){
         camera.GetDirectionVector(dx, dy, dz);
         GLfloat spotDirection[] = {dx, dy, dz};
         glEnable(GL_LIGHT0+numLights);
-        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection);/*Definir direccao do foco*/
+        glLightf(GL_LIGHT0+numLights, GL_SPOT_CUTOFF, 22.5); // angulo de corte do foco
+        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection); //Definir direccao do foco
+        /*
+        glLightf(GL_LIGHT0+numLights, GL_CONSTANT_ATTENUATION, 2.0);
+        glLightf(GL_LIGHT0+numLights, GL_LINEAR_ATTENUATION, 1.0);
+        glLightf(GL_LIGHT0+numLights, GL_QUADRATIC_ATTENUATION, 0.5);
+        */
+
     }
 
 }

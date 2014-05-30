@@ -23,8 +23,6 @@ void init(void)
     glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
-
-
     glutWarpPointer(wCenterScreen, hCenterScreen);
 
     //camera starting position and orientation
@@ -44,44 +42,40 @@ void init(void)
 //================================================================================
 //======================================================================== DISPLAY
 
-void drawGrid()
-{
+void drawGrid(){
 
-    for(float i = -300; i <= 300; i += 5)
-    {
+    glPushMatrix();
+
+        for(float i = -300; i <= 300; i += 5)
+        {
+            glBegin(GL_LINES);
+                glColor3ub(150, 190, 150);
+                glVertex3f(-500, 0, i);
+                glVertex3f(500, 0, i);
+                glVertex3f(i, 0,-500);
+                glVertex3f(i, 0, 500);
+            glEnd();
+        }
+
+
+        //============================================Eixos
+
+        glColor4f(AZUL);
         glBegin(GL_LINES);
-            glColor3ub(150, 190, 150);
-            glVertex3f(-500, 0, i);
-            glVertex3f(500, 0, i);
-            glVertex3f(i, 0,-500);
-            glVertex3f(i, 0, 500);
+            glVertex3i(0,0,-xC);
+            glVertex3i(0,0, xC);
         glEnd();
-    }
+        glBegin(GL_LINES);
+            glVertex3i(0,-xC,0);
+            glVertex3i(0,xC,0);
+        glEnd();
+        glBegin(GL_LINES);
+            glVertex3i(-xC,0,0);
+            glVertex3i( xC,0,0);
+        glEnd();
 
-    /*
-    //============================================Eixos
-    glColor4f(AZUL);
-    glBegin(GL_LINES);
-        glVertex3i(0,0,-xC);
-        glVertex3i(0,0, xC);
-    glEnd();
-    glBegin(GL_LINES);
-        glVertex3i(0,-xC,0);
-        glVertex3i(0,xC,0);
-    glEnd();
-    glBegin(GL_LINES);
-        glVertex3i(-xC,0,0);
-        glVertex3i( xC,0,0);
-    glEnd();
-    */
+    glPopMatrix();
 
-}
-
-void drawBullets(){
-
-    for(int i=0; i<NUMBULLETS; i++){
-        bullets[i].draw();
-    }
 }
 
 
@@ -97,11 +91,14 @@ void drawScene(){
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
 
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    draw_esfera2();
+    glEnable(GL_BLEND); //Activar as funcoes de BLEND
+    glEnable(GL_DEPTH_TEST); //Activar o "teste de profundidade", z-buffer
+
+
     glBlendFunc(GL_ONE, GL_ZERO);
     draw_esfera1();
-
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    draw_esfera2();
 
 
 
