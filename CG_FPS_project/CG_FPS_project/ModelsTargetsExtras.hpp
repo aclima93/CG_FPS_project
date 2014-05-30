@@ -83,13 +83,25 @@ void createTargetsAndExtras(){
 
 void createModels(){
     for(int i=0; i<NUMMODELS; i++){
-        models[i].Init( "Test\\test.obj", "Test\\grass_tex.bmp", -5, 0, -i-5 );
+        models[i].Init( "Test\\test.obj", "Test\\grass_tex.bmp", -5, 0, -i-5, 1, 1, 1 );
     }
 }
 
 void drawModels(){
     for(int i=0; i<NUMMODELS; i++){
         models[i].drawModel();
+    }
+}
+
+void createWalls(){
+    for(int i=0; i<NUMMODELS*2; i++){
+       walls[i].Init( "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp", -20, 0, -i*2 -15, 20, 20, 20 );
+    }
+}
+
+void drawWalls(){
+    for(int i=0; i<NUMMODELS*2; i++){
+        walls[i].drawModel();
     }
 }
 

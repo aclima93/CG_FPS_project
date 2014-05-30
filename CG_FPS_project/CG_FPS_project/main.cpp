@@ -33,6 +33,7 @@ void init(void)
 
     createTargetsAndExtras();
     createModels();
+    createWalls();
 
 
 
@@ -62,12 +63,12 @@ void drawGrid(){
 
         glColor4f(AZUL);
         glBegin(GL_LINES);
-            glVertex3i(0,0,-xC);
-            glVertex3i(0,0, xC);
+            glVertex3i(0,0,-zC);
+            glVertex3i(0,0, zC);
         glEnd();
         glBegin(GL_LINES);
-            glVertex3i(0,-xC,0);
-            glVertex3i(0,xC,0);
+            glVertex3i(0,-yC,0);
+            glVertex3i(0,yC,0);
         glEnd();
         glBegin(GL_LINES);
             glVertex3i(-xC,0,0);
@@ -95,11 +96,12 @@ void drawScene(){
     glEnable(GL_DEPTH_TEST); //Activar o "teste de profundidade", z-buffer
 
 
+    /*
     glBlendFunc(GL_ONE, GL_ZERO);
     draw_esfera1();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     draw_esfera2();
-
+    */
 
 
 
@@ -108,6 +110,7 @@ void drawScene(){
     drawTargets();
     drawExtras();
     drawModels();
+    drawWalls();
     drawBullets();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
 

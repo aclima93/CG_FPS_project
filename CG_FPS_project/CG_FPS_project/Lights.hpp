@@ -63,7 +63,7 @@ void draw_local_lights( ){
 
     for(int i=0; i<numLights; i++){
         glPushMatrix();
-            glColor3f( localCor[0], localCor[1], localCor[2] );
+            //glColor3f( localCor[0], localCor[1], localCor[2] );
             glTranslatef( localPos[i][0], localPos[i][1], localPos[i][2] );
             glutSolidSphere( raioEsf, 5, 5 );
         glPopMatrix();

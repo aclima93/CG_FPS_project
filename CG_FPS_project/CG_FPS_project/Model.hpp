@@ -32,6 +32,7 @@ class Model{
         int f_size;
 
         float x, y, z;
+        float xScale, yScale, zScale;
 
         GLuint  texture[2];
         RgbImage imag;
@@ -45,10 +46,13 @@ class Model{
             delete [] f;
         }
 
-        void Init(const char* objFile, const char* textureFile, float xx, float yy, float zz){
+        void Init(const char* objFile, const char* textureFile, float xx, float yy, float zz, float xs, float ys, float zs){
             x = xx;
             y = yy;
             z = zz;
+            xScale = xs;
+            yScale = ys;
+            zScale = zs;
             f_size = 0;
             loadingFileObj(objFile); // Read data
             createTexture(textureFile); // Passar os dados do .obj para openGL
@@ -193,41 +197,50 @@ class Model{
 
         /* Funcao para converter os dados do ficheiro .obj em openGl */
         void drawModel(){
-            int aux_num;
-            /* f V/VT/VN V/VT/VN V/VT/VN */
-            /* f 0/1/2 3/4/5 6/7/8 */
 
-            for(int i=0; i<f_size; i++){
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D,texture[0]);
-                glBegin(GL_TRIANGLES); /* Start drawing triangle */
-                    /* Vertex 1 */
-                    aux_num = (f[(i*9) + 1]) - 1;
-                    glTexCoord2f(vt[aux_num*2 + 0], vt[aux_num*2 + 1]);
-                    aux_num = (f[i*9 + 2]) - 1;
-                    glNormal3f(vn[aux_num*3 + 0], vn[aux_num*3 + 1], vn[aux_num*3 + 2]);
-                    aux_num = (f[i*9 + 0]) - 1;
-                    glVertex3f(x+ v[aux_num*3 + 0], y+ v[aux_num*3 + 1], z+ v[aux_num*3 + 2]);
+            glPushMatrix();
 
-                    /* Vertex 2 */
-                    aux_num = (f[i*9 + 4]) - 1;
-                    glTexCoord2f(vt[aux_num*2 + 0], vt[aux_num*2 + 1]);
-                    aux_num = (f[i*9 + 5]) - 1;
-                    glNormal3f(vn[aux_num*3 + 0], vn[aux_num*3 + 1], vn[aux_num*3 + 2]);
-                    aux_num = (f[i*9 + 3]) - 1;
-                    glVertex3f(x+ v[aux_num*3 + 0], y+ v[aux_num*3 + 1], z+ v[aux_num*3 + 2]);
+                glColor3f(1, 1, 1);
+                glTranslatef(x, y, z);
+                glScalef(xScale, yScale, zScale);
 
-                    /* Vertex 3 */
-                    aux_num = (f[i*9 + 7]) - 1;
-                    glTexCoord2f(vt[aux_num*2 + 0], vt[aux_num*2 + 1]);
-                    aux_num = (f[i*9 + 8]) - 1;
-                    glNormal3f(vn[aux_num*3 + 0], vn[aux_num*3 + 1], vn[aux_num*3 + 2]);
-                    aux_num = (f[i*9 + 6]) - 1;
-                    glVertex3f(x+ v[aux_num*3 + 0], y+ v[aux_num*3 + 1], z+ v[aux_num*3 + 2]);
-                glEnd(); /* Stop drawing triangle */
-                glDisable(GL_TEXTURE_2D);
-            }
-            //glutSwapBuffers();
+
+                int aux_num;
+                /* f V/VT/VN V/VT/VN V/VT/VN */
+                /* f 0/1/2 3/4/5 6/7/8 */
+
+                for(int i=0; i<f_size; i++){
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D,texture[0]);
+                    glBegin(GL_TRIANGLES); /* Start drawing triangle */
+                        /* Vertex 1 */
+                        aux_num = (f[(i*9) + 1]) - 1;
+                        glTexCoord2f(vt[aux_num*2 + 0], vt[aux_num*2 + 1]);
+                        aux_num = (f[i*9 + 2]) - 1;
+                        glNormal3f(vn[aux_num*3 + 0], vn[aux_num*3 + 1], vn[aux_num*3 + 2]);
+                        aux_num = (f[i*9 + 0]) - 1;
+                        glVertex3f(/*x+*/ v[aux_num*3 + 0], /*y+*/ v[aux_num*3 + 1], /*z+*/ v[aux_num*3 + 2]);
+
+                        /* Vertex 2 */
+                        aux_num = (f[i*9 + 4]) - 1;
+                        glTexCoord2f(vt[aux_num*2 + 0], vt[aux_num*2 + 1]);
+                        aux_num = (f[i*9 + 5]) - 1;
+                        glNormal3f(vn[aux_num*3 + 0], vn[aux_num*3 + 1], vn[aux_num*3 + 2]);
+                        aux_num = (f[i*9 + 3]) - 1;
+                        glVertex3f(/*x+*/ v[aux_num*3 + 0], /*y+*/ v[aux_num*3 + 1], /*z+*/ v[aux_num*3 + 2]);
+
+                        /* Vertex 3 */
+                        aux_num = (f[i*9 + 7]) - 1;
+                        glTexCoord2f(vt[aux_num*2 + 0], vt[aux_num*2 + 1]);
+                        aux_num = (f[i*9 + 8]) - 1;
+                        glNormal3f(vn[aux_num*3 + 0], vn[aux_num*3 + 1], vn[aux_num*3 + 2]);
+                        aux_num = (f[i*9 + 6]) - 1;
+                        glVertex3f(/*x+*/ v[aux_num*3 + 0], /*y+*/ v[aux_num*3 + 1], /*z+*/ v[aux_num*3 + 2]);
+                    glEnd(); /* Stop drawing triangle */
+                    glDisable(GL_TEXTURE_2D);
+                }
+
+                glPopMatrix();
         }
 
 
