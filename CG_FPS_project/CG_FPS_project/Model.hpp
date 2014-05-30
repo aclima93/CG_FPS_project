@@ -193,13 +193,14 @@ class Model{
         }
 
         /* Funcao para converter os dados do ficheiro .obj em openGl */
-        void drawModel(float x, float y, float z, float xs, float ys, float zs, float r, float g, float b){
+        void drawModel(float x, float y, float z, float xs, float ys, float zs, float rotation, float r, float g, float b){
 
             glPushMatrix();
 
                 glColor3f(r, g, b); // white so it doesn't affect the texture
                 glTranslatef(x, y, z);
                 glScalef(xs, ys, zs);
+                glRotatef(rotation, 0, 1, 0);
 
 
                 int aux_num;

@@ -59,42 +59,48 @@ class Map{
             walls[0].Init(
                 //parede esquerda1
                 -mapWidth/2, mapHeight/2, -mapLength*(firstGlassStart/2),
-                 10, 10, 10,                                               // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                  // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[1].Init(
                 //vidro esquerda1
                 -mapWidth/2, mapHeight/2, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
-                 10, 10, 10,                                                // normal
+                 10, 10, 10,
+                 90,
                  VIDRO,                                                    // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[2].Init(
                 //parede esquerda2
                 -mapWidth/2, mapHeight/2, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-                 10, 10, 10,                                                // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                    // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[3].Init(
                 //vidro esquerda2
                 -mapWidth/2, mapHeight/2, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
-                 10, 10, 10,                                                // normal
+                 10, 10, 10,
+                 90,
                  VIDRO,                                                    // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[4].Init(
                 //parede esquerda3
                 -mapWidth/2, mapHeight/2, -mapLength*((mapLength + secondGlassEnd)/2 ),
-                 10, 10, 10,                                                // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[5].Init(
                 //parede esquerda4
                 -mapWidth*(0.75f), mapHeight/2, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-                 10, 10, 10,                                                      // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                         // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
@@ -102,6 +108,7 @@ class Map{
                 //parede esquerda5
                 -mapWidth, mapHeight/2, -mapLength*( (firstGlassStart + secondGlassEnd)/2 ),
                  10, 10, 10, // /* maybe these? */ mapHeight, (firstGlassStart + secondGlassEnd)/2,
+                 90,
                  WHITE,                                              // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
@@ -111,138 +118,35 @@ class Map{
             walls[7].Init(
                 //parede esquerda6
                 -(mapWidth + mapWidth/2)/2, mapHeight/2, -mapLength*(firstGlassStart),
-                 10, 10, 10,                                              // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                  // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[8].Init(
                 //parede esquerda7
                 -(mapWidth*(0.75f) + mapWidth/2)/2, mapHeight/2, -mapLength*(firstGlassEnd),
-                 10, 10, 10,                                                        // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                         // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[9].Init(
                 //parede esquerda8
                 -(mapWidth*(0.75f) + mapWidth/2)/2, mapHeight/2, -mapLength*(secondGlassStart),
-                 10, 10, 10,                                                        // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                         // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
             walls[10].Init(
                 //parede esquerda9
                 -(mapWidth + mapWidth/2)/2, mapHeight/2, -mapLength*(secondGlassEnd),
-                 10, 10, 10,                                              // normal
+                 10, 10, 10,
+                 90,
                  WHITE,                                                  // r g b a
                  "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp"
             );
-
-            /*
-            //-----------------
-            //paredes verticais
-            walls[0].Init(
-                //parede esquerda1
-                -mapWidth/2, mapHeight, 0,                         // A
-                -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),      // B
-                -mapWidth/2, 0, 0,                                   // C
-                -mapWidth/2, 0, -mapLength*(firstGlassStart),                // D
-                 1, 0, 0,                                               // normal
-                 WHITE                                                  // r g b a
-            );
-            walls[1].Init(
-                //vidro esquerda1
-                -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),      // A
-                -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),      // B
-                -mapWidth/2, 0, -mapLength*(firstGlassStart),                // C
-                -mapWidth/2, 0, -mapLength*(firstGlassEnd),                // D
-                 1, 0, 0,                                                // normal
-                 VIDRO                                                    // r g b a
-            );
-            walls[2].Init(
-                //parede esquerda2
-                -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),      // A
-                -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),      // B
-                -mapWidth/2, 0, -mapLength*(firstGlassEnd),                // C
-                -mapWidth/2, 0, -mapLength*(secondGlassStart),                // D
-                 1, 0, 0,                                                // normal
-                 WHITE                                                    // r g b a
-            );
-            walls[3].Init(
-                //vidro esquerda2
-                -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),      // A
-                -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),      // B
-                -mapWidth/2, 0, -mapLength*(secondGlassStart),                // C
-                -mapWidth/2, 0, -mapLength*(secondGlassEnd),                // D
-                 1, 0, 0,                                                // normal
-                 VIDRO                                                    // r g b a
-            );
-            walls[4].Init(
-                //parede esquerda3
-                -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),      // top left
-                -mapWidth/2, mapHeight, -mapLength,              // top right
-                -mapWidth/2, 0, -mapLength*(secondGlassEnd),                // bottom left
-                -mapWidth/2, 0, -mapLength,                        // bottom right
-                 1, 0, 0,                                                // normal
-                 WHITE                                                // r g b a
-            );
-            walls[5].Init(
-                //parede esquerda4
-                -mapWidth*(0.75f), mapHeight, -mapLength*(firstGlassEnd),      // A
-                -mapWidth*(0.75f), mapHeight, -mapLength*(secondGlassStart),      // B
-                -mapWidth*(0.75f), 0, -mapLength*(firstGlassEnd),                // C
-                -mapWidth*(0.75f), 0, -mapLength*(secondGlassStart),                // D
-                 -1, 0, 0,                                                      // normal
-                 WHITE                                                         // r g b a
-            );
-            walls[6].Init(
-                //parede esquerda5
-                -mapWidth, mapHeight, -mapLength*(firstGlassStart),      // A
-                -mapWidth, mapHeight, -mapLength*(secondGlassEnd),      // B
-                -mapWidth, 0, -mapLength*(firstGlassStart),                // C
-                -mapWidth, 0, -mapLength*(secondGlassEnd),                // D
-                 1, 0, 0,                                              // normal
-                 WHITE                                              // r g b a
-            );
-
-            //-------------------
-            //paredes horizontais
-            walls[7].Init(
-                //parede esquerda6
-                -mapWidth, mapHeight, -mapLength*(firstGlassStart),      // A
-                -mapWidth/2, mapHeight, -mapLength*(firstGlassStart),    // B
-                -mapWidth, 0, -mapLength*(firstGlassStart),                // C
-                -mapWidth/2, 0, -mapLength*(firstGlassStart),              // D
-                 0, 0, -1,                                              // normal
-                 WHITE                                                  // r g b a
-            );
-            walls[8].Init(
-                //parede esquerda7
-                -mapWidth*(0.75f), mapHeight, -mapLength*(firstGlassEnd),        // A
-                -mapWidth/2, mapHeight, -mapLength*(firstGlassEnd),              // B
-                -mapWidth*(0.75f), 0, -mapLength*(firstGlassEnd),                  // C
-                -mapWidth/2, 0, -mapLength*(firstGlassEnd),                        // D
-                 0, 0, 1,                                                        // normal
-                 WHITE                                                         // r g b a
-            );
-            walls[9].Init(
-                //parede esquerda8
-                -mapWidth*(0.75f), mapHeight, -mapLength*(secondGlassStart),        // A
-                -mapWidth/2, mapHeight, -mapLength*(secondGlassStart),              // B
-                -mapWidth*(0.75f), 0, -mapLength*(secondGlassStart),                  // C
-                -mapWidth/2, 0, -mapLength*(secondGlassStart),                        // D
-                 0, 0, -1,                                                        // normal
-                 WHITE                                                         // r g b a
-            );
-            walls[10].Init(
-                //parede esquerda9
-                -mapWidth, mapHeight, -mapLength*(secondGlassEnd),      // A
-                -mapWidth/2, mapHeight, -mapLength*(secondGlassEnd),    // B
-                -mapWidth, 0, -mapLength*(secondGlassEnd),                // C
-                -mapWidth/2, 0, -mapLength*(secondGlassEnd),              // D
-                 0, 0, 1,                                              // normal
-                 WHITE                                                  // r g b a
-            );
-            */
 
         }
 
@@ -320,32 +224,15 @@ class Map{
 
             //draw left side and right side by symmetry
             for(int i=0; i<NUMWALLS; i++){
-                walls[i].model.drawModel( walls[i].x, walls[i].y, walls[i].z, walls[i].xScale, walls[i].yScale, walls[i].zScale, walls[i].color[0], walls[i].color[1], walls[i].color[2] );
-                walls[i].model.drawModel( -walls[i].x, walls[i].y, walls[i].z, walls[i].xScale, walls[i].yScale, walls[i].zScale, walls[i].color[0], walls[i].color[1], walls[i].color[2] );
-                /*
-                    desenhaQuadrado(
-                        walls[i].topLeft[0], walls[i].topLeft[1], walls[i].topLeft[2],
-                        walls[i].bottomLeft[0], walls[i].bottomLeft[1], walls[i].bottomLeft[2],
-                        walls[i].topRight[0], walls[i].topRight[1], walls[i].topRight[2],
-                        walls[i].bottomRight[0], walls[i].bottomRight[1], walls[i].bottomRight[2],
+                walls[i].model.drawModel( walls[i].x, walls[i].y, walls[i].z,
+                                          walls[i].xScale, walls[i].yScale, walls[i].zScale,
+                                          walls[i].rotation,
+                                          walls[i].color[0], walls[i].color[1], walls[i].color[2] );
 
-                        walls[i].normal[0], walls[i].normal[1], walls[i].normal[2],
-                        walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
-                        -1, 0 // no texture
-                    );
-                    desenhaQuadrado(
-
-                        - walls[i].topLeft[0], walls[i].topLeft[1], walls[i].topLeft[2],
-                        - walls[i].bottomLeft[0], walls[i].bottomLeft[1], walls[i].bottomLeft[2],
-                        - walls[i].topRight[0], walls[i].topRight[1], walls[i].topRight[2],
-                        - walls[i].bottomRight[0], walls[i].bottomRight[1], walls[i].bottomRight[2],
-
-                        -walls[i].normal[0], -walls[i].normal[1], -walls[i].normal[2],
-                        walls[i].color[0], walls[i].color[1], walls[i].color[2], walls[i].color[3],
-                        -1, 0 // no texture
-                    );
-
-                */
+                walls[i].model.drawModel( -walls[i].x, walls[i].y, walls[i].z,
+                                          walls[i].xScale, walls[i].yScale, walls[i].zScale,
+                                          -walls[i].rotation,
+                                          walls[i].color[0], walls[i].color[1], walls[i].color[2] );
 
             }
 

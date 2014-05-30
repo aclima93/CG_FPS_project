@@ -10,12 +10,14 @@ class Wall{
         float x, y, z;
         float xScale, yScale, zScale;
         float color[4]; // r g b a
+        float rotation;
         Model model;
 
         Wall(){}
 
         void Init(float xx, float yy, float zz,
              float xs, float ys, float zs,
+             float r,
              float c0, float c1, float c2, float c3,
              const char* filename, const char* texturename){
 
@@ -26,6 +28,8 @@ class Wall{
             xScale = xs;
             yScale = ys;
             zScale = zs;
+
+            rotation = r;
 
             color[0] = c0;
             color[1] = c1;
