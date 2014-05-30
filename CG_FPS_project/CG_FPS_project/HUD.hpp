@@ -22,7 +22,7 @@ const float crosshairLengthFrac = crosshairLength/3;
 const float wCenterScreen = wScreen/2;
 const float hCenterScreen = hScreen/2;
 
-float minimapViewHeight = 20;
+float minimapViewHeight = 35;
 
 char targetsInfoText[100];
 char timerInfoText[100];
@@ -164,7 +164,7 @@ class HUD{
             glPopMatrix();
         }
 
-        void drawMiniMap(float x, float y, float z){
+        void drawMiniMap(float x, float y, float z, float dx, float dz){
 
             glClearColor(BLACK);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -174,8 +174,8 @@ class HUD{
             glOrtho(-xC, xC, -yC, yC, zC, -zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-                      //onde está           para onde está a olhar     vector up
-            gluLookAt( x, minimapViewHeight, z,          x, 0, z,                   0, 0, -1);
+                      //onde está           para onde está a olhar          vector up
+            gluLookAt( x, minimapViewHeight, z,          x, 0, z,           dx, 0, dz);
 
             if(y){}
 

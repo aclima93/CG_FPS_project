@@ -131,7 +131,7 @@ void display(void){
 
 
     //================================================================= Viewport1 (minimap)
-    hud.drawMiniMap(xCamera, yCamera, zCamera);
+    hud.drawMiniMap(xCamera, yCamera, zCamera, dxCamera, dzCamera );
 
     drawScene(); //--------------------- desenha objectos no viewport1
     drawFlashlightLight();
@@ -181,6 +181,7 @@ void Timer(int value){
 
 
     camera.GetPos(xCamera, yCamera, zCamera);
+    camera.GetDirectionVector(dxCamera, dyCamera, dzCamera);
 
     updateGameTimer();
     updateBullets();

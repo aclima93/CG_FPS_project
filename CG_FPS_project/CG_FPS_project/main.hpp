@@ -46,6 +46,9 @@ float zStart = -7.5;
 float xCamera;
 float yCamera;
 float zCamera;
+float dxCamera;
+float dyCamera;
+float dzCamera;
 
 
 int mainMenu;

@@ -15,7 +15,12 @@ const float mapWidth = 100; // 5
 const float mapLength = 500; // 10
 const float mapHeight = 25; // 1
 
-#define wallScale  25, 25, 25
+#define XSCALE 25
+#define YSCALE 25
+#define ZSCALE 25
+
+
+#define wallScale  XSCALE, YSCALE, ZSCALE
 #define concreteWallModel "Test\\concrete_wall.obj"
 #define concreteWallTexture "Test\\concrete_wall.bmp"
 
@@ -97,8 +102,22 @@ float horizontalWalls[][numWallParams] = {
     //-------------------
     //paredes horizontais
     {
-        //parede esquerda6
+        //parede esquerda6.
+        -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
+         wallScale,
+         180,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda6.2
         -(mapWidth + mapWidth/2)/2, 0, -mapLength*(firstGlassStart),
+         wallScale,
+         180,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda6.3
+        -(mapWidth + mapWidth/2 + mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
          wallScale,
          180,
          WHITE                                                  // r g b a
@@ -182,102 +201,6 @@ class Map{
                                concreteWallModel, concreteWallTexture );
                 i++;
             }
-
-            /*
-            //-----------------
-            //paredes verticais
-            walls[0].Init(
-                //parede esquerda1
-                -mapWidth/2, 0, -mapLength*(firstGlassStart/2),
-                 wallScale,
-                 90,
-                 WHITE,                                                  // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[1].Init(
-                //vidro esquerda1
-                -mapWidth/2, 0, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
-                 wallScale,
-                 90,
-                 VIDRO,                                                    // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[2].Init(
-                //parede esquerda2
-                -mapWidth/2, 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-                 wallScale,
-                 90,
-                 WHITE,                                                    // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[3].Init(
-                //vidro esquerda2
-                -mapWidth/2, 0, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
-                 wallScale,
-                 90,
-                 VIDRO,                                                    // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[4].Init(
-                //parede esquerda3
-                -mapWidth/2, 0, -mapLength*((mapLength + secondGlassEnd)/2 ),
-                 wallScale,
-                 90,
-                 WHITE,                                                // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[5].Init(
-                //parede esquerda4
-                -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-                 wallScale,
-                 -90,
-                 WHITE,                                                         // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[6].Init(
-                //parede esquerda5
-                -mapWidth, 0, -mapLength*( (firstGlassStart + secondGlassEnd)/2 ),
-                 wallScale,
-                 90,
-                 WHITE,                                              // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-
-            //-------------------
-            //paredes horizontais
-            walls[7].Init(
-                //parede esquerda6
-                -(mapWidth + mapWidth/2)/2, 0, -mapLength*(firstGlassStart),
-                 wallScale,
-                 180,
-                 WHITE,                                                  // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[8].Init(
-                //parede esquerda7
-                -(mapWidth*(0.75f) + mapWidth/2)/2, 0, -mapLength*(firstGlassEnd),
-                 wallScale,
-                 0,
-                 WHITE,                                                         // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[9].Init(
-                //parede esquerda8
-                -(mapWidth*(0.75f) + mapWidth/2)/2, 0, -mapLength*(secondGlassStart),
-                 wallScale,
-                 180,
-                 WHITE,                                                         // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            walls[10].Init(
-                //parede esquerda9
-                -(mapWidth + mapWidth/2)/2, 0, -mapLength*(secondGlassEnd),
-                 wallScale,
-                 0,
-                 WHITE,                                                  // r g b a
-                 concreteWallModel, concreteWallTexture
-            );
-            */
 
         }
 
