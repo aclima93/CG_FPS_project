@@ -58,7 +58,7 @@ float glassWalls[][numWallParams] = {
 };
 
 
-#define numVerticalWalls 5
+#define numVerticalWalls 9
 float verticalWalls[][numWallParams]= {
 
     //-----------------
@@ -72,8 +72,24 @@ float verticalWalls[][numWallParams]= {
          WHITE                                                  // r g b a
     },
     {
-        //parede esquerda2
+        //parede esquerda2.1
+        -mapWidth/2, 0, -mapLength*( (firstGlassEnd + (firstGlassEnd + secondGlassStart)/2 )/2 ),
+         wallScale,
+         lWallBB, hWallBB, wWallBB,
+         90,
+         WHITE                                                    // r g b a
+    },
+    {
+        //parede esquerda2.2
         -mapWidth/2, 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
+         wallScale,
+         lWallBB, hWallBB, wWallBB,
+         90,
+         WHITE                                                    // r g b a
+    },
+    {
+        //parede esquerda2.3
+        -mapWidth/2, 0, -mapLength*( (secondGlassStart + (firstGlassEnd + secondGlassStart)/2 )/2 ),
          wallScale,
          lWallBB, hWallBB, wWallBB,
          90,
@@ -88,8 +104,24 @@ float verticalWalls[][numWallParams]= {
          WHITE                                                // r g b a
     },
     {
-        //parede esquerda4
+        //parede esquerda4.1
+        -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + (firstGlassEnd + secondGlassStart)/2 )/2 ),
+         wallScale,
+         lWallBB, hWallBB, wWallBB,
+         -90,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda4.2
         -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
+         wallScale,
+         lWallBB, hWallBB, wWallBB,
+         -90,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda4.3
+        -mapWidth*(0.75f), 0, -mapLength*( (secondGlassStart + (firstGlassEnd + secondGlassStart)/2 )/2 ),
          wallScale,
          lWallBB, hWallBB, wWallBB,
          -90,

@@ -162,9 +162,12 @@ class HUD{
                 sprintf(clipsInfoText,"%d bullets left", bulletsLeft);
                 desenhaTexto(clipsInfoText, widthHUDBlock/4, heightHUDBlock/2+10, 0);
             glPopMatrix();
+
         }
 
         void drawMiniMap(float x, float y, float z, float dx, float dz){
+
+            if(y){}
 
             glClearColor(BLACK);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -176,8 +179,6 @@ class HUD{
             glLoadIdentity();
                       //onde está           para onde está a olhar          vector up
             gluLookAt( x, minimapViewHeight, z,          x, 0, z,           dx, 0, dz);
-
-            if(y){}
 
         }
 
@@ -219,6 +220,36 @@ class HUD{
 
         }
 
+        void drawMiniMapBox(){
+
+            // top line
+            glPushMatrix();
+                glBegin(GL_QUADS);
+                    glColor3f(1.0f, 0.0f, 0.0);
+
+                    glVertex2f( 0, (hScreen*7)/8 - 1 );
+                    glVertex2f( 0, (hScreen*7)/8 );
+                    glVertex2f( wScreen/8, (hScreen*7)/8 - 1);
+                    glVertex2f( wScreen/8, (hScreen*7)/8 );
+
+                glEnd();
+            glPopMatrix();
+
+            // side line
+            glPushMatrix();
+                glBegin(GL_QUADS);
+                    glColor3f(1.0f, 0.0f, 0.0);
+
+                    glVertex2f( wScreen/8 -1, (hScreen*7)/8 );
+                    glVertex2f( wScreen/8 -1 , hScreen );
+                    glVertex2f( wScreen/8, hScreen);
+                    glVertex2f( wScreen/8, (hScreen*7)/8 );
+
+                glEnd();
+            glPopMatrix();
+
+        }
+
         //everything except the minimap
         void drawHUD(){
 
@@ -234,6 +265,7 @@ class HUD{
                 drawGunInfo();
                 drawTimeInfo();
                 drawTargetsInfo();
+                drawMiniMapBox();
                 glPushMatrix();
                     glTranslatef(0, -crosshairLength, 0);
                     drawCrosshair();

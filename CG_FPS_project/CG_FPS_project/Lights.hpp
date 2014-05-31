@@ -76,9 +76,9 @@ void drawFlashlightLight(){
     // círculo na posição da cãmara
     glPushMatrix();
         glColor4f(VERMELHO);
-        glTranslatef( xCamera, yCamera-2, zCamera);
-        glScalef(1,0,1);
-        glutWireSphere(playerRadius, 10, 10);
+        glTranslatef( xCamera, yCamera+15, zCamera);
+        //glScalef(1,0,1);
+        glutSolidSphere(playerRadius, 10, 10);
     glPopMatrix();
 
 
