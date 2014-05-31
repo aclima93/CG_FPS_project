@@ -4,6 +4,8 @@
 #include "Model.hpp"
 #include "BoundingBox.hpp"
 
+#include "Map.hpp"
+
 class Wall{
 
     public:
@@ -11,6 +13,7 @@ class Wall{
         float x, y, z;
         float xScale, yScale, zScale;
         float color[4]; // r g b a
+        float w, h, l;
         float rotation;
         Model model;
         BoundingBox boundingBox;
@@ -19,6 +22,7 @@ class Wall{
 
         void Init(float xx, float yy, float zz,
              float xs, float ys, float zs,
+             float w, float h, float l,
              float r,
              float c0, float c1, float c2, float c3,
              const char* filename, const char* texturename){
@@ -39,7 +43,7 @@ class Wall{
             color[3] = c3;
 
             model.Init(filename, texturename);
-            boundingBox.Init(0, x, y, z, xScale, yScale, zScale);
+            boundingBox.Init(0, x, 15, z, w, l, h, r);
 
 
         }

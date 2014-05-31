@@ -66,7 +66,7 @@ class Target{
             //boundingBoxes().resize(numBoundingBoxes);
 
             for(int i=0; i<numBoundingBoxes; i++){
-                boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2]);
+                boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], 0);
             }
 
             model.Init(objFile, textureFile);
