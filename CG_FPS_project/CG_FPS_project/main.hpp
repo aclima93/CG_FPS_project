@@ -36,12 +36,13 @@ Camera camera;
 HUD hud;
 Map map;
 Sounds sounds;
-Model models[NUMMODELS];
-Model walls[NUMMODELS*2];
+
 
 float xStart = 0;
 float yStart = mapHeight/2;
 float zStart = -7.5;
+
+float playerRadius = 5;
 
 float xCamera;
 float yCamera;

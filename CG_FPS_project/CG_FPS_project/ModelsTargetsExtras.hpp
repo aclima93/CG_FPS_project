@@ -12,6 +12,9 @@ void drawTargets(){
     }
 }
 
+#define camo1Obj "Test\\Camo3\\camo.obj"
+#define camo1Texture "Test\\Camo3\\Camo2.bmp"
+
 void createTargetsAndExtras(){
 
     for(int i=0; i<NUMPOSSIBLE; i++){
@@ -62,7 +65,7 @@ void createTargetsAndExtras(){
         sizesBB[5][0] = 2.0f;   sizesBB[5][1] = 2.0f;  sizesBB[5][2] = 2.0f;  // left leg
 
 
-        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB);
+        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, camo1Obj, camo1Texture);
         aux.erase( aux.begin()+ pos );
 
     }
@@ -75,43 +78,12 @@ void createTargetsAndExtras(){
         posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1];  posBB2[0][2] = aux2[pos][2];  // head
         sizesBB2[0][0] = 2.0f;   sizesBB2[0][1] = 2.0f;  sizesBB2[0][2] = 2.0f;  // head
 
-        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2);
+        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2, 0, 1, 1, 1, camo1Obj, camo1Texture);
         aux2.erase( aux2.begin()+ pos );
     }
 
 }
 
-void createModels(){
-    /*
-    for(int i=0; i<NUMMODELS; i++){
-        models[i].Init( "Test\\test.obj", "Test\\grass_tex.bmp" );
-    }
-    */
-}
-
-void drawModels(){
-    /*
-    for(int i=0; i<NUMMODELS; i++){
-        models[i].drawModel();
-    }
-    */
-}
-
-void createWalls(){
-    /*
-    for(int i=0; i<NUMMODELS*2; i++){
-       walls[i].Init( "Test\\concrete_wall.obj", "Test\\concrete_wall.bmp" );
-    }
-    */
-}
-
-void drawWalls(){
-    /*
-    for(int i=0; i<NUMMODELS*2; i++){
-        walls[i].drawModel();
-    }
-    */
-}
 
 void drawBullets(){
 

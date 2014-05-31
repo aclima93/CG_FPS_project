@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <float.h>
 
 class BoundingBox{
@@ -83,6 +83,7 @@ class BoundingBox{
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
+        //bullet collisions detection
         float checkCollision(float ox, float oy, float oz,  //origin of ray
                              float dx, float dy, float dz){ // direction of ray
 
@@ -159,6 +160,34 @@ class BoundingBox{
             }
 
             return tmin;
+
+        }
+
+
+
+        // check collisions between circle and rectangle (angles in radians)
+        float checkCircleCollision( float xCircle, float yCircle, float radius){
+
+            float xRectangle = x, yRectangle = y;
+            float wRectangle = w, hRectangle = l; // yes, it's l, trust me =P
+
+            float xDistance = abs(xCircle - xRectangle);
+            float yDistance = abs(yCircle - yRectangle);
+
+            // imediate "outside of rectangle" verifications
+            if (xDistance > (wRectangle/2 + radius)) { return false; }
+            if (yDistance > (hRectangle/2 + radius)) { return false; }
+
+            // imediate "inside of rectangle" verifications
+            if (xDistance <= (wRectangle/2)) { return true; }
+            if (yDistance <= (hRectangle/2)) { return true; }
+
+            // distance-derived verification
+            float a = (xDistance - wRectangle/2);
+            float b = (yDistance - hRectangle/2);
+            float distance = a*a + b* b;
+
+            return (distance <= (radius*radius));
 
         }
 

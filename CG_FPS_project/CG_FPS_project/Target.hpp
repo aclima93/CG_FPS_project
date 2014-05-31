@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include "BoundingBox.hpp"
+#include "Model.hpp"
 #include <vector>
 
 #define NUMTARGETS 10
@@ -25,10 +26,13 @@ class Target{
 
         float x, y, z;
         int numBoundingBoxes;
-        float w, l, h;
+        float w, l, h; // BB and scaling factors
+        float rotation;
+        float r, g, b;
         float halfW, halfL, halfH;
 
         BoundingBox boundingBoxes[NUMBOUNDINGBOXES];
+        Model model;
 
         Target(){}
         ~Target(){
@@ -36,7 +40,9 @@ class Target{
 
         void Init(float xx, float yy, float zz,
                   float ww, float hh, float ll,
-                  int numBB, float posBB[][3], float sizesBB[][3]){
+                  int numBB, float posBB[][3], float sizesBB[][3],
+                  float rot, float rr, float gg, float bb,
+                  const char* objFile, const char* textureFile ){
 
             x = xx;
             y = yy;
@@ -45,6 +51,12 @@ class Target{
             w = ww;
             h = hh;
             l = ll;
+
+            rotation = rot;
+
+            r = rr;
+            g = gg;
+            b = bb;
 
             halfW = w/2;
             halfH = h/2;
@@ -56,9 +68,14 @@ class Target{
             for(int i=0; i<numBoundingBoxes; i++){
                 boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2]);
             }
+
+            model.Init(objFile, textureFile);
+
         }
 
         void drawTarget(){
+
+            //model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
 
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
@@ -103,6 +120,7 @@ class Target{
 
             glPopMatrix();
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         }
 
         void drawBoundingBoxes(){

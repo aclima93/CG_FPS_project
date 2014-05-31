@@ -3,9 +3,9 @@
 
 
 #include "ModelsTargetsExtras.hpp"
-#include "Events.hpp"
 #include "Physics.hpp"
 #include "Lights.hpp"
+#include "Events.hpp"
 
 
 
@@ -32,8 +32,6 @@ void init(void)
 
 
     createTargetsAndExtras();
-    createModels();
-    createWalls();
 
 
 
@@ -109,8 +107,6 @@ void drawScene(){
     map.drawMap();
     drawTargets();
     drawExtras();
-    drawModels();
-    drawWalls();
     drawBullets();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
 

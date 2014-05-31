@@ -72,14 +72,15 @@ void draw_local_lights( ){
 
 void drawFlashlightLight(){
 
-    /*
-    // quadrado na posição da cãmara
+
+    // círculo na posição da cãmara
     glPushMatrix();
         glColor4f(VERMELHO);
-        glTranslatef( xCamera, yCamera+3, zCamera);
-        glutSolidCube(1);
+        glTranslatef( xCamera, yCamera-2, zCamera);
+        glScalef(1,0,1);
+        glutWireSphere(playerRadius, 10, 10);
     glPopMatrix();
-    */
+
 
     if(nightTime){
         //  Direccao do FOCO=lanterna

@@ -8,7 +8,6 @@
 #include "Colors.hpp"
 #include "Images.hpp"
 
-#define NUMWALLS 11
 #define NUMGROUNDS 2
 
 const float mapWidth = 100; // 5
@@ -96,13 +95,13 @@ float verticalWalls[][numWallParams]= {
     }
 };
 
-#define numHorizontalWalls 4
+#define numHorizontalWalls 10
 float horizontalWalls[][numWallParams] = {
 
     //-------------------
     //paredes horizontais
     {
-        //parede esquerda6.
+        //parede esquerda6.1
         -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
          wallScale,
          180,
@@ -123,28 +122,57 @@ float horizontalWalls[][numWallParams] = {
          WHITE                                                  // r g b a
     },
     {
-        //parede esquerda7
-        -(mapWidth*(0.75f) + mapWidth/2)/2, 0, -mapLength*(firstGlassEnd),
+        //parede esquerda7.1
+        -(mapWidth*(0.75f) + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(firstGlassEnd),
          wallScale,
          0,
          WHITE                                                         // r g b a
     },
     {
-        //parede esquerda8
-        -(mapWidth*(0.75f) + mapWidth/2)/2, 0, -mapLength*(secondGlassStart),
+        //parede esquerda7.2
+        -(mapWidth/2 + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(firstGlassEnd),
+         wallScale,
+         0,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda8.1
+        -(mapWidth*(0.75f) + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(secondGlassStart),
          wallScale,
          180,
          WHITE                                                         // r g b a
     },
     {
-        //parede esquerda9
+        //parede esquerda8.2
+        -(mapWidth/2 + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(secondGlassStart),
+         wallScale,
+         180,
+         WHITE                                                         // r g b a
+    },
+    {
+        //parede esquerda9.1
+        -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(secondGlassEnd),
+         wallScale,
+         0,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda9.2
         -(mapWidth + mapWidth/2)/2, 0, -mapLength*(secondGlassEnd),
+         wallScale,
+         0,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda9.3
+        -(mapWidth + mapWidth/2 + mapWidth/4 )/2, 0, -mapLength*(secondGlassEnd),
          wallScale,
          0,
          WHITE                                                  // r g b a
     }
 };
 
+#define NUMWALLS numGlassWalls+numHorizontalWalls+numVerticalWalls
 
 
 class Map{
@@ -293,10 +321,21 @@ class Map{
 
         }
 
+        void drawBBWalls(){
+
+            //draw left side and right side by symmetry
+            for(int i=0; i<NUMWALLS; i++){
+                walls[i].boundingBox.drawBoundingBox();
+            }
+
+
+        }
+
         void drawMap(){
 
             drawGround();
             drawWalls();
+            drawBBWalls();
 
         }
 

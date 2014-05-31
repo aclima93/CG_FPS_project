@@ -22,7 +22,7 @@ const float crosshairLengthFrac = crosshairLength/3;
 const float wCenterScreen = wScreen/2;
 const float hCenterScreen = hScreen/2;
 
-float minimapViewHeight = 35;
+float minimapViewHeight = -35;
 
 char targetsInfoText[100];
 char timerInfoText[100];
@@ -171,7 +171,7 @@ class HUD{
             glViewport (0, 0, wScreen/8, hScreen/8);
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
-            glOrtho(-xC, xC, -yC, yC, zC, -zC);
+            glOrtho(xC, -xC, -yC, yC, zC, -zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
                       //onde está           para onde está a olhar          vector up

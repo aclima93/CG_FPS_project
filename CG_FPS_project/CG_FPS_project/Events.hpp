@@ -117,24 +117,36 @@ void keyboard(unsigned char key, int x, int y){
         case 'W':
         case 'w':
             camera.Move(g_translation_speed);
+            if( checkWallCollisions() ){
+                camera.Move(-g_translation_speed*3); // undo
+            }
             break;
 
         //--------------------------- back
         case 'S':
         case 's':
             camera.Move(-g_translation_speed);
+            if( checkWallCollisions() ){
+                camera.Move(g_translation_speed*3); // undo
+            }
             break;
 
         //--------------------------- left
         case 'A':
         case 'a':
             camera.Strafe(g_translation_speed);
+            if( checkWallCollisions() ){
+                camera.Strafe(-g_translation_speed*3); // undo
+            }
             break;
 
         //--------------------------- left
         case 'D':
         case 'd':
             camera.Strafe(-g_translation_speed);
+            if( checkWallCollisions() ){
+                camera.Strafe(g_translation_speed*3); // undo
+            }
             break;
 
         //--------------------------- reload

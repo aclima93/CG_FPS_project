@@ -39,12 +39,7 @@ class Model{
 
         Model(){}
 
-        ~Model(){
-            delete [] v;
-            delete [] vt;
-            delete [] vn;
-            delete [] f;
-        }
+        ~Model(){}
 
         void Init(const char* objFile, const char* textureFile){
 

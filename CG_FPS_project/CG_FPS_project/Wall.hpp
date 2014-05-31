@@ -2,6 +2,7 @@
 #define WALL_HPP
 
 #include "Model.hpp"
+#include "BoundingBox.hpp"
 
 class Wall{
 
@@ -12,6 +13,7 @@ class Wall{
         float color[4]; // r g b a
         float rotation;
         Model model;
+        BoundingBox boundingBox;
 
         Wall(){}
 
@@ -37,8 +39,11 @@ class Wall{
             color[3] = c3;
 
             model.Init(filename, texturename);
+            boundingBox.Init(0, x, y, z, xScale, yScale, zScale);
+
 
         }
+
 
 };
 

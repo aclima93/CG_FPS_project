@@ -33,6 +33,15 @@ void reloadGun(){
     }
 }
 
+bool checkWallCollisions(){
+    for(int i=0; i<NUMWALLS; i++){
+        if( map.walls[i].boundingBox.checkCircleCollision( xCamera, zCamera, playerRadius ) ){
+            return true;
+        }
+    }
+    return false;
+}
+
 int checkTargetCollisions(float x, float y, float z, float dx, float dy, float dz){
 
     for(int i=0; i<(int)targets.size(); i++){
