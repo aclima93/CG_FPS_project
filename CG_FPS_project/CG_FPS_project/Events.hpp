@@ -1,5 +1,7 @@
 // =========================================== EVENTOS
 
+#define bounceFactor 3
+
 void createMainMenu(){
 
     for(int i=0; i<numGameModes; i++){
@@ -117,8 +119,8 @@ void keyboard(unsigned char key, int x, int y){
         case 'W':
         case 'w':
             camera.Move(g_translation_speed);
-            if( checkWallCollisions() ){
-                camera.Move(-g_translation_speed*3); // undo
+            if( checkPlayerWallCollisions() ){
+                camera.Move(-g_translation_speed*bounceFactor); // undo
             }
             break;
 
@@ -126,17 +128,17 @@ void keyboard(unsigned char key, int x, int y){
         case 'S':
         case 's':
             camera.Move(-g_translation_speed);
-            if( checkWallCollisions() ){
-                camera.Move(g_translation_speed*3); // undo
+            if( checkPlayerWallCollisions() ){
+                camera.Move(g_translation_speed*bounceFactor); // undo
             }
             break;
 
-        //--------------------------- left
+        //--------------------------- right
         case 'A':
         case 'a':
             camera.Strafe(g_translation_speed);
-            if( checkWallCollisions() ){
-                camera.Strafe(-g_translation_speed*3); // undo
+            if( checkPlayerWallCollisions() ){
+                camera.Strafe(-g_translation_speed*bounceFactor); // undo
             }
             break;
 
@@ -144,8 +146,8 @@ void keyboard(unsigned char key, int x, int y){
         case 'D':
         case 'd':
             camera.Strafe(-g_translation_speed);
-            if( checkWallCollisions() ){
-                camera.Strafe(g_translation_speed*3); // undo
+            if( checkPlayerWallCollisions() ){
+                camera.Strafe(g_translation_speed*bounceFactor); // undo
             }
             break;
 

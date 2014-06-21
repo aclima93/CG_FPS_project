@@ -43,6 +43,7 @@ void init(void)
 
 void drawGrid(){
 
+
     glPushMatrix();
 
         for(float i = -300; i <= 300; i += 5)
@@ -74,6 +75,7 @@ void drawGrid(){
         glEnd();
 
     glPopMatrix();
+
 
 }
 

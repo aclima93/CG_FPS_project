@@ -7,6 +7,7 @@
 #include "Ground.hpp"
 #include "Colors.hpp"
 #include "Images.hpp"
+#include <string.h>
 
 #define DEBUG_MODE 1
 
@@ -144,7 +145,8 @@ float horizontalWalls[][numWallParams] = {
     }
 };
 
-#define NUMWALLS (numGlassWalls+numHorizontalWalls+numVerticalWalls)*2
+#define NUMWALLS (/*numGlassWalls+*/numHorizontalWalls+numVerticalWalls)*2
+#define NUMGLASS numGlassWalls*2
 
 
 class Map{
@@ -156,6 +158,8 @@ class Map{
         Ground ground[NUMGROUNDS];
 
         Wall walls[NUMWALLS];
+        Wall glass[NUMGLASS];
+        int isGlassActive[NUMGLASS];
 
 
         Map(){
@@ -209,19 +213,22 @@ class Map{
                                concreteWallModel, concreteWallTexture);
                 wall_i+=2;
             }
+
+            int glassWall_i = 0;
+            memset(isGlassActive, 1, sizeof(isGlassActive));
             for(int k=0; k<numGlassWalls; k++){
-                walls[wall_i].Init( glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
+                glass[glassWall_i].Init( glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
                                glassWalls[k][4], glassWalls[k][5], glassWalls[k][6], glassWalls[k][7],
                                glassWalls[k][8], glassWalls[k][9], glassWalls[k][10],
                                glassWalls[k][11], glassWalls[k][12], glassWalls[k][13],
                                concreteWallModel, concreteWallTexture );
 
-                walls[wall_i+1].Init( -glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
+                glass[glassWall_i+1].Init( -glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
                                glassWalls[k][4], glassWalls[k][5], glassWalls[k][6], glassWalls[k][7],
                                glassWalls[k][8], -glassWalls[k][9], glassWalls[k][10],
                                glassWalls[k][11], glassWalls[k][12], glassWalls[k][13],
                                concreteWallModel, concreteWallTexture );
-                wall_i+=2;
+                glassWall_i+=2;
             }
 
         }
@@ -303,24 +310,39 @@ class Map{
                                           walls[i].xScale, walls[i].yScale, walls[i].zScale,
                                           walls[i].rotation,
                                           walls[i].color[0], walls[i].color[1], walls[i].color[2] );
-            }
 
-        }
-
-        void drawBBWalls(){
-
-            if(DEBUG_MODE){
-                for(int i=0; i<NUMWALLS; i++){
+                if(DEBUG_MODE){
                     walls[i].boundingBox.drawBoundingBox();
                 }
+            }
+        }
+
+        void drawGlass(){
+
+            for(int i=0; i<NUMGLASS; i++){
+
+                if( isGlassActive[i] ){
+
+                    glass[i].model.drawModel( glass[i].x, glass[i].y, glass[i].z,
+                                              glass[i].xScale, glass[i].yScale, glass[i].zScale,
+                                              glass[i].rotation,
+                                              glass[i].color[0], glass[i].color[1], glass[i].color[2] );
+
+                    if(DEBUG_MODE){
+                         glass[i].boundingBox.drawBoundingBox();
+                    }
+
+                }
+
             }
         }
 
         void drawMap(){
 
             drawGround();
+
             drawWalls();
-            drawBBWalls();
+            drawGlass();
 
         }
 

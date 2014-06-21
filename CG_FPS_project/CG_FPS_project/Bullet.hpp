@@ -17,8 +17,8 @@
 int bulletsInGun = CLIPSIZE;
 int bulletsLeft = CLIPSIZE * NUMCLIPS;
 int bulletIndex = 0;
-float bulletSpeed = 1; //304; // 303.986 m/s
-float maxTravelDistance = 5000;
+float bulletSpeed = 304; // 303.986 m/s
+float maxTravelDistance = 1000;
 float maxTravelDistanceSQR = maxTravelDistance*maxTravelDistance;
 
 class Bullet{
@@ -58,6 +58,7 @@ class Bullet{
 
             if(isActive){
 
+                /*
                 glPushMatrix();
                     glBegin(GL_LINES);
                         glColor3f(0, 1, 0);     // green
@@ -65,14 +66,15 @@ class Bullet{
                         glVertex3f(0, 0, 0 );	// origin
                     glEnd();
                 glPopMatrix();
+                */
 
-                /*
+
                 glPushMatrix();
                     glTranslatef( x, y, z);
                     glColor3f (0.4, 0.4, 1);
                     glutWireCube(0.05f);
                 glPopMatrix();
-                */
+
             }
 
 
@@ -81,11 +83,13 @@ class Bullet{
 
         void updatePosition(){
 
-            x += vx;
-            y += vy;
-            z += vz;
+            if(isActive){
+                x += vx;
+                y += vy;
+                z += vz;
 
-            isActive = ( (x*x) + (y*y) + (z*z) <= maxTravelDistanceSQR  );
+                isActive = ( (x*x) + (y*y) + (z*z) <= maxTravelDistanceSQR  );
+            }
         }
 
 };

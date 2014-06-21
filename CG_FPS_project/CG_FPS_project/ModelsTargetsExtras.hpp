@@ -12,14 +12,14 @@ void drawTargets(){
     }
 }
 
-#define CAMO_CITY_TEXTURE "Test\\Camo3\\Camo3.bmp"
-#define CAMO_CITY_OBJ "Test\\Camo3\\camo3.obj"
+#define CAMO_CITY_TEXTURE "Test\\Wall\\Wall_texture.bmp"//"Test\\Camo3\\Camo3.bmp"
+#define CAMO_CITY_OBJ "Test\\test.obj"//"Test\\Camo3\\camo3.obj"
 
-#define CAMO_JUNGLE_TEXTURE "Test\\Camo2\\Camo-Wallpaper-Picture.bmp"
-#define CAMO_JUNGLE_OBJ "Test\\Camo2\\camo2.obj"
+#define CAMO_JUNGLE_TEXTURE "Test\\Wall\\Wall_texture.bmp"//"Test\\Camo2\\Camo-Wallpaper-Picture.bmp"
+#define CAMO_JUNGLE_OBJ "Test\\test.obj"//"Test\\Camo2\\camo2.obj"
 
-#define CAMO_SNOW_TEXTURE "Test\\Camo1\\Camo-Wallpaper.bmp"
-#define CAMO_SNOW_OBJ "Test\\Camo1\\camo1.obj"
+#define CAMO_SNOW_TEXTURE "Test\\Wall\\Wall_texture.bmp"//"Test\\Camo1\\Camo-Wallpaper.bmp"
+#define CAMO_SNOW_OBJ "Test\\test.obj"//"Test\\Camo1\\camo1.obj"
 
 #define lol1 "Test\\test.obj"
 #define lol2 "Test\\Wall\\Wall_texture.bmp"
@@ -29,11 +29,11 @@ void createTargetsAndExtras(){
     for(int i=0; i<NUMPOSSIBLE; i++){
         possiblePositions[i][0] = 0;
         possiblePositions[i][1] = 5;
-        possiblePositions[i][2] = -i*10 ;
+        possiblePositions[i][2] = -i*10 +20 ;
 
         possibleExtraPositions[i][0] = 0;
         possibleExtraPositions[i][1] = 20;
-        possibleExtraPositions[i][2] = -i*10;
+        possibleExtraPositions[i][2] = -i*10 +20;
     }
 
     std::vector< std::vector<float> > aux = possiblePositions;
@@ -74,8 +74,6 @@ void createTargetsAndExtras(){
         sizesBB[5][0] = 2.0f;   sizesBB[5][1] = 2.0f;  sizesBB[5][2] = 2.0f;  // left leg
 
 
-
-        /*
         srand(time(NULL));
         int randomNum = rand() % 3;
         if( randomNum == 0){
@@ -85,11 +83,8 @@ void createTargetsAndExtras(){
             targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, CAMO_CITY_OBJ, CAMO_CITY_TEXTURE);
         }
         else{
-             targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, CAMO_JUNGLE_OBJ, CAMO_JUNGLE_TEXTURE);
+            targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, CAMO_JUNGLE_OBJ, CAMO_JUNGLE_TEXTURE);
         }
-        */
-
-        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, lol1, lol2);
 
         aux.erase( aux.begin()+ pos );
 

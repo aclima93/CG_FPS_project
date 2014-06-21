@@ -33,7 +33,7 @@ void reloadGun(){
     }
 }
 
-bool checkWallCollisions(){
+bool checkPlayerWallCollisions(){
 
     for(int i=0; i<NUMWALLS; i++){
         if( map.walls[i].boundingBox.checkPlayerWallCollision( xCamera, zCamera, playerRadius ) ){
@@ -41,7 +41,52 @@ bool checkWallCollisions(){
         }
     }
 
+    for(int i=0; i<NUMGLASS; i++){
+        if( map.isGlassActive[i] ){
+            if( map.glass[i].boundingBox.checkPlayerWallCollision( xCamera, zCamera, playerRadius ) ){
+                return true;
+            }
+        }
+    }
+
     return false;
+}
+
+int checkWallCollisions(float x, float y, float z, float dx, float dy, float dz){
+
+    for(int i=0; i<NUMWALLS; i++){
+
+        float distance = map.walls[i].boundingBox.checkCollision(x, y, z, dx, dy, dz);
+
+        if( distance != -1 ){
+            bullets[bulletIndex].isActive = false;
+            return 1; // stop the bullet in mid-flight
+
+        }
+
+    }
+
+    return -1;
+
+}
+
+int checkGlassCollisions(float x, float y, float z, float dx, float dy, float dz){
+
+    for(int i=0; i<NUMGLASS; i++){
+
+        float distance = map.glass[i].boundingBox.checkCollision(x, y, z, dx, dy, dz);
+
+        if( distance != -1 ){
+            bullets[bulletIndex].isActive = false;
+            map.isGlassActive[i] = 0; // remove glass
+            return 1; // stop the bullet in mid-flight
+
+        }
+
+    }
+
+    return -1;
+
 }
 
 int checkTargetCollisions(float x, float y, float z, float dx, float dy, float dz){
@@ -113,6 +158,8 @@ void shootGun(){
 
     if(bulletsInGun){
 
+        sounds.playGunFiringSound(); // play firing sound
+
         bulletsInGun--;
 
         float x, y, z;
@@ -128,14 +175,27 @@ void shootGun(){
 
         if( targetBBIndex != -1){
             score += targetValues[targetBBIndex];
+
+
+            //play metalic hit sound
         }
-        else{
-            if( checkExtraCollisions(x, y, z, dx, dy, dz) != -1){
-                score += extraValue;
-            }
+        else if( checkExtraCollisions(x, y, z, dx, dy, dz) != -1){
+            score += extraValue;
+
+
+            //play metalic hit sound
+        }
+        else if( checkGlassCollisions(x, y, z, dx, dy, dz) != -1){
+
+
+            //play glass breaking sound
+        }
+        else if( checkWallCollisions(x, y, z, dx, dy, dz) != -1){
+
+
+            //play wall hit sound
         }
 
-        sounds.playGunFiringSound();
 
     }
 }

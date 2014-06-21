@@ -73,6 +73,7 @@ void draw_local_lights( ){
 void drawFlashlightLight(){
 
 
+    /*
     // círculo na posição da cãmara
     glPushMatrix();
         glColor4f(VERMELHO);
@@ -80,6 +81,7 @@ void drawFlashlightLight(){
         //glScalef(1,0,1);
         glutSolidSphere(playerRadius, 10, 10);
     glPopMatrix();
+    */
 
 
     if(nightTime){
@@ -90,11 +92,13 @@ void drawFlashlightLight(){
         glEnable(GL_LIGHT0+numLights);
         glLightf(GL_LIGHT0+numLights, GL_SPOT_CUTOFF, 22.5); // angulo de corte do foco
         glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection); //Definir direccao do foco
+
         /*
         glLightf(GL_LIGHT0+numLights, GL_CONSTANT_ATTENUATION, 2.0);
         glLightf(GL_LIGHT0+numLights, GL_LINEAR_ATTENUATION, 1.0);
         glLightf(GL_LIGHT0+numLights, GL_QUADRATIC_ATTENUATION, 0.5);
         */
+
 
     }
 
