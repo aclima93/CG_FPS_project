@@ -65,7 +65,7 @@ float verticalWalls[][numWallParams]= {
     //paredes verticais
     {
         //parede esquerda1
-        -mapWidth/2, 0, -mapLength*0.2,
+        -mapWidth/2, 0, -mapLength*(0.2f),
          XSCALE, YSCALE, ZSCALE*14.5,//wallScale,
          lWallBB, hWallBB, wWallBB*13,
          90,
@@ -73,7 +73,7 @@ float verticalWalls[][numWallParams]= {
     },
     {
         //parede esquerda2
-        -mapWidth/2, 0, -mapLength*0.5,
+        -mapWidth/2, 0, -mapLength*(0.5f),
          XSCALE, YSCALE, ZSCALE*3.5,//wallScale,
          lWallBB, hWallBB, wWallBB*3,
          90,
@@ -81,7 +81,7 @@ float verticalWalls[][numWallParams]= {
     },
     {
         //parede esquerda3
-        -mapWidth/2, 0, -mapLength*0.8,
+        -mapWidth/2, 0, -mapLength*(0.8f),
          XSCALE, YSCALE, ZSCALE*14.5,//wallScale,
          lWallBB, hWallBB, wWallBB*13,
          90,
@@ -89,7 +89,7 @@ float verticalWalls[][numWallParams]= {
     },
     {
         //parede esquerda4
-        -mapWidth*(0.75f), 0, -mapLength*0.5,
+        -mapWidth*(0.75f), 0, -mapLength*(0.5f),
          XSCALE, YSCALE, ZSCALE*3.5,//wallScale,
          lWallBB, hWallBB, wWallBB*3,
          -90,
@@ -97,7 +97,7 @@ float verticalWalls[][numWallParams]= {
     },
     {
         //parede esquerda5
-        -mapWidth, 0, -mapLength*0.5,
+        -mapWidth, 0, -mapLength*(0.5f),
          XSCALE, YSCALE, ZSCALE*7.25,//wallScale,
          lWallBB, hWallBB, wWallBB*6,
          90,
@@ -298,7 +298,6 @@ class Map{
 
         void drawWalls(){
 
-            //draw left side and right side by symmetry
             for(int i=0; i<NUMWALLS; i++){
                 walls[i].model.drawModel( walls[i].x, walls[i].y, walls[i].z,
                                           walls[i].xScale, walls[i].yScale, walls[i].zScale,
@@ -309,7 +308,7 @@ class Map{
         }
 
         void drawBBWalls(){
-            //draw left side and right side by symmetry
+
             if(DEBUG_MODE){
                 for(int i=0; i<NUMWALLS; i++){
                     walls[i].boundingBox.drawBoundingBox();

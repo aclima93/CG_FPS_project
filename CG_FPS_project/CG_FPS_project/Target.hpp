@@ -63,7 +63,6 @@ class Target{
             halfL = l/2;
 
             numBoundingBoxes = numBB;
-            //boundingBoxes().resize(numBoundingBoxes);
 
             for(int i=0; i<numBoundingBoxes; i++){
                 boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], 0);
@@ -75,8 +74,7 @@ class Target{
 
         void drawTarget(){
 
-            //model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
-
+            model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
             glPushMatrix();

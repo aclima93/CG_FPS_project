@@ -172,9 +172,9 @@ class BoundingBox{
 
 
         // check collisions between circle and rectangle (angles in radians)
-        float checkCircleCollision( float xCircle, float yCircle, float radius){
+        float checkPlayerWallCollision( float xCircle, float yCircle, float radius){
 
-            float xRectangle = x, yRectangle = y;
+            float xRectangle = x, yRectangle = z;
             float wRectangle = w, hRectangle = l; // yes, it's l, trust me =P
 
             float xDistance = abs(xCircle - xRectangle);

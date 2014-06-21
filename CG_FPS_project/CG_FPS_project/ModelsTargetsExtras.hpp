@@ -12,8 +12,17 @@ void drawTargets(){
     }
 }
 
-#define camo1Obj "Test\\Camo3\\camo.obj"
-#define camo1Texture "Test\\Camo3\\Camo2.bmp"
+#define CAMO_CITY_TEXTURE "Test\\Camo3\\Camo3.bmp"
+#define CAMO_CITY_OBJ "Test\\Camo3\\camo3.obj"
+
+#define CAMO_JUNGLE_TEXTURE "Test\\Camo2\\Camo-Wallpaper-Picture.bmp"
+#define CAMO_JUNGLE_OBJ "Test\\Camo2\\camo2.obj"
+
+#define CAMO_SNOW_TEXTURE "Test\\Camo1\\Camo-Wallpaper.bmp"
+#define CAMO_SNOW_OBJ "Test\\Camo1\\camo1.obj"
+
+#define lol1 "Test\\test.obj"
+#define lol2 "Test\\Wall\\Wall_texture.bmp"
 
 void createTargetsAndExtras(){
 
@@ -65,7 +74,23 @@ void createTargetsAndExtras(){
         sizesBB[5][0] = 2.0f;   sizesBB[5][1] = 2.0f;  sizesBB[5][2] = 2.0f;  // left leg
 
 
-        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, camo1Obj, camo1Texture);
+
+        /*
+        srand(time(NULL));
+        int randomNum = rand() % 3;
+        if( randomNum == 0){
+            targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, CAMO_SNOW_OBJ, CAMO_SNOW_TEXTURE);
+        }
+        else if( randomNum == 1 ){
+            targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, CAMO_CITY_OBJ, CAMO_CITY_TEXTURE);
+        }
+        else{
+             targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, CAMO_JUNGLE_OBJ, CAMO_JUNGLE_TEXTURE);
+        }
+        */
+
+        targets[i].Init( aux[pos][0], aux[pos][1], aux[pos][2], w, h, l, numBB, posBB, sizesBB, 0, 1, 1, 1, lol1, lol2);
+
         aux.erase( aux.begin()+ pos );
 
     }
@@ -78,7 +103,7 @@ void createTargetsAndExtras(){
         posBB2[0][0] = aux2[pos][0];     posBB2[0][1] = aux2[pos][1];  posBB2[0][2] = aux2[pos][2];  // head
         sizesBB2[0][0] = 2.0f;   sizesBB2[0][1] = 2.0f;  sizesBB2[0][2] = 2.0f;  // head
 
-        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2, 0, 1, 1, 1, camo1Obj, camo1Texture);
+        extras[i].Init( aux2[pos][0], aux2[pos][1], aux2[pos][2], w, h, l, numBB2, posBB2, sizesBB2, 0, 1, 1, 1, lol1, lol2);
         aux2.erase( aux2.begin()+ pos );
     }
 
