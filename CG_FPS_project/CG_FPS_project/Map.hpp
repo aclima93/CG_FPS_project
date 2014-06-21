@@ -20,8 +20,8 @@ const float mapHeight = 25; // 1
 
 
 #define wallScale  XSCALE, YSCALE, ZSCALE
-#define concreteWallModel "Test\\concrete_wall.obj"
-#define concreteWallTexture "Test\\concrete_wall.bmp"
+#define concreteWallModel "Test\\Wall\\Wall.obj"
+#define concreteWallTexture "Test\\Wall\\Wall_texture.bmp"
 
 const float firstGlassStart = 0.40f;
 const float firstGlassEnd = 0.45f;
@@ -58,7 +58,7 @@ float glassWalls[][numWallParams] = {
 };
 
 
-#define numVerticalWalls 9
+#define numVerticalWalls 5
 float verticalWalls[][numWallParams]= {
 
     //-----------------
@@ -66,67 +66,67 @@ float verticalWalls[][numWallParams]= {
     {
         //parede esquerda1
         -mapWidth/2, 0, -mapLength*(firstGlassStart/2),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
+         XSCALE, YSCALE, ZSCALE*14.5,//wallScale,
+         lWallBB, hWallBB, wWallBB*13,
          90,
          WHITE                                                  // r g b a
     },
-    {
+    /*{
         //parede esquerda2.1
         -mapWidth/2, 0, -mapLength*( (firstGlassEnd + (firstGlassEnd + secondGlassStart)/2 )/2 ),
          wallScale,
          lWallBB, hWallBB, wWallBB,
          90,
          WHITE                                                    // r g b a
-    },
+    },*/
     {
         //parede esquerda2.2
         -mapWidth/2, 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
+         XSCALE, YSCALE, ZSCALE*3,//wallScale,
+         lWallBB, hWallBB, wWallBB*2,
          90,
          WHITE                                                    // r g b a
     },
-    {
+    /*{
         //parede esquerda2.3
         -mapWidth/2, 0, -mapLength*( (secondGlassStart + (firstGlassEnd + secondGlassStart)/2 )/2 ),
          wallScale,
          lWallBB, hWallBB, wWallBB,
          90,
          WHITE                                                    // r g b a
-    },
+    },*/
     {
         //parede esquerda3
         -mapWidth/2, 0, -mapLength*((mapLength + secondGlassEnd)/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
+         XSCALE, YSCALE, ZSCALE*14.5,//wallScale,
+         lWallBB, hWallBB, wWallBB*3,
          90,
          WHITE                                                // r g b a
     },
-    {
+    /*{
         //parede esquerda4.1
         -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + (firstGlassEnd + secondGlassStart)/2 )/2 ),
          wallScale,
          lWallBB, hWallBB, wWallBB,
          -90,
          WHITE                                                         // r g b a
-    },
+    },*/
     {
         //parede esquerda4.2
         -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-         wallScale,
+         XSCALE, YSCALE, ZSCALE*3,//wallScale,
          lWallBB, hWallBB, wWallBB,
          -90,
          WHITE                                                         // r g b a
     },
-    {
+    /*{
         //parede esquerda4.3
         -mapWidth*(0.75f), 0, -mapLength*( (secondGlassStart + (firstGlassEnd + secondGlassStart)/2 )/2 ),
          wallScale,
          lWallBB, hWallBB, wWallBB,
          -90,
          WHITE                                                         // r g b a
-    },
+    },*/
     {
         //parede esquerda5
         -mapWidth, 0, -mapLength*( (firstGlassStart + secondGlassEnd)/2 ),
@@ -137,35 +137,35 @@ float verticalWalls[][numWallParams]= {
     }
 };
 
-#define numHorizontalWalls 10
+#define numHorizontalWalls 6
 float horizontalWalls[][numWallParams] = {
 
     //-------------------
     //paredes horizontais
-    {
+    /*{
         //parede esquerda6.1
         -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
          wallScale,
          wWallBB, hWallBB, lWallBB,
          180,
          WHITE                                                  // r g b a
-    },
+    },*/
     {
         //parede esquerda6.2
         -(mapWidth + mapWidth/2)/2, 0, -mapLength*(firstGlassStart),
-         wallScale,
+         XSCALE*3, YSCALE, ZSCALE,//wallScale,
          wWallBB, hWallBB, lWallBB,
          180,
          WHITE                                                  // r g b a
     },
-    {
+    /*{
         //parede esquerda6.3
         -(mapWidth + mapWidth/2 + mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
          wallScale,
          wWallBB, hWallBB, lWallBB,
          180,
          WHITE                                                  // r g b a
-    },
+    },*/
     {
         //parede esquerda7.1
         -(mapWidth*(0.75f) + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(firstGlassEnd),
@@ -198,30 +198,30 @@ float horizontalWalls[][numWallParams] = {
          180,
          WHITE                                                         // r g b a
     },
-    {
+    /*{
         //parede esquerda9.1
         -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(secondGlassEnd),
          wallScale,
          wWallBB, hWallBB, lWallBB,
          0,
          WHITE                                                  // r g b a
-    },
+    },*/
     {
         //parede esquerda9.2
         -(mapWidth + mapWidth/2)/2, 0, -mapLength*(secondGlassEnd),
-         wallScale,
+         XSCALE*3, YSCALE, ZSCALE,//wallScale,
          wWallBB, hWallBB, lWallBB,
          0,
          WHITE                                                  // r g b a
     },
-    {
+    /*{
         //parede esquerda9.3
         -(mapWidth + mapWidth/2 + mapWidth/4 )/2, 0, -mapLength*(secondGlassEnd),
          wallScale,
          wWallBB, hWallBB, lWallBB,
          0,
          WHITE                                                  // r g b a
-    }
+    }*/
 };
 
 #define NUMWALLS numGlassWalls+numHorizontalWalls+numVerticalWalls
