@@ -8,6 +8,8 @@
 #include "Colors.hpp"
 #include "Images.hpp"
 
+#define DEBUG_MODE 1
+
 #define NUMGROUNDS 2
 
 const float mapWidth = 100; // 5
@@ -17,8 +19,6 @@ const float mapHeight = 25; // 1
 #define XSCALE 25
 #define YSCALE 25
 #define ZSCALE 25
-
-
 #define wallScale  XSCALE, YSCALE, ZSCALE
 #define concreteWallModel "Test\\Wall\\Wall.obj"
 #define concreteWallTexture "Test\\Wall\\Wall_texture.bmp"
@@ -42,16 +42,16 @@ float glassWalls[][numWallParams] = {
     {
         //vidro esquerda1
         -mapWidth/2, 0, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
+         XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
+         lWallBB/4, hWallBB, wWallBB*2,
          90,
          VIDRO                                                    // r g b a
     },
     {
         //vidro esquerda2
         -mapWidth/2, 0, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
+         XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
+         lWallBB/4, hWallBB, wWallBB*2,
          90,
          VIDRO                                                    // r g b a
     }
@@ -65,166 +65,86 @@ float verticalWalls[][numWallParams]= {
     //paredes verticais
     {
         //parede esquerda1
-        -mapWidth/2, 0, -mapLength*(firstGlassStart/2),
+        -mapWidth/2, 0, -mapLength*0.2,
          XSCALE, YSCALE, ZSCALE*14.5,//wallScale,
          lWallBB, hWallBB, wWallBB*13,
          90,
          WHITE                                                  // r g b a
     },
-    /*{
-        //parede esquerda2.1
-        -mapWidth/2, 0, -mapLength*( (firstGlassEnd + (firstGlassEnd + secondGlassStart)/2 )/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
-         90,
-         WHITE                                                    // r g b a
-    },*/
     {
-        //parede esquerda2.2
-        -mapWidth/2, 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-         XSCALE, YSCALE, ZSCALE*3,//wallScale,
-         lWallBB, hWallBB, wWallBB*2,
+        //parede esquerda2
+        -mapWidth/2, 0, -mapLength*0.5,
+         XSCALE, YSCALE, ZSCALE*3.5,//wallScale,
+         lWallBB, hWallBB, wWallBB*3,
          90,
          WHITE                                                    // r g b a
     },
-    /*{
-        //parede esquerda2.3
-        -mapWidth/2, 0, -mapLength*( (secondGlassStart + (firstGlassEnd + secondGlassStart)/2 )/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
-         90,
-         WHITE                                                    // r g b a
-    },*/
     {
         //parede esquerda3
-        -mapWidth/2, 0, -mapLength*((mapLength + secondGlassEnd)/2 ),
+        -mapWidth/2, 0, -mapLength*0.8,
          XSCALE, YSCALE, ZSCALE*14.5,//wallScale,
-         lWallBB, hWallBB, wWallBB*3,
+         lWallBB, hWallBB, wWallBB*13,
          90,
          WHITE                                                // r g b a
     },
-    /*{
-        //parede esquerda4.1
-        -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + (firstGlassEnd + secondGlassStart)/2 )/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
-         -90,
-         WHITE                                                         // r g b a
-    },*/
     {
-        //parede esquerda4.2
-        -mapWidth*(0.75f), 0, -mapLength*( (firstGlassEnd + secondGlassStart)/2 ),
-         XSCALE, YSCALE, ZSCALE*3,//wallScale,
-         lWallBB, hWallBB, wWallBB,
+        //parede esquerda4
+        -mapWidth*(0.75f), 0, -mapLength*0.5,
+         XSCALE, YSCALE, ZSCALE*3.5,//wallScale,
+         lWallBB, hWallBB, wWallBB*3,
          -90,
          WHITE                                                         // r g b a
     },
-    /*{
-        //parede esquerda4.3
-        -mapWidth*(0.75f), 0, -mapLength*( (secondGlassStart + (firstGlassEnd + secondGlassStart)/2 )/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
-         -90,
-         WHITE                                                         // r g b a
-    },*/
     {
         //parede esquerda5
-        -mapWidth, 0, -mapLength*( (firstGlassStart + secondGlassEnd)/2 ),
-         wallScale,
-         lWallBB, hWallBB, wWallBB,
+        -mapWidth, 0, -mapLength*0.5,
+         XSCALE, YSCALE, ZSCALE*7.25,//wallScale,
+         lWallBB, hWallBB, wWallBB*6,
          90,
          WHITE                                              // r g b a
     }
 };
 
-#define numHorizontalWalls 6
+#define numHorizontalWalls 4
 float horizontalWalls[][numWallParams] = {
 
     //-------------------
     //paredes horizontais
-    /*{
-        //parede esquerda6.1
-        -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
-         180,
-         WHITE                                                  // r g b a
-    },*/
     {
-        //parede esquerda6.2
+        //parede esquerda6
         -(mapWidth + mapWidth/2)/2, 0, -mapLength*(firstGlassStart),
-         XSCALE*3, YSCALE, ZSCALE,//wallScale,
-         wWallBB, hWallBB, lWallBB,
+         XSCALE*3.5, YSCALE, ZSCALE,//wallScale,
+         wWallBB*3, hWallBB, lWallBB,
          180,
          WHITE                                                  // r g b a
     },
-    /*{
-        //parede esquerda6.3
-        -(mapWidth + mapWidth/2 + mapWidth/4 )/2, 0, -mapLength*(firstGlassStart),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
-         180,
-         WHITE                                                  // r g b a
-    },*/
     {
-        //parede esquerda7.1
-        -(mapWidth*(0.75f) + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(firstGlassEnd),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
+        //parede esquerda7
+        -(mapWidth*(0.75f) + mapWidth/2)/2 , 0, -mapLength*(firstGlassEnd),
+         XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
+         wWallBB*1.25, hWallBB, lWallBB,
          0,
          WHITE                                                         // r g b a
     },
     {
-        //parede esquerda7.2
-        -(mapWidth/2 + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(firstGlassEnd),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
-         0,
-         WHITE                                                         // r g b a
-    },
-    {
-        //parede esquerda8.1
-        -(mapWidth*(0.75f) + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(secondGlassStart),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
+        //parede esquerda8
+        -(mapWidth*(0.75f) + mapWidth/2)/2 , 0, -mapLength*(secondGlassStart),
+         XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
+         wWallBB*1.25, hWallBB, lWallBB,
          180,
          WHITE                                                         // r g b a
     },
     {
-        //parede esquerda8.2
-        -(mapWidth/2 + (mapWidth*(0.75f) + mapWidth/2)/2 )/2 , 0, -mapLength*(secondGlassStart),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
-         180,
-         WHITE                                                         // r g b a
-    },
-    /*{
-        //parede esquerda9.1
-        -(mapWidth + mapWidth/2 - mapWidth/4 )/2, 0, -mapLength*(secondGlassEnd),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
-         0,
-         WHITE                                                  // r g b a
-    },*/
-    {
-        //parede esquerda9.2
+        //parede esquerda9
         -(mapWidth + mapWidth/2)/2, 0, -mapLength*(secondGlassEnd),
-         XSCALE*3, YSCALE, ZSCALE,//wallScale,
-         wWallBB, hWallBB, lWallBB,
+         XSCALE*3.5, YSCALE, ZSCALE,//wallScale,
+         wWallBB*3, hWallBB, lWallBB,
          0,
          WHITE                                                  // r g b a
-    },
-    /*{
-        //parede esquerda9.3
-        -(mapWidth + mapWidth/2 + mapWidth/4 )/2, 0, -mapLength*(secondGlassEnd),
-         wallScale,
-         wWallBB, hWallBB, lWallBB,
-         0,
-         WHITE                                                  // r g b a
-    }*/
+    }
 };
 
-#define NUMWALLS numGlassWalls+numHorizontalWalls+numVerticalWalls
+#define NUMWALLS (numGlassWalls+numHorizontalWalls+numVerticalWalls)*2
 
 
 class Map{
@@ -259,30 +179,49 @@ class Map{
             );
 
 
-            int i;
-            for(i=0; i<numHorizontalWalls; i++){
-                walls[i].Init( horizontalWalls[i][0], horizontalWalls[i][1], horizontalWalls[i][2], horizontalWalls[i][3],
+            int wall_i = 0;
+            for(int i=0; i<numHorizontalWalls; i++){
+                walls[wall_i].Init( horizontalWalls[i][0], horizontalWalls[i][1], horizontalWalls[i][2], horizontalWalls[i][3],
                                horizontalWalls[i][4], horizontalWalls[i][5], horizontalWalls[i][6], horizontalWalls[i][7],
                                horizontalWalls[i][8], horizontalWalls[i][9], horizontalWalls[i][10],
                                horizontalWalls[i][11], horizontalWalls[i][12], horizontalWalls[i][13],
                                concreteWallModel, concreteWallTexture
                         );
+                walls[wall_i+1].Init( -horizontalWalls[i][0], horizontalWalls[i][1], horizontalWalls[i][2], horizontalWalls[i][3],
+                               horizontalWalls[i][4], horizontalWalls[i][5], horizontalWalls[i][6], horizontalWalls[i][7],
+                               horizontalWalls[i][8], -horizontalWalls[i][9], horizontalWalls[i][10],
+                               horizontalWalls[i][11], horizontalWalls[i][12], horizontalWalls[i][13],
+                               concreteWallModel, concreteWallTexture
+                        );
+                wall_i+=2;
             }
             for(int j=0; j<numVerticalWalls; j++){
-                walls[i].Init( verticalWalls[j][0], verticalWalls[j][1], verticalWalls[j][2], verticalWalls[j][3],
+                walls[wall_i].Init( verticalWalls[j][0], verticalWalls[j][1], verticalWalls[j][2], verticalWalls[j][3],
                                verticalWalls[j][4], verticalWalls[j][5], verticalWalls[j][6], verticalWalls[j][7],
                                verticalWalls[j][8], verticalWalls[j][9], verticalWalls[j][10],
                                verticalWalls[j][11], verticalWalls[j][12], verticalWalls[j][13],
                                concreteWallModel, concreteWallTexture);
-                i++;
+
+                walls[wall_i+1].Init( -verticalWalls[j][0], verticalWalls[j][1], verticalWalls[j][2], verticalWalls[j][3],
+                               verticalWalls[j][4], verticalWalls[j][5], verticalWalls[j][6], verticalWalls[j][7],
+                               verticalWalls[j][8], -verticalWalls[j][9], verticalWalls[j][10],
+                               verticalWalls[j][11], verticalWalls[j][12], verticalWalls[j][13],
+                               concreteWallModel, concreteWallTexture);
+                wall_i+=2;
             }
             for(int k=0; k<numGlassWalls; k++){
-                walls[i].Init( glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
+                walls[wall_i].Init( glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
                                glassWalls[k][4], glassWalls[k][5], glassWalls[k][6], glassWalls[k][7],
                                glassWalls[k][8], glassWalls[k][9], glassWalls[k][10],
                                glassWalls[k][11], glassWalls[k][12], glassWalls[k][13],
                                concreteWallModel, concreteWallTexture );
-                i++;
+
+                walls[wall_i+1].Init( -glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
+                               glassWalls[k][4], glassWalls[k][5], glassWalls[k][6], glassWalls[k][7],
+                               glassWalls[k][8], -glassWalls[k][9], glassWalls[k][10],
+                               glassWalls[k][11], glassWalls[k][12], glassWalls[k][13],
+                               concreteWallModel, concreteWallTexture );
+                wall_i+=2;
             }
 
         }
@@ -365,25 +304,17 @@ class Map{
                                           walls[i].xScale, walls[i].yScale, walls[i].zScale,
                                           walls[i].rotation,
                                           walls[i].color[0], walls[i].color[1], walls[i].color[2] );
-
-                walls[i].model.drawModel( -walls[i].x, walls[i].y, walls[i].z,
-                                          walls[i].xScale, walls[i].yScale, walls[i].zScale,
-                                          -walls[i].rotation,
-                                          walls[i].color[0], walls[i].color[1], walls[i].color[2] );
-
             }
-
 
         }
 
         void drawBBWalls(){
-
             //draw left side and right side by symmetry
-            for(int i=0; i<NUMWALLS; i++){
-                walls[i].boundingBox.drawBoundingBox();
+            if(DEBUG_MODE){
+                for(int i=0; i<NUMWALLS; i++){
+                    walls[i].boundingBox.drawBoundingBox();
+                }
             }
-
-
         }
 
         void drawMap(){
