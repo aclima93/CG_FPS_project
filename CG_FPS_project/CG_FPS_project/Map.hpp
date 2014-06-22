@@ -255,6 +255,7 @@ class Map{
                              ){
 
             glEnable(GL_TEXTURE_2D);
+            //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
             glPushMatrix();
 
                 if(texIndex != -1){
@@ -284,6 +285,7 @@ class Map{
 
                 glEnd();
             glPopMatrix();
+            //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
         void drawGround(){
@@ -310,11 +312,9 @@ class Map{
 
                 halfW = ground[i].wFactor/2;
                 halfL = ground[i].lFactor/2;
-                //halfW = 5;
-                //halfL = 5;
                 int counter  = 0;
-                limitX = ground[i].centerX + ground[i].width/2 - ground[i].wFactor;
-                limitZ = ground[i].centerZ + ground[i].length/2 - ground[i].lFactor;
+                limitX = ground[i].centerX + ground[i].width/2 ;//- ground[i].wFactor;
+                limitZ = ground[i].centerZ + ground[i].length/2 ;//- ground[i].lFactor;
 
                 startZ = ground[i].centerZ - ground[i].length/2 + ground[i].lFactor;
                 startX = ground[i].centerX - ground[i].width/2 + ground[i].wFactor;
@@ -337,7 +337,7 @@ class Map{
 
                     }
                 }
-                std::cout << counter << std::endl;
+                //std::cout << counter << std::endl;
             }
             //exit(0);
 

@@ -3,6 +3,11 @@
 
 #include <GL/glut.h>
 #include <math.h>
+#include "RgbImage.h"
+#include <string>
+
+
+#define HUDColor 0.0f, 0.635f, 0.909f
 
 GLint wScreen=1366, hScreen=800;
 GLfloat xC=50.0, yC=50.0, zC=50.0; // Sistema Coordenadas
@@ -38,22 +43,46 @@ int score = 0;
 int targetValues[6] = { 500, 350, 50, 50, 50, 50}; // head, torso, arms and legs
 int extraValue = 750;
 
+#define numImages 3
+RgbImage hudImag;
+GLuint  hudTexture[numImages];
+string hudImages[numImages] = {"textures\\esquerda.bmp", "textures\\central.bmp", "textures\\direita.bmp"};
+
 class HUD{
 
     public:
 
-        HUD(){}
+        HUD(){
+            createTextures();
+        }
+
+        void createTextures(){
+            for(int x=0;x<numImages;x++){
+                glGenTextures(1, &hudTexture[x]);
+                glBindTexture(GL_TEXTURE_2D, hudTexture[x]);
+                hudImag.LoadBmpFile(hudImages[x].c_str()); /* Passar a string para const char em C */
+                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+                glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                    hudImag.GetNumCols(),
+                    hudImag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+                    hudImag.ImageData());
+             }
+        }
 
         void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z){
             glRasterPos3f(x,y,z);
             while(*string)
-              glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, *string++);
+              glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *string++);
         }
 
         void drawCrosshair(){
 
             glPushMatrix();
-                glColor3f(1.0f, 0.0f, 0.0);
+                glColor3f(HUDColor);
                 // top segment
                 glBegin(GL_QUADS);
 
@@ -110,26 +139,33 @@ class HUD{
 
         void drawTargetsInfo(){
 
+
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, hudTexture[2]);
+                glPushMatrix();
+                    glDisable(GL_LIGHTING);
+                    glBegin(GL_QUADS);
+                    glColor4f(WHITE);
+                    glNormal3f(0.0f, 0.0f, 0.0f);
+
+                        glTexCoord2f(0.0f, 1.0f); glVertex2f(wScreen - widthHUDBlock, 0.0);
+                        glTexCoord2f(0.0f, 0.0f); glVertex2f(wScreen - widthHUDBlock, heightHUDBlock);
+                        glTexCoord2f(1.0f, 0.0f); glVertex2f(wScreen, heightHUDBlock);
+                        glTexCoord2f(1.0f, 1.0f); glVertex2f(wScreen, 0.0);
+
+                    glEnd();
+                    glEnable(GL_LIGHTING);
+                glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
+
             glPushMatrix();
-                glBegin(GL_QUADS);
-                    glColor3f(1.0f, 0.0f, 0.0);
-
-                    glVertex2f(wScreen - widthHUDBlock, 0.0);
-                    glVertex2f(wScreen - widthHUDBlock, heightHUDBlock);
-                    glVertex2f(wScreen, heightHUDBlock);
-                    glVertex2f(wScreen, 0.0);
-
-                glEnd();
-            glPopMatrix();
-
-            glPushMatrix();
-                glColor3f(0,0,0);
+                glColor3f(HUDColor);
                 sprintf(targetsInfoText,"%d/%d", numTargetsHit, NUMTARGETS);
                 desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
             glPopMatrix();
 
             glPushMatrix();
-                glColor3f(0,0,0);
+                glColor3f(HUDColor);
                 sprintf(extrasInfoText,"%d/%d", numExtrasHit, NUMEXTRAS);
                 desenhaTexto(extrasInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2 + 10.0, 0);
             glPopMatrix();
@@ -139,26 +175,31 @@ class HUD{
 
         void drawGunInfo(){
 
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, hudTexture[0]);
+                glPushMatrix();
+                glDisable(GL_LIGHTING);
+                    glBegin(GL_QUADS);
+                        glColor4f(WHITE);
+                        glNormal3f(0.0f, 0.0f, 0.0f);
+                        glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0, 0.0);
+                        glTexCoord2f(0.0f, 0.0f); glVertex2f(widthHUDBlock, 0.0);
+                        glTexCoord2f(1.0f, 0.0f); glVertex2f(widthHUDBlock, heightHUDBlock);
+                        glTexCoord2f(1.0f, 1.0f); glVertex2f(0.0, heightHUDBlock);
+
+                    glEnd();
+                    glEnable(GL_LIGHTING);
+                glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
+
             glPushMatrix();
-                glBegin(GL_QUADS);
-                    glColor3f(1.0f, 0.0f, 0.0);
-
-                    glVertex2f(0.0, 0.0);
-                    glVertex2f(widthHUDBlock, 0.0);
-                    glVertex2f(widthHUDBlock, heightHUDBlock);
-                    glVertex2f(0.0, heightHUDBlock);
-
-                glEnd();
-            glPopMatrix();
-
-            glPushMatrix();
-                glColor3f(0,0,0);
+                glColor3f(HUDColor);
                 sprintf(bulletInfoText,"%d bullets loaded", bulletsInGun);
                 desenhaTexto(bulletInfoText, widthHUDBlock/4, heightHUDBlock/2-10, 0);
             glPopMatrix();
 
             glPushMatrix();
-                glColor3f(0,0,0);
+                glColor3f(HUDColor);
                 sprintf(clipsInfoText,"%d bullets left", bulletsLeft);
                 desenhaTexto(clipsInfoText, widthHUDBlock/4, heightHUDBlock/2+10, 0);
             glPopMatrix();
@@ -184,35 +225,32 @@ class HUD{
 
         void drawTimeInfo(){
 
-            glPushMatrix();
-                glColor3f(1.0f, 0.0f, 0.0);
-                glBegin(GL_QUADS);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, hudTexture[1]);
+                glPushMatrix();
+                    glDisable(GL_LIGHTING);
+                    glBegin(GL_QUADS);
 
-                    glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
-                    glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
-                    glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
-                    glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
+                    glColor4f(WHITE);
+                    glNormal3f(0.0f, 0.0f, 0.0f);
+                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
+                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
+                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
+                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
 
-                glEnd();
-
-                glBegin(GL_QUADS);
-
-                    glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
-                    glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
-                    glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
-                    glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
-
-                glEnd();
-            glPopMatrix();
+                    glEnd();
+                    glEnable(GL_LIGHTING);
+                glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
 
             glPushMatrix();
-                glColor3f(0,0,0);
+                glColor3f(HUDColor);
                 sprintf(timerInfoText,"Score: %d", score);
                 desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 -10 ,0);
             glPopMatrix();
 
             glPushMatrix();
-                glColor3f(0,0,0);
+                glColor3f(HUDColor);
                 sprintf(scoreInfoText,"%d:%d:%d", minutes, secs, miliseconds);
                 desenhaTexto(scoreInfoText, wCenterScreen, heightHUDBlock/3 +10 ,0);
             glPopMatrix();
@@ -225,12 +263,12 @@ class HUD{
             // top line
             glPushMatrix();
                 glBegin(GL_QUADS);
-                    glColor3f(1.0f, 0.0f, 0.0);
+                    glColor3f(HUDColor);
 
-                    glVertex2f( 0, (hScreen*7)/8 - 1 );
                     glVertex2f( 0, (hScreen*7)/8 );
-                    glVertex2f( wScreen/8, (hScreen*7)/8 - 1);
+                    glVertex2f( 0, (hScreen*7)/8+3 );
                     glVertex2f( wScreen/8, (hScreen*7)/8 );
+                    glVertex2f( wScreen/8, (hScreen*7)/8 +3);
 
                 glEnd();
             glPopMatrix();
@@ -238,10 +276,10 @@ class HUD{
             // side line
             glPushMatrix();
                 glBegin(GL_QUADS);
-                    glColor3f(1.0f, 0.0f, 0.0);
+                    glColor3f(HUDColor);
 
-                    glVertex2f( wScreen/8 -1, (hScreen*7)/8 );
-                    glVertex2f( wScreen/8 -1 , hScreen );
+                    glVertex2f( wScreen/8 -3, (hScreen*7)/8 );
+                    glVertex2f( wScreen/8 -3 , hScreen );
                     glVertex2f( wScreen/8, hScreen);
                     glVertex2f( wScreen/8, (hScreen*7)/8 );
 
@@ -261,13 +299,6 @@ class HUD{
                 glLoadIdentity();
                 glDisable(GL_CULL_FACE);
                 glClear(GL_DEPTH_BUFFER_BIT);
-
-
-                /*
-                glEnable(GL_LIGHTING);
-                GLfloat luzGlobalCor[4]={1.0,1.0,1.0,1.0};
-                glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
-                */
 
                 drawGunInfo();
                 drawTimeInfo();
