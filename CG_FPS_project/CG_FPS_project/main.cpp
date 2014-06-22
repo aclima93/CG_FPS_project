@@ -33,6 +33,8 @@ void init(void)
 
     createTargetsAndExtras();
 
+    /* Sky Box */
+    skybox.createTexture();
 
 
 }
@@ -103,7 +105,8 @@ void drawScene(){
     draw_esfera2();
     */
 
-
+    /* Sky Box */
+    skybox.drawSkyBox();
 
     drawFog();
     map.drawMap();
@@ -111,6 +114,7 @@ void drawScene(){
     drawExtras();
     drawBullets();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
+
 
 
 }
