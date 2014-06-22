@@ -105,7 +105,7 @@ inline RgbImage::RgbImage( const char* filename )
 
 inline RgbImage::~RgbImage()
 { 
-	delete[] ImagePtr;
+    //delete[] ImagePtr; // este delete estava a dar segfault
 }
 
 // Returned value points to three "unsigned char" values for R,G,B

@@ -7,7 +7,7 @@
 
 
 //------------------------------------------------------------ Observador
-const float g_translation_speed = 1;//0.05;
+const float g_translation_speed = 2.5;//0.05;
 const float g_rotation_speed = M_PI/180* 0.5;
 const float limit = 85.0 * M_PI / 180.0;
 

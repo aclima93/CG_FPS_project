@@ -15,7 +15,7 @@ int minutes = 0;
 int secs = 0;
 int miliseconds = 0;
 
-const int msecCallback = 100;
+const int msecCallback = 250;
 const int msecDisplayCallback = msecCallback * 10;
 
 const float widthHUDBlock = 200;
@@ -30,6 +30,8 @@ const float hCenterScreen = hScreen/2;
 float minimapViewHeight = -35;
 
 char targetsInfoText[100];
+char gameOverText1[100];
+char gameOverText2[100];
 char timerInfoText[100];
 char bulletInfoText[100];
 char extrasInfoText[100];
@@ -47,6 +49,7 @@ int extraValue = 750;
 RgbImage hudImag;
 GLuint  hudTexture[numImages];
 string hudImages[numImages] = {"textures\\esquerda.bmp", "textures\\central.bmp", "textures\\direita.bmp"};
+bool gameOver = false;
 
 class HUD{
 
@@ -76,63 +79,108 @@ class HUD{
         void desenhaTexto(char *string, GLfloat x, GLfloat y, GLfloat z){
             glRasterPos3f(x,y,z);
             while(*string)
-              glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *string++);
+              glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *string++);
         }
 
         void drawCrosshair(){
 
-            glPushMatrix();
-                glColor3f(HUDColor);
-                // top segment
-                glBegin(GL_QUADS);
+            if(!gameOver){
 
-                    glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLength);
-                    glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLengthFrac);
-                    glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLengthFrac);
-                    glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLength);
+                glDisable(GL_LIGHTING);
+                glPushMatrix();
+                    glColor3f(HUDColor);
+                    // top segment
+                    glBegin(GL_QUADS);
 
-                glEnd();
-                // bottom segment
-                glBegin(GL_QUADS);
+                        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLength);
+                        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen - crosshairLengthFrac);
+                        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLengthFrac);
+                        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen - crosshairLength);
 
-                    glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLength);
-                    glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLengthFrac);
-                    glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLengthFrac);
-                    glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLength);
+                    glEnd();
+                    // bottom segment
+                    glBegin(GL_QUADS);
 
-                glEnd();
-                // right segment
-                glBegin(GL_QUADS);
+                        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLength);
+                        glVertex2f(wCenterScreen + crosshairThickness, hCenterScreen + crosshairLengthFrac);
+                        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLengthFrac);
+                        glVertex2f(wCenterScreen - crosshairThickness, hCenterScreen + crosshairLength);
 
-                    glVertex2f(wCenterScreen - crosshairLength, hCenterScreen - crosshairThickness);
-                    glVertex2f(wCenterScreen - crosshairLength, hCenterScreen + crosshairThickness);
-                    glVertex2f(wCenterScreen - crosshairLengthFrac, hCenterScreen + crosshairThickness);
-                    glVertex2f(wCenterScreen - crosshairLengthFrac, hCenterScreen - crosshairThickness);
+                    glEnd();
+                    // right segment
+                    glBegin(GL_QUADS);
 
-                glEnd();
-                // left segment
-                glBegin(GL_QUADS);
+                        glVertex2f(wCenterScreen - crosshairLength, hCenterScreen - crosshairThickness);
+                        glVertex2f(wCenterScreen - crosshairLength, hCenterScreen + crosshairThickness);
+                        glVertex2f(wCenterScreen - crosshairLengthFrac, hCenterScreen + crosshairThickness);
+                        glVertex2f(wCenterScreen - crosshairLengthFrac, hCenterScreen - crosshairThickness);
 
-                    glVertex2f(wCenterScreen + crosshairLength, hCenterScreen + crosshairThickness);
-                    glVertex2f(wCenterScreen + crosshairLength, hCenterScreen - crosshairThickness);
-                    glVertex2f(wCenterScreen + crosshairLengthFrac, hCenterScreen - crosshairThickness);
-                    glVertex2f(wCenterScreen + crosshairLengthFrac, hCenterScreen + crosshairThickness);
+                    glEnd();
+                    // left segment
+                    glBegin(GL_QUADS);
 
-                glEnd();
+                        glVertex2f(wCenterScreen + crosshairLength, hCenterScreen + crosshairThickness);
+                        glVertex2f(wCenterScreen + crosshairLength, hCenterScreen - crosshairThickness);
+                        glVertex2f(wCenterScreen + crosshairLengthFrac, hCenterScreen - crosshairThickness);
+                        glVertex2f(wCenterScreen + crosshairLengthFrac, hCenterScreen + crosshairThickness);
 
-                // center
-                int segments = 5;
-                float t;
-                int r = 2;
+                    glEnd();
 
-                glBegin( GL_TRIANGLE_FAN );
-                    glVertex2f(wCenterScreen, hCenterScreen);
-                    for( int n = 0; n <= segments; n++ ) {
-                        t = 2*M_PI*(float)n/(float)segments;
-                        glVertex2f(wCenterScreen + sin(t)*r, hCenterScreen + cos(t)*r);
-                    }
-                glEnd();
-            glPopMatrix();
+                    // center
+                    /*
+                    int segments = 5;
+                    float t;
+                    int r = 2;
+
+                    glBegin( GL_TRIANGLE_FAN );
+                        glVertex2f(wCenterScreen, hCenterScreen);
+                        for( int n = 0; n <= segments; n++ ) {
+                            t = 2*M_PI*(float)n/(float)segments;
+                            glVertex2f(wCenterScreen + sin(t)*r, hCenterScreen + cos(t)*r);
+                        }
+                    glEnd();
+                    */
+
+                glPopMatrix();
+                glEnable(GL_LIGHTING);
+
+            }
+            else{
+
+                glDisable(GL_LIGHTING);
+
+                //GameOver segment in middle of screen
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, hudTexture[1]);
+                    glPushMatrix();
+                        glDisable(GL_LIGHTING);
+                        glBegin(GL_QUADS);
+
+                        glColor4f(WHITE);
+                        glNormal3f(0.0f, 0.0f, 0.0f);
+                        glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - (2*heightHUDBlock)/3);
+                        glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + (2*heightHUDBlock)/3);
+                        glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen + (2*heightHUDBlock)/3);
+                        glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen - (2*heightHUDBlock)/3);
+
+                        glEnd();
+                        glEnable(GL_LIGHTING);
+                    glPopMatrix();
+                glDisable(GL_TEXTURE_2D);
+
+                glPushMatrix();
+                    glColor3f(HUDColor);
+                    sprintf(gameOverText1,"Game Over");
+                    desenhaTexto(gameOverText1, wCenterScreen - 15, hCenterScreen -10, 0);
+                glPopMatrix();
+                glPushMatrix();
+                    glColor3f(HUDColor);
+                    sprintf(gameOverText2,"Press Spacebar to Restart");
+                    desenhaTexto(gameOverText2, wCenterScreen - 30, hCenterScreen + 10, 0);
+                glPopMatrix();
+
+                glEnable(GL_LIGHTING);
+            }
 
 
         }
@@ -161,13 +209,13 @@ class HUD{
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(targetsInfoText,"%d/%d", numTargetsHit, NUMTARGETS);
-                desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2, 0);
+                desenhaTexto(targetsInfoText, wScreen - widthHUDBlock/2 - 15, heightHUDBlock/2-10, 0);
             glPopMatrix();
 
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(extrasInfoText,"%d/%d", numExtrasHit, NUMEXTRAS);
-                desenhaTexto(extrasInfoText, wScreen - widthHUDBlock/2, heightHUDBlock/2 + 10.0, 0);
+                desenhaTexto(extrasInfoText, wScreen - widthHUDBlock/2 - 15, heightHUDBlock/2 +15, 0);
             glPopMatrix();
 
 
@@ -194,14 +242,14 @@ class HUD{
 
             glPushMatrix();
                 glColor3f(HUDColor);
-                sprintf(bulletInfoText,"%d bullets loaded", bulletsInGun);
-                desenhaTexto(bulletInfoText, widthHUDBlock/4, heightHUDBlock/2-10, 0);
+                sprintf(bulletInfoText,"%d bullets in chamber", bulletsInGun);
+                desenhaTexto(bulletInfoText, widthHUDBlock/4 -15, heightHUDBlock/2-10, 0);
             glPopMatrix();
 
             glPushMatrix();
                 glColor3f(HUDColor);
-                sprintf(clipsInfoText,"%d bullets left", bulletsLeft);
-                desenhaTexto(clipsInfoText, widthHUDBlock/4, heightHUDBlock/2+10, 0);
+                sprintf(clipsInfoText,"%d bullets remaining", bulletsLeft);
+                desenhaTexto(clipsInfoText, widthHUDBlock/4 -15, heightHUDBlock/2+10, 0);
             glPopMatrix();
 
         }
@@ -246,19 +294,21 @@ class HUD{
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(timerInfoText,"Score: %d", score);
-                desenhaTexto(timerInfoText, wCenterScreen, heightHUDBlock/3 -10 ,0);
+                desenhaTexto(timerInfoText, wCenterScreen -15, heightHUDBlock/3 -10 ,0);
             glPopMatrix();
 
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(scoreInfoText,"%d:%d:%d", minutes, secs, miliseconds);
-                desenhaTexto(scoreInfoText, wCenterScreen, heightHUDBlock/3 +10 ,0);
+                desenhaTexto(scoreInfoText, wCenterScreen -15 , heightHUDBlock/3 +10 ,0);
             glPopMatrix();
 
 
         }
 
         void drawMiniMapBox(){
+
+            glDisable(GL_LIGHTING);
 
             // top line
             glPushMatrix();
@@ -267,8 +317,8 @@ class HUD{
 
                     glVertex2f( 0, (hScreen*7)/8 );
                     glVertex2f( 0, (hScreen*7)/8+3 );
-                    glVertex2f( wScreen/8, (hScreen*7)/8 );
-                    glVertex2f( wScreen/8, (hScreen*7)/8 +3);
+                    glVertex2f( wScreen/8, (hScreen*7)/8+3 );
+                    glVertex2f( wScreen/8, (hScreen*7)/8);
 
                 glEnd();
             glPopMatrix();
@@ -278,13 +328,15 @@ class HUD{
                 glBegin(GL_QUADS);
                     glColor3f(HUDColor);
 
-                    glVertex2f( wScreen/8 -3, (hScreen*7)/8 );
-                    glVertex2f( wScreen/8 -3 , hScreen );
-                    glVertex2f( wScreen/8, hScreen);
                     glVertex2f( wScreen/8, (hScreen*7)/8 );
+                    glVertex2f( wScreen/8, hScreen );
+                    glVertex2f( wScreen/8+3, hScreen);
+                    glVertex2f( wScreen/8+3, (hScreen*7)/8 );
 
                 glEnd();
             glPopMatrix();
+
+            glEnable(GL_LIGHTING);
 
         }
 

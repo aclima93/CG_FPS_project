@@ -165,15 +165,21 @@ void display(void){
 
 void updateGameTimer(){
 
-    miliseconds += msecCallback;
+    if( bulletsLeft > 0 && numTargetsHit+numExtrasHit < NUMTARGETS+NUMEXTRAS ){
 
-    if(miliseconds > 999){
-        miliseconds = 0;
-        secs++;
+        miliseconds += msecCallback;
+
+        if(miliseconds > 999){
+            miliseconds = 0 + (miliseconds - 1000);
+            secs++;
+        }
+        if(secs > 59){
+            secs = 0;
+            minutes++;
+        }
     }
-    if(secs > 59){
-        secs = 0;
-        minutes++;
+    else{
+        gameOver = true;
     }
 
 }

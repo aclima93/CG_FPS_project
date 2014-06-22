@@ -58,9 +58,11 @@ class Target{
             g = gg;
             b = bb;
 
-            halfW = w/2;
-            halfH = h/2;
-            halfL = l/2;
+
+            halfW = 6/2;
+            halfH = 16/2;
+            halfL = 0.5/2;
+
 
             numBoundingBoxes = numBB;
 
@@ -74,50 +76,56 @@ class Target{
 
         void drawTarget(){
 
-            model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
 
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
             glPushMatrix();
-
-                glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
-
-                    glColor3f(1, 0, 0);	// Color RED
-
-                    glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
-                    glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Top)
-                    glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Bottom Left Of The Quad (Top)
-                    glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Bottom Right Of The Quad (Top)
-
-                    glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Top Right Of The Quad (Bottom)
-                    glVertex3f(x- halfW, y- halfH, z+ halfL);	// Top Left Of The Quad (Bottom)
-                    glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Bottom)
-                    glVertex3f(x+ halfW, y- halfH, z- halfL);	// Bottom Right Of The Quad (Bottom)
-
-                    glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Front)
-                    glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Left Of The Quad (Front)
-                    glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Left Of The Quad (Front)
-                    glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Front)
-
-                    glVertex3f(x+ halfW, y- halfH, z- halfL);	// Top Right Of The Quad (Back)
-                    glVertex3f(x- halfW, y- halfH, z- halfL);	// Top Left Of The Quad (Back)
-                    glVertex3f(x- halfW, y+ halfH, z- halfL);	// Bottom Left Of The Quad (Back)
-                    glVertex3f(x+ halfW, y+ halfH, z- halfL);	// Bottom Right Of The Quad (Back)
-
-                    glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Left)
-                    glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Left)
-                    glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Left)
-                    glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Left)
-
-                    glVertex3f(x+ halfW,y+ halfH,z- halfL);	// Top Right Of The Quad (Right)
-                    glVertex3f(x+ halfW,y+ halfH,z+ halfL);	// Top Left Of The Quad (Right)
-                    glVertex3f(x+ halfW,y- halfH,z+ halfL);	// Bottom Left Of The Quad (Right)
-                    glVertex3f(x+ halfW,y- halfH,z- halfL);	// Bottom Right Of The Quad (Right)
-
-                glEnd();			// End Drawing The Paralellogram
-
-
+                glTranslatef(0, -y*1.5f, 0);
+                model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
             glPopMatrix();
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+            if(DEBUG_MODE){
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
+                glPushMatrix();
+
+                    glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
+
+                        glColor3f(1, 0, 0);	// Color RED
+
+                        glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
+                        glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Top)
+                        glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Bottom Left Of The Quad (Top)
+                        glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Bottom Right Of The Quad (Top)
+
+                        glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Top Right Of The Quad (Bottom)
+                        glVertex3f(x- halfW, y- halfH, z+ halfL);	// Top Left Of The Quad (Bottom)
+                        glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Bottom)
+                        glVertex3f(x+ halfW, y- halfH, z- halfL);	// Bottom Right Of The Quad (Bottom)
+
+                        glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Front)
+                        glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Left Of The Quad (Front)
+                        glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Left Of The Quad (Front)
+                        glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Front)
+
+                        glVertex3f(x+ halfW, y- halfH, z- halfL);	// Top Right Of The Quad (Back)
+                        glVertex3f(x- halfW, y- halfH, z- halfL);	// Top Left Of The Quad (Back)
+                        glVertex3f(x- halfW, y+ halfH, z- halfL);	// Bottom Left Of The Quad (Back)
+                        glVertex3f(x+ halfW, y+ halfH, z- halfL);	// Bottom Right Of The Quad (Back)
+
+                        glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Left)
+                        glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Left)
+                        glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Left)
+                        glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Left)
+
+                        glVertex3f(x+ halfW,y+ halfH,z- halfL);	// Top Right Of The Quad (Right)
+                        glVertex3f(x+ halfW,y+ halfH,z+ halfL);	// Top Left Of The Quad (Right)
+                        glVertex3f(x+ halfW,y- halfH,z+ halfL);	// Bottom Left Of The Quad (Right)
+                        glVertex3f(x+ halfW,y- halfH,z- halfL);	// Bottom Right Of The Quad (Right)
+
+                    glEnd();			// End Drawing The Paralellogram
+
+
+                glPopMatrix();
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
 
         }
 

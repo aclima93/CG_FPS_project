@@ -13,14 +13,12 @@ HEADERS += \
     Bullet.hpp \
     main.hpp \
     Map.hpp \
-    Map.hpp.autosave \
     Wall.hpp \
     Colors.hpp \
     BoundingBox.hpp \
     Target.hpp \
     HUD.hpp \
     Sounds.hpp \
-    Images.hpp \
     RgbImage.h \
     Model.hpp \
     Events.hpp \
@@ -31,12 +29,7 @@ HEADERS += \
     SkyBox.hpp
 
 OTHER_FILES += \
-    CG_FPS_project.pro.user \
-    models_textures/textures/grass_tex.bmp \
-    models_textures/textures/ground_tex.bmp \
-    models_textures/textures/grass_tex.jpg \
-    models_textures/textures/ground_tex.jpg \
-    NOTA_SOBRE_FICHEIROS.txt
+    CG_FPS_project.pro.user
 
 
 
@@ -68,9 +61,9 @@ LIBS += -lsfml-audio-s-d
 #LIBS += -llibsndfile-1
 
 # DevIL library .lib files
-LIBS += -lDevIL
-LIBS += -lILU
-LIBS += -lILUT
+#LIBS += -lDevIL
+#LIBS += -lILU
+#LIBS += -lILUT
 
 # Path to the DevIL library
 #LIBS += -L"C:/Users/AntónioCarlosLagarto/Desktop/DevIL-SDK-x86-1.7.8/lib"

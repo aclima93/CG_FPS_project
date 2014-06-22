@@ -88,7 +88,7 @@ void drawFlashlightLight(){
     if(nightTime){
         //  Direccao do FOCO=lanterna
         float dx, dy, dz;
-        GLfloat lightpos[] = {xCamera, yCamera, zCamera-1, 1}; // o 1 indica luz no ponto e não no infinito
+        GLfloat lightpos[] = {xCamera, yCamera, zCamera, 1}; // o 1 indica luz no ponto e não no infinito
         camera.GetDirectionVector(dx, dy, dz);
         GLfloat spotDirection[] = {dx, dy, dz};
 

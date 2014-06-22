@@ -17,7 +17,7 @@ CXXFLAGS      = -pipe -fno-keep-inline-dllexport -g -frtti -Wall -Wextra -fexcep
 INCPATH       = -I..\CG_FPS_project -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtOpenGL" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtWidgets" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtGui" -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtCore" -I"debug" -I"." -I"..\..\..\..\..\..\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++"
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,console -mthreads
-LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lfreeglut -lsfml-audio -lsfml-audio-d -lsfml-audio-s -lsfml-audio-s-d -lDevIL -lILU -lILUT -LC:\Qt\Qt5.2.1\5.2.1\mingw48_32\lib -lQt5OpenGLd -lQt5Widgetsd -lQt5Guid -lQt5Cored 
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lfreeglut -lsfml-audio -lsfml-audio-d -lsfml-audio-s -lsfml-audio-s-d -LC:\Qt\Qt5.2.1\5.2.1\mingw48_32\lib -lQt5OpenGLd -lQt5Widgetsd -lQt5Guid -lQt5Cored 
 QMAKE         = C:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\qmake.exe
 IDC           = idc
 IDL           = midl
@@ -134,14 +134,6 @@ debug/main.o: ../CG_FPS_project/main.cpp ../CG_FPS_project/main.hpp \
 		../CG_FPS_project/BoundingBox.hpp \
 		../CG_FPS_project/Ground.hpp \
 		../CG_FPS_project/Colors.hpp \
-		../CG_FPS_project/Images.hpp \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/config.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/devil_internal_exports.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/il.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/ilu.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/ilut.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/ilut_config.h \
-		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/IL/ilu_region.h \
 		../CG_FPS_project/Target.hpp \
 		../CG_FPS_project/HUD.hpp \
 		../CG_FPS_project/Sounds.hpp \

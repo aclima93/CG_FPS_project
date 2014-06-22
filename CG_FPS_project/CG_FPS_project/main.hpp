@@ -27,7 +27,6 @@
 #include "Target.hpp"
 #include "HUD.hpp"
 #include "Sounds.hpp"
-#include "Images.hpp"
 #include "Model.hpp"
 #include "SkyBox.hpp"
 

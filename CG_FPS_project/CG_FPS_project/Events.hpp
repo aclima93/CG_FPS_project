@@ -1,5 +1,7 @@
 // =========================================== EVENTOS
 
+#include <GL/glut.h>
+
 #define bounceFactor 3
 
 void createMainMenu(){
@@ -55,7 +57,15 @@ void teclasNotAscii(int key, int x, int y){
     //using parameters just because
     if( x || y ){}
 
-    switch(key){}
+    switch(key){
+
+        case GLUT_KEY_F4:
+            if( glutGetModifiers() == GLUT_ACTIVE_ALT){
+                exit(0);
+            }
+            break;
+
+    }
 
     glutPostRedisplay();
 
@@ -63,33 +73,34 @@ void teclasNotAscii(int key, int x, int y){
 
 void mouseMotion(int x, int y){
 
-    //if(DEBUG) std::cout << x << " - " << y << "\n";
+    if(!gameOver){
 
-    // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
-    // This avoids it being called recursively and hanging up the event loop
-    static bool just_warped = false;
+        // This variable is hack to stop glutWarpPointer from triggering an event callback to Mouse(...)
+        // This avoids it being called recursively and hanging up the event loop
+        static bool just_warped = false;
 
-    if(just_warped) {
-        just_warped = false;
-        return;
+        if(just_warped) {
+            just_warped = false;
+            return;
+        }
+
+        int dx = x - wCenterScreen;
+        int dy = -(y - hCenterScreen);
+
+        if(dx) {
+            camera.RotateYaw(g_rotation_speed*dx);
+        }
+
+        if(dy) {
+            camera.RotatePitch(g_rotation_speed*dy);
+        }
+
+        if( !isMenuActive ) glutWarpPointer(wCenterScreen, hCenterScreen);
+
+        just_warped = true;
+
+        glutPostRedisplay();
     }
-
-    int dx = x - wCenterScreen;
-    int dy = -(y - hCenterScreen);
-
-    if(dx) {
-        camera.RotateYaw(g_rotation_speed*dx);
-    }
-
-    if(dy) {
-        camera.RotatePitch(g_rotation_speed*dy);
-    }
-
-    if( !isMenuActive ) glutWarpPointer(wCenterScreen, hCenterScreen);
-
-    just_warped = true;
-
-    glutPostRedisplay();
 
 }
 
@@ -97,13 +108,15 @@ void mouseClicks(int button, int state, int x, int y) {
 
     if(button || state || x || y){}
 
-    //if(DEBUG) std::cout << button << " " << state << " :::: " << x << " - " << y << "\n";
+    if(!gameOver){
 
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        shootGun();
+        if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+            shootGun();
+        }
+
+        glutPostRedisplay();
+
     }
-
-    glutPostRedisplay();
 
 }
 
@@ -111,87 +124,90 @@ void keyboard(unsigned char key, int x, int y){
 
     if(key||x||y){}
 
-    //if(DEBUG) std::cout << key << " :::: " << x << " - " << y << "\n";
+    if(!gameOver){
+        switch (key){
+    
+            //--------------------------- forward
+            case 'W':
+            case 'w':
+                camera.Move(g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Move(-g_translation_speed*bounceFactor); // undo
+                }
+                break;
+    
+            //--------------------------- back
+            case 'S':
+            case 's':
+                camera.Move(-g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Move(g_translation_speed*bounceFactor); // undo
+                }
+                break;
+    
+            //--------------------------- right
+            case 'A':
+            case 'a':
+                camera.Strafe(g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Strafe(-g_translation_speed*bounceFactor); // undo
+                }
+                break;
+    
+            //--------------------------- left
+            case 'D':
+            case 'd':
+                camera.Strafe(-g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Strafe(g_translation_speed*bounceFactor); // undo
+                }
+                break;
+    
+            //--------------------------- reload
+            case 'R':
+            case 'r':
+                reloadGun();
+                break;
+    
+    
+            //--------------------------- Pause
+            case 'P':
+            case 'p':
+                break;
+    
+            //--------------------------- main menu
+            case 'M':
+            case 'm':
+                isMenuActive = !isMenuActive;
+                break;
+    
+    
+            // ------------------------------ move vertically for DEBUG
+            //--------------------------- up
+            case 'U':
+            case 'u':
+                camera.Fly(g_translation_speed);
+                break;
+            //--------------------------- down
+            case 'J':
+            case 'j':
+                camera.Fly(-g_translation_speed);
+                break;
+        }
+    }
 
-    switch (key){
 
-        //--------------------------- forward
-        case 'W':
-        case 'w':
-            camera.Move(g_translation_speed);
-            if( checkPlayerWallCollisions() ){
-                camera.Move(-g_translation_speed*bounceFactor); // undo
-            }
+    switch(key) {
+
+        // restart game
+        case ' ':
+            //Restart();
+            exit(0);
             break;
-
-        //--------------------------- back
-        case 'S':
-        case 's':
-            camera.Move(-g_translation_speed);
-            if( checkPlayerWallCollisions() ){
-                camera.Move(g_translation_speed*bounceFactor); // undo
-            }
-            break;
-
-        //--------------------------- right
-        case 'A':
-        case 'a':
-            camera.Strafe(g_translation_speed);
-            if( checkPlayerWallCollisions() ){
-                camera.Strafe(-g_translation_speed*bounceFactor); // undo
-            }
-            break;
-
-        //--------------------------- left
-        case 'D':
-        case 'd':
-            camera.Strafe(-g_translation_speed);
-            if( checkPlayerWallCollisions() ){
-                camera.Strafe(g_translation_speed*bounceFactor); // undo
-            }
-            break;
-
-        //--------------------------- reload
-        case 'R':
-        case 'r':
-            reloadGun();
-            break;
-
-
-        //--------------------------- Pause
-        case 'P':
-        case 'p':
-            break;
-
-        //--------------------------- main menu
-        case 'M':
-        case 'm':
-            isMenuActive = !isMenuActive;
-            break;
-
-
-        // ------------------------------ move vertically for DEBUG
-        //--------------------------- up
-        case 'U':
-        case 'u':
-            camera.Fly(g_translation_speed);
-            break;
-        //--------------------------- down
-        case 'J':
-        case 'j':
-            camera.Fly(-g_translation_speed);
-            break;
-
-
 
         //--------------------------- Escape
         case 27:
             exit(0);
-            break;
-        case GLUT_KEY_F4:
-            if( glutGetModifiers() == GLUT_ACTIVE_ALT){
-                exit(0);
-            }
             break;
     }
 
