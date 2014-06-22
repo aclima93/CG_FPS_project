@@ -36,6 +36,8 @@ void init(void)
     /* Sky Box */
     skybox.createTexture();
 
+    /* Glass */
+    glass.createTexture();
 
 }
 
@@ -105,6 +107,9 @@ void drawScene(){
 
     /* Sky Box */
     skybox.drawSkyBox();
+
+    /* Glass */
+    glass.drawSkyBox();
 
     drawFog();
     map.drawMap();
