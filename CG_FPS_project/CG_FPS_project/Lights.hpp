@@ -29,7 +29,7 @@ void initLights(void){
     }
 
 
-    /*
+    /* Comentar depois!!!!!!!!!!!!!
     //Iluminacao local
     glLightfv(GL_LIGHT0, GL_POSITION, localPos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);

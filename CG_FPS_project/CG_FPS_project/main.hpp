@@ -29,6 +29,7 @@
 #include "Sounds.hpp"
 #include "Images.hpp"
 #include "Model.hpp"
+#include "SkyBox.hpp"
 
 // our defined elements
 Bullet bullets[NUMBULLETS];
@@ -51,6 +52,8 @@ float dxCamera;
 float dyCamera;
 float dzCamera;
 
+/* Sky Box */
+SkyBox skybox;
 
 int mainMenu;
 bool isMenuActive = false;

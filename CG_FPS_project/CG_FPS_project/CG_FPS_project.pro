@@ -27,7 +27,8 @@ HEADERS += \
     Lights.hpp \
     ModelsTargetsExtras.hpp \
     Physics.hpp \
-    Ground.hpp
+    Ground.hpp \
+    SkyBox.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user \
@@ -53,8 +54,8 @@ OTHER_FILES += \
 #DEPENDPATH += $$PWD/../../../../../../"Program Files (x86)"/"FMOD SoundSystem"/"FMOD Programmers API Windows"/lib
 
 # FMOD library .libfiles
-LIBS += -lfmodex_vc
-LIBS += -lfmodexL_vc
+#LIBS += -lfmodex_vc
+#LIBS += -lfmodexL_vc
 
 # SFML library .libfiles
 LIBS += -lsfml-audio
