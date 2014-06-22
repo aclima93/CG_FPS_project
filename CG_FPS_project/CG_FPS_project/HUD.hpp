@@ -262,6 +262,13 @@ class HUD{
                 glDisable(GL_CULL_FACE);
                 glClear(GL_DEPTH_BUFFER_BIT);
 
+
+                /*
+                glEnable(GL_LIGHTING);
+                GLfloat luzGlobalCor[4]={1.0,1.0,1.0,1.0};
+                glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
+                */
+
                 drawGunInfo();
                 drawTimeInfo();
                 drawTargetsInfo();

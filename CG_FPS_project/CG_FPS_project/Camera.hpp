@@ -40,7 +40,7 @@ class Camera{
         void SetPos(float x, float y, float z){
             m_x = x;
             m_y = y;
-            m_z =z;
+            m_z = z;
 
             Refresh();
         }

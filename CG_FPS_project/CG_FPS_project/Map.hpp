@@ -11,7 +11,7 @@
 
 #define DEBUG_MODE 1
 
-#define NUMGROUNDS 2
+#define NUMGROUNDS 4
 
 const float mapWidth = 100; // 5
 const float mapLength = 500; // 10
@@ -147,7 +147,7 @@ float horizontalWalls[][numWallParams] = {
 
 #define NUMWALLS (/*numGlassWalls+*/numHorizontalWalls+numVerticalWalls)*2
 #define NUMGLASS numGlassWalls*2
-
+#define factor 50
 
 class Map{
     public:
@@ -159,27 +159,39 @@ class Map{
 
         Wall walls[NUMWALLS];
         Wall glass[NUMGLASS];
-        int isGlassActive[NUMGLASS];
+        bool isGlassActive[NUMGLASS];
 
 
         Map(){
 
             //chão
             ground[0].Init(
-                -mapWidth/2, 0, -mapLength,   // A
-                -mapWidth/2, 0, 0,   // B
-                 0, 0, -mapLength,               // C
-                 0, 0, 0,               // D
-                 0, 1, 0,                           // normal
-                 VERDE                          // r g b a
+                -mapWidth/4, -mapLength/2, //center
+                 mapWidth/2, mapLength,    // w, l
+                 0, 1, 0,                  // normal
+                 VERDE,                    // r g b a
+                 factor/2, factor
             );
             ground[1].Init(
-                -mapWidth, 0, -mapLength*(secondGlassEnd),   // A
-                -mapWidth, 0, -mapLength*(firstGlassStart),   // B
-                -mapWidth/2, 0, -mapLength*(secondGlassEnd),               // C
-                -mapWidth/2, 0, -mapLength*(firstGlassStart),               // D
-                 0, 1, 0,                           // normal
-                 VERDE                          // r g b a
+                -mapWidth*(0.75f), -mapLength/2, //center
+                 mapWidth/2, mapLength*(0.2f),  // w, l
+                 0, 1, 0,                        // normal
+                 VERDE,                          // r g b a
+                 factor/2, factor
+            );
+            ground[2].Init(
+                 mapWidth/4, -mapLength/2, //center
+                 mapWidth/2, mapLength,    // w, l
+                 0, 1, 0,                  // normal
+                 VERDE,                    // r g b a
+                 factor/2, factor
+            );
+            ground[3].Init(
+                 mapWidth*(0.75f), -mapLength/2, //center
+                 mapWidth/2, mapLength*(0.2f),   // w, l
+                 0, 1, 0,                        // normal
+                 VERDE,                          // r g b a
+                 factor/2, factor
             );
 
 
@@ -276,30 +288,58 @@ class Map{
 
         void drawGround(){
 
-            //draw left side and right side by symmetry
+
+            float halfW, halfL;
+            float limitX, limitZ, startX, startZ;
+
+
             for(int i=0; i<NUMGROUNDS; i++){
+
+                /*
                 desenhaQuadrado(
-
-                    ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
-                    ground[i].bottomLeft[0], ground[i].bottomLeft[1], ground[i].bottomLeft[2],
-                    ground[i].topRight[0], ground[i].topRight[1], ground[i].topRight[2],
-                    ground[i].bottomRight[0], ground[i].bottomRight[1], ground[i].bottomRight[2],
-
+                    ground[i].centerX - ground[i].width/2, 0, ground[i].centerZ + ground[i].length/2,
+                    ground[i].centerX - ground[i].width/2, 0, ground[i].centerZ - ground[i].length/2,
+                    ground[i].centerX + ground[i].width/2, 0, ground[i].centerZ + ground[i].length/2,
+                    ground[i].centerX + ground[i].width/2, 0, ground[i].centerZ - ground[i].length/2,
                     ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
                     ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    1, 1 // ground texture
+                    1, 10 // ground texture
                 );
-                desenhaQuadrado(
-                    - ground[i].topLeft[0], ground[i].topLeft[1], ground[i].topLeft[2],
-                    - ground[i].bottomLeft[0], ground[i].bottomLeft[1], ground[i].bottomLeft[2],
-                    - ground[i].topRight[0], ground[i].topRight[1], ground[i].topRight[2],
-                    - ground[i].bottomRight[0], ground[i].bottomRight[1], ground[i].bottomRight[2],
+                */
 
-                    ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
-                    ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    1, 1 // ground texture
-                );
+
+                halfW = ground[i].wFactor/2;
+                halfL = ground[i].lFactor/2;
+                //halfW = 5;
+                //halfL = 5;
+                int counter  = 0;
+                limitX = ground[i].centerX + ground[i].width/2 - ground[i].wFactor;
+                limitZ = ground[i].centerZ + ground[i].length/2 - ground[i].lFactor;
+
+                startZ = ground[i].centerZ - ground[i].length/2 + ground[i].lFactor;
+                startX = ground[i].centerX - ground[i].width/2 + ground[i].wFactor;
+
+                for(int cz = startZ; cz <= limitZ; cz += ground[i].lFactor ){
+
+                    for(int cx = startX; cx <= limitX; cx += ground[i].wFactor ){
+
+                        desenhaQuadrado(
+                            cx - halfW, 0, cz + halfL,
+                            cx - halfW, 0, cz - halfL,
+                            cx + halfW, 0, cz + halfL,
+                            cx + halfW, 0, cz - halfL,
+                            ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
+                            ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
+                            1, 10 // ground texture
+                        );
+
+                        counter++;
+
+                    }
+                }
+                std::cout << counter << std::endl;
             }
+            //exit(0);
 
         }
 

@@ -5,10 +5,11 @@ void initLights(void){
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_CULL_FACE);
+    glEnable(GL_NORMALIZE); //Have OpenGL automatically normalize our normals
 
 
-    //glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    //glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
     //Iluminacao global
     if( dayTime){
@@ -87,17 +88,19 @@ void drawFlashlightLight(){
     if(nightTime){
         //  Direccao do FOCO=lanterna
         float dx, dy, dz;
+        GLfloat lightpos[] = {xCamera, yCamera, zCamera-1, 1}; // o 1 indica luz no ponto e não no infinito
         camera.GetDirectionVector(dx, dy, dz);
         GLfloat spotDirection[] = {dx, dy, dz};
-        glEnable(GL_LIGHT0+numLights);
-        glLightf(GL_LIGHT0+numLights, GL_SPOT_CUTOFF, 22.5); // angulo de corte do foco
-        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection); //Definir direccao do foco
 
-        /*
+        glEnable(GL_LIGHT0+numLights);
+        glLightfv(GL_LIGHT0+numLights, GL_POSITION, lightpos);
+        glLightf(GL_LIGHT0+numLights, GL_SPOT_CUTOFF, 15); // angulo de corte do foco
+        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection ); //Definir direccao do foco
+
         glLightf(GL_LIGHT0+numLights, GL_CONSTANT_ATTENUATION, 2.0);
-        glLightf(GL_LIGHT0+numLights, GL_LINEAR_ATTENUATION, 1.0);
-        glLightf(GL_LIGHT0+numLights, GL_QUADRATIC_ATTENUATION, 0.5);
-        */
+        //glLightf(GL_LIGHT0+numLights, GL_LINEAR_ATTENUATION, 1.0);
+        //glLightf(GL_LIGHT0+numLights, GL_QUADRATIC_ATTENUATION, 0.5);
+
 
 
     }

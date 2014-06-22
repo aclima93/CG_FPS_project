@@ -129,10 +129,9 @@ void display(void){
 
 
     //================================================================= Viewport1 (minimap)
+    glDisable(GL_LIGHTING);
     hud.drawMiniMap(xCamera, yCamera, zCamera, dxCamera, dzCamera );
-
     drawScene(); //--------------------- desenha objectos no viewport1
-    drawFlashlightLight();
 
 
     //================================================================= Viewport2 (game)
