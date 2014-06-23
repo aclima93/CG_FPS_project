@@ -20,7 +20,7 @@ const float mapHeight = 25; // 1
 #define wallScale  XSCALE, YSCALE, ZSCALE
 #define concreteWallModel "Test\\Wall\\Wall.obj"
 #define concreteWallTexture "Test\\Wall\\Wall_texture.bmp"
-#define groundTexture "Test\\Wall\\Wall_texture.bmp"//"textures\\ground_tex.bmp"
+#define groundTexture "textures\\ground_tex.bmp"
 
 
 GLuint  textureMap[1];

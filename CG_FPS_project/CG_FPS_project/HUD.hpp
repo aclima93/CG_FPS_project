@@ -43,7 +43,7 @@ int numExtrasHit = 0;
 
 int score = 0;
 int targetValues[6] = { 500, 350, 50, 50, 50, 50}; // head, torso, arms and legs
-int extraValue = 750;
+int extraValue = -750;
 
 #define numImages 3
 RgbImage hudImag;

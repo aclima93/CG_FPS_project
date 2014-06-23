@@ -52,7 +52,6 @@ class BoundingBox{
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
                 glPushMatrix();
 
-
                     glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
                     glColor3f(1, 0, 1);	// Color Pink
 

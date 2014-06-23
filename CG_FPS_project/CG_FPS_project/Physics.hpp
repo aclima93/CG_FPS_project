@@ -35,16 +35,19 @@ void reloadGun(){
 
 bool checkPlayerWallCollisions(){
 
-    for(int i=0; i<NUMWALLS; i++){
-        if( map.walls[i].boundingBox.checkPlayerWallCollision( xCamera, zCamera, playerRadius ) ){
-            return true;
-        }
-    }
+    if(!DEBUG_MODE){
 
-    for(int i=0; i<NUMGLASS; i++){
-        if( map.isGlassActive[i] ){
-            if( map.glass[i].boundingBox.checkPlayerWallCollision( xCamera, zCamera, playerRadius ) ){
+        for(int i=0; i<NUMWALLS; i++){
+            if( map.walls[i].boundingBox.checkPlayerWallCollision( xCamera, zCamera, playerRadius ) ){
                 return true;
+            }
+        }
+
+        for(int i=0; i<NUMGLASS; i++){
+            if( map.isGlassActive[i] ){
+                if( map.glass[i].boundingBox.checkPlayerWallCollision( xCamera, zCamera, playerRadius ) ){
+                    return true;
+                }
             }
         }
     }

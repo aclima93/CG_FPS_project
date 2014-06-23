@@ -165,7 +165,7 @@ void display(void){
 
 void updateGameTimer(){
 
-    if( bulletsLeft > 0 && numTargetsHit+numExtrasHit < NUMTARGETS+NUMEXTRAS ){
+    if( bulletsLeft+bulletsInGun > 0 && numTargetsHit+numExtrasHit < NUMTARGETS+NUMEXTRAS ){
 
         miliseconds += msecCallback;
 

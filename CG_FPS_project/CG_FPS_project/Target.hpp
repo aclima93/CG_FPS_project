@@ -12,13 +12,12 @@
 #include "Model.hpp"
 #include <vector>
 
-#define NUMTARGETS 10
-#define NUMEXTRAS 3 // extra targets
-#define NUMPOSSIBLE 50
+#define NUMTARGETS 21 //10
+#define NUMEXTRAS 3 // civillians
+#define NUMPOSSIBLE 24
 #define NUMBOUNDINGBOXES 6
 
-std::vector< std::vector<float> > possiblePositions(NUMPOSSIBLE, std::vector<float>(3));
-std::vector< std::vector<float> > possibleExtraPositions(NUMPOSSIBLE, std::vector<float>(3));
+std::vector< std::vector<float> > possiblePositions(NUMPOSSIBLE, std::vector<float>(4));
 
 class Target{
 
@@ -67,7 +66,12 @@ class Target{
             numBoundingBoxes = numBB;
 
             for(int i=0; i<numBoundingBoxes; i++){
-                boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], 0);
+                if(r == 0){
+                    boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], r);
+                }
+                else if(r == 90){
+                    boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], r);
+                }
             }
 
             model.Init(objFile, textureFile);
@@ -78,7 +82,7 @@ class Target{
 
 
             glPushMatrix();
-                glTranslatef(0, -y*1.5f, 0);
+                glTranslatef(0, -y, 0);
                 model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
             glPopMatrix();
 
