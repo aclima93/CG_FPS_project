@@ -12,6 +12,7 @@
 
 //debug
 #define DEBUG 1
+#define DEBUG_MODE 1
 
 #include <GL/freeglut.h>
 #include <GL/glut.h>

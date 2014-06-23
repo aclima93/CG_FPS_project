@@ -23,6 +23,9 @@ void init(void)
     glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
+    map.createTexture();
+    hud.createTextures();
+
     glutWarpPointer(wCenterScreen, hCenterScreen);
 
     //camera starting position and orientation

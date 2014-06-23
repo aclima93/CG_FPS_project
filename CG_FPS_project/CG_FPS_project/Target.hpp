@@ -47,9 +47,26 @@ class Target{
             y = yy;
             z = zz;
 
-            w = ww;
-            h = hh;
-            l = ll;
+            if(rot == 0){
+                w = ww;
+                h = hh;
+                l = ll;
+
+                halfW = 6/2;
+                halfH = 16/2;
+                halfL = 0.5/2;
+
+            }
+
+            else if(rot == 90){
+                w = ll;
+                h = hh;
+                l = ww;
+
+                halfW = 0.5/2;
+                halfH = 16/2;
+                halfL = 6/2;
+            }
 
             rotation = rot;
 
@@ -57,21 +74,11 @@ class Target{
             g = gg;
             b = bb;
 
-
-            halfW = 6/2;
-            halfH = 16/2;
-            halfL = 0.5/2;
-
-
             numBoundingBoxes = numBB;
 
             for(int i=0; i<numBoundingBoxes; i++){
-                if(r == 0){
-                    boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], r);
-                }
-                else if(r == 90){
-                    boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], r);
-                }
+                boundingBoxes[i].Init( i, posBB[i][0], posBB[i][1], posBB[i][2], sizesBB[i][0], sizesBB[i][1], sizesBB[i][2], rotation);
+
             }
 
             model.Init(objFile, textureFile);
@@ -134,9 +141,18 @@ class Target{
         }
 
         void drawBoundingBoxes(){
-            for(int i=0; i<numBoundingBoxes; i++){
-                boundingBoxes[i].drawBoundingBox();
-            }
+
+            glPushMatrix();
+
+                glTranslatef(x, y, z);
+                glRotatef(rotation, 0.0f, 1.0f, 0.0f);   //Y
+
+                    for(int i=0; i<numBoundingBoxes; i++){
+                        boundingBoxes[i].drawBoundingBox();
+                    }
+                glTranslatef(0, 0, 0);
+
+            glPopMatrix();
         }
 
 

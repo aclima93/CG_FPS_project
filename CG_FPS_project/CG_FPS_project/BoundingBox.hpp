@@ -12,9 +12,6 @@
 #include <cmath>
 #include <float.h>
 
-
-#define DEBUG_MODE 1
-
 class BoundingBox{
 
     public:
@@ -35,15 +32,27 @@ class BoundingBox{
             y = yy;
             z = zz;
 
-            w = ww;
-            h = hh;
-            l = ll;
+            //if(r == 0){
+                w = ww;
+                h = hh;
+                l = ll;
+
+                halfW = w/2;
+                halfH = h/2;
+                halfL = l/2;
+            /*}
+            else if(r == 90){
+                w = ll;
+                h = hh;
+                l = ww;
+
+                halfW = w/2;
+                halfH = h/2;
+                halfL = l/2;
+            }*/
 
             rotation = r;
 
-            halfW = w/2;
-            halfH = h/2;
-            halfL = l/2;
         }
 
         void drawBoundingBox(){
