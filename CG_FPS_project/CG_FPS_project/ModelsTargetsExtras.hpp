@@ -33,7 +33,7 @@ void initPositions(){
     possiblePositions[2][2] = -mapLength*(0.4125f);
     possiblePositions[2][3] = 0;
 
-    possiblePositions[3][0] = -mapWidth*(0.985f);
+    possiblePositions[3][0] = -mapWidth*(0.975f);
     possiblePositions[3][1] = TARGET_HEIGHT;
     possiblePositions[3][2] = -mapLength*(0.425f);
     possiblePositions[3][3] = 90;

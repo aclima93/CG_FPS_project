@@ -55,9 +55,7 @@ class HUD{
 
     public:
 
-        HUD(){
-            createTextures();
-        }
+        HUD(){}
 
         void createTextures(){
             for(int x=0;x<numImages;x++){
@@ -86,7 +84,6 @@ class HUD{
 
             if(!gameOver){
 
-                glDisable(GL_LIGHTING);
                 glPushMatrix();
                     glColor3f(HUDColor);
                     // top segment
@@ -142,31 +139,25 @@ class HUD{
                     */
 
                 glPopMatrix();
-                glEnable(GL_LIGHTING);
 
             }
             else{
 
-                glDisable(GL_LIGHTING);
-
                 //GameOver segment in middle of screen
                 glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D, hudTexture[1]);
-                    glPushMatrix();
-                        glDisable(GL_LIGHTING);
-                        glBegin(GL_QUADS);
+                glPushMatrix();
+                    glBegin(GL_QUADS);
 
-                        glColor4f(WHITE);
-                        glNormal3f(0.0f, 0.0f, 0.0f);
-                        glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - (2*heightHUDBlock)/3);
-                        glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + (2*heightHUDBlock)/3);
-                        glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen + (2*heightHUDBlock)/3);
-                        glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen - (2*heightHUDBlock)/3);
+                    glColor4f(WHITE);
+                    glNormal3f(0.0f, 0.0f, 0.0f);
+                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - heightHUDBlock);
+                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + heightHUDBlock);
+                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen + heightHUDBlock);
+                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen - heightHUDBlock);
 
-                        glEnd();
-                        glEnable(GL_LIGHTING);
-                    glPopMatrix();
-                glDisable(GL_TEXTURE_2D);
+                    glEnd();
+                glPopMatrix();
 
                 glPushMatrix();
                     glColor3f(HUDColor);
@@ -179,7 +170,6 @@ class HUD{
                     desenhaTexto(gameOverText2, wCenterScreen - 30, hCenterScreen + 10, 0);
                 glPopMatrix();
 
-                glEnable(GL_LIGHTING);
             }
 
 
@@ -187,11 +177,10 @@ class HUD{
 
         void drawTargetsInfo(){
 
-
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, hudTexture[2]);
                 glPushMatrix();
-                    glDisable(GL_LIGHTING);
+
                     glBegin(GL_QUADS);
                     glColor4f(WHITE);
                     glNormal3f(0.0f, 0.0f, 0.0f);
@@ -202,7 +191,6 @@ class HUD{
                         glTexCoord2f(1.0f, 1.0f); glVertex2f(wScreen, 0.0);
 
                     glEnd();
-                    glEnable(GL_LIGHTING);
                 glPopMatrix();
             glDisable(GL_TEXTURE_2D);
 
@@ -218,7 +206,6 @@ class HUD{
                 desenhaTexto(extrasInfoText, wScreen - widthHUDBlock/2 - 15, heightHUDBlock/2 +15, 0);
             glPopMatrix();
 
-
         }
 
         void drawGunInfo(){
@@ -226,7 +213,6 @@ class HUD{
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, hudTexture[0]);
                 glPushMatrix();
-                glDisable(GL_LIGHTING);
                     glBegin(GL_QUADS);
                         glColor4f(WHITE);
                         glNormal3f(0.0f, 0.0f, 0.0f);
@@ -236,19 +222,18 @@ class HUD{
                         glTexCoord2f(1.0f, 1.0f); glVertex2f(0.0, heightHUDBlock);
 
                     glEnd();
-                    glEnable(GL_LIGHTING);
                 glPopMatrix();
             glDisable(GL_TEXTURE_2D);
 
             glPushMatrix();
                 glColor3f(HUDColor);
-                sprintf(bulletInfoText,"%d bullets in chamber", bulletsInGun);
+                sprintf(bulletInfoText,"%d in chamber", bulletsInGun);
                 desenhaTexto(bulletInfoText, widthHUDBlock/4 -15, heightHUDBlock/2-10, 0);
             glPopMatrix();
 
             glPushMatrix();
                 glColor3f(HUDColor);
-                sprintf(clipsInfoText,"%d bullets remaining", bulletsLeft);
+                sprintf(clipsInfoText,"%d remaining", bulletsLeft);
                 desenhaTexto(clipsInfoText, widthHUDBlock/4 -15, heightHUDBlock/2+10, 0);
             glPopMatrix();
 
@@ -266,7 +251,7 @@ class HUD{
             glOrtho(xC, -xC, -yC, yC, zC, -zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-                      //onde está           para onde está a olhar          vector up
+            //               onde está           para onde está a olhar          vector up
             gluLookAt( x, minimapViewHeight, z,          x, 0, z,           dx, 0, dz);
 
         }
@@ -276,7 +261,6 @@ class HUD{
             glEnable(GL_TEXTURE_2D);
             glBindTexture(GL_TEXTURE_2D, hudTexture[1]);
                 glPushMatrix();
-                    glDisable(GL_LIGHTING);
                     glBegin(GL_QUADS);
 
                     glColor4f(WHITE);
@@ -287,7 +271,6 @@ class HUD{
                     glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
 
                     glEnd();
-                    glEnable(GL_LIGHTING);
                 glPopMatrix();
             glDisable(GL_TEXTURE_2D);
 
@@ -307,8 +290,6 @@ class HUD{
         }
 
         void drawMiniMapBox(){
-
-            glDisable(GL_LIGHTING);
 
             // top line
             glPushMatrix();
@@ -336,8 +317,6 @@ class HUD{
                 glEnd();
             glPopMatrix();
 
-            glEnable(GL_LIGHTING);
-
         }
 
         //everything except the minimap
@@ -352,6 +331,7 @@ class HUD{
                 glDisable(GL_CULL_FACE);
                 glClear(GL_DEPTH_BUFFER_BIT);
 
+                glDisable(GL_LIGHTING);
                 drawGunInfo();
                 drawTimeInfo();
                 drawTargetsInfo();
@@ -360,6 +340,7 @@ class HUD{
                     glTranslatef(0, -crosshairLength, 0);
                     drawCrosshair();
                 glPopMatrix();
+                glEnable(GL_LIGHTING);
 
                 // Making sure we can render 3d again
                 glMatrixMode(GL_PROJECTION);

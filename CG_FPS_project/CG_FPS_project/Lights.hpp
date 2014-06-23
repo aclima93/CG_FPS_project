@@ -12,22 +12,26 @@ void initLights(void){
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
     //Iluminacao global
+    /*
     if( dayTime){
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
     }
     if( nightTime){
 
         for(int i=0; i<numLights; i++){
-
+*/
+    int i=numLights;
             glEnable(GL_LIGHT0+i);
 
             glLightfv(GL_LIGHT0+i, GL_AMBIENT, light_ambient[i]);
             glLightfv(GL_LIGHT0+i, GL_DIFFUSE, light_diffuse[i]);
             glLightfv(GL_LIGHT0+i, GL_SPECULAR, light_specular[i]);
             glLightfv(GL_LIGHT0+i, GL_POSITION, localPos[i]);
+            /*
         }
 
     }
+    */
 
 
     /* Comentar depois!!!!!!!!!!!!!
@@ -74,17 +78,6 @@ void draw_local_lights( ){
 void drawFlashlightLight(){
 
 
-    /*
-    // círculo na posição da cãmara
-    glPushMatrix();
-        glColor4f(VERMELHO);
-        glTranslatef( xCamera, yCamera+15, zCamera);
-        //glScalef(1,0,1);
-        glutSolidSphere(playerRadius, 10, 10);
-    glPopMatrix();
-    */
-
-
     if(nightTime){
         //  Direccao do FOCO=lanterna
         float dx, dy, dz;
@@ -110,24 +103,19 @@ void drawFlashlightLight(){
 
 void drawFog(){
 
-    /*
+
 
     GLfloat fogColor[] = {0.5f, 0.5f, 0.5f, 1};
     //GLfloat distanceFromOrigin = sqrt( xCamera*xCamera + yCamera*yCamera + zCamera*zCamera );
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, fogColor);
 
-    glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogi(xCamera, yCamera);//GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);        // Set Fog Based On Vertice Coordinates
+    //glFogi(GL_FOG_MODE, GL_LINEAR);
+    glFogi(GL_FOG_MODE, GL_EXP2); glFogf(GL_FOG_DENSITY, 0.025f);
+    //glFogi(xCamera, yCamera);//GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);        // Set Fog Based On Vertice Coordinates
     glFogf(GL_FOG_START, 0.0f);
-    glFogf(GL_FOG_END, 30.0f);
+    glFogf(GL_FOG_END, mapLength);
     glHint (GL_FOG_HINT, GL_FASTEST);
-
-
-    //glFogi(GL_FOG_MODE, GL_EXP2);
-    //glFogf(GL_FOG_DENSITY, 0.05f);
-    //glHint (GL_FOG_HINT, GL_FASTEST);
-    */
 
 
 }

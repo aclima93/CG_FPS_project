@@ -440,36 +440,34 @@ class Map{
 
         Map(){
 
-            createTexture();
-
             //chão
             ground[0].Init(
                 -mapWidth/4, -mapLength/2, //center
                  mapWidth/2, mapLength,    // w, l
                  0, 1, 0,                  // normal
                  WHITE,                    // r g b a
-                 factor/2, factor
+                 factor/2, factor*2
             );
             ground[1].Init(
                 -mapWidth*(0.75f), -mapLength/2, //center
                  mapWidth/2, mapLength*(0.2f),  // w, l
                  0, 1, 0,                        // normal
                  WHITE,                          // r g b a
-                 factor/2, factor
+                 factor/2, factor*2
             );
             ground[2].Init(
                  mapWidth/4, -mapLength/2, //center
                  mapWidth/2, mapLength,    // w, l
                  0, 1, 0,                  // normal
                  WHITE,                    // r g b a
-                 factor/2, factor
+                 factor/2, factor*2
             );
             ground[3].Init(
                  mapWidth*(0.75f), -mapLength/2, //center
                  mapWidth/2, mapLength*(0.2f),   // w, l
                  0, 1, 0,                        // normal
                  WHITE,                          // r g b a
-                 factor/2, factor
+                 factor/2, factor*2
             );
 
 

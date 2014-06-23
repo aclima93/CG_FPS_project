@@ -108,7 +108,6 @@ void drawScene(){
     draw_esfera2();
     */
 
-    /* Sky Box */
     skybox.drawSkyBox();
 
     drawFog();
@@ -197,7 +196,6 @@ void Timer(int value){
     updateBullets();
 
     if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
-        //std::cout << "chamei o glutpostredisplay no timer\n";
         glutPostRedisplay(); // flag que chama a função de display na próxima iteração
     }
 
