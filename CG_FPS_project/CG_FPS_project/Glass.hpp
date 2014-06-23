@@ -16,7 +16,13 @@
 using namespace std;
 
 /* Alfa de transparencia a aplicar ao vidro */
-float alfaVidro = 0.5f;
+float alfaVidro = 0.25f;
+float x = -10;
+float y = 10;
+float z = -10;
+float halfW = 20;
+float halfH = 10;
+float halfL = 1;
 
 class Glass {
     public:
@@ -41,10 +47,40 @@ class Glass {
                 glEnable(GL_DEPTH_TEST);
 
                 glNormal3f(0.0f, 0.0f, 0.0f);
-                glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0,20.0,-10.0); /* Superior esquerdo */
-                glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0,10.0,-10.0); /* Inferior esquerdo */
-                glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0,10.0,-10.0); /* Inferior direito */
-                glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0,20.0,-10.0); /* Superior direito */
+                //glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0,20.0,-10.0); /* Superior esquerdo */
+                //glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0,10.0,-10.0); /* Inferior esquerdo */
+               // glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0,10.0,-10.0); /* Inferior direito */
+               // glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0,20.0,-10.0); /* Superior direito */
+
+                glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
+                glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Top)
+                glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Bottom Left Of The Quad (Top)
+                glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Bottom Right Of The Quad (Top)
+
+                glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Top Right Of The Quad (Bottom)
+                glVertex3f(x- halfW, y- halfH, z+ halfL);	// Top Left Of The Quad (Bottom)
+                glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Bottom)
+                glVertex3f(x+ halfW, y- halfH, z- halfL);	// Bottom Right Of The Quad (Bottom)
+
+                glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Front)
+                glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Left Of The Quad (Front)
+                glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Left Of The Quad (Front)
+                glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Front)
+
+                glVertex3f(x+ halfW, y- halfH, z- halfL);	// Top Right Of The Quad (Back)
+                glVertex3f(x- halfW, y- halfH, z- halfL);	// Top Left Of The Quad (Back)
+                glVertex3f(x- halfW, y+ halfH, z- halfL);	// Bottom Left Of The Quad (Back)
+                glVertex3f(x+ halfW, y+ halfH, z- halfL);	// Bottom Right Of The Quad (Back)
+
+                glVertex3f(x- halfW, y+ halfH, z+ halfL);	// Top Right Of The Quad (Left)
+                glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Left)
+                glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Left)
+                glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Left)
+
+                glVertex3f(x+ halfW, y+ halfH,z- halfL);	// Top Right Of The Quad (Right)
+                glVertex3f(x+ halfW, y+ halfH,z+ halfL);	// Top Left Of The Quad (Right)
+                glVertex3f(x+ halfW, y- halfH,z+ halfL);	// Bottom Left Of The Quad (Right)
+                glVertex3f(x+ halfW, y- halfH,z- halfL);	// Bottom Right Of The Quad (Right)
             glEnd();
 
             glDisable(GL_BLEND); /* Desactivar o BLEND */
