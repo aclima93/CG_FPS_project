@@ -26,7 +26,8 @@ HEADERS += \
     ModelsTargetsExtras.hpp \
     Physics.hpp \
     Ground.hpp \
-    SkyBox.hpp
+    SkyBox.hpp \
+    Glass.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user

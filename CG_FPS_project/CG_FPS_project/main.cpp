@@ -108,13 +108,18 @@ void drawScene(){
     draw_esfera2();
     */
 
+    /* Draw SkyBox */
     skybox.drawSkyBox();
 
-    drawFog();
+    //drawFog();
     map.drawMap();
     drawTargets();
     drawExtras();
     drawBullets();
+
+    /* Transparency Glass */
+    //glass.drawGlass();
+
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
 
 

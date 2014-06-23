@@ -7,6 +7,8 @@
 #include "Ground.hpp"
 #include "Colors.hpp"
 #include <string.h>
+#include "Glass.hpp"
+Glass glass2;
 
 #define NUMGROUNDS 4
 
@@ -663,6 +665,7 @@ class Map{
             }
         }
 
+
         void drawMap(){
 
             drawGround();
@@ -670,8 +673,10 @@ class Map{
             drawWalls();
             drawGlass();
 
-        }
+            /* Transparency Glass IMPECAVEL!!! */
+            glass2.drawGlass();
 
+        }
 
 };
 
