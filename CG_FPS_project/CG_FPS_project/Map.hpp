@@ -8,8 +8,6 @@
 #include "Colors.hpp"
 #include <string.h>
 
-#define DEBUG_MODE 1
-
 #define NUMGROUNDS 4
 
 const float mapWidth = 100; // 5
@@ -22,6 +20,11 @@ const float mapHeight = 25; // 1
 #define wallScale  XSCALE, YSCALE, ZSCALE
 #define concreteWallModel "Test\\Wall\\Wall.obj"
 #define concreteWallTexture "Test\\Wall\\Wall_texture.bmp"
+#define groundTexture "Test\\Wall\\Wall_texture.bmp"//"textures\\ground_tex.bmp"
+
+
+GLuint  textureMap[1];
+RgbImage imagMap;
 
 const float firstGlassStart = 0.40f;
 const float firstGlassEnd = 0.45f;
@@ -57,6 +60,45 @@ float glassWalls[][numWallParams] = {
     }
 };
 
+
+#define numMiddleWalls 4
+float middleWalls[][numWallParams]= {
+
+    //-----------------
+    //paredes verticais no centro
+    {
+        //parede central1
+        0, 0, -mapLength*(0.375f),
+        XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
+        lWallBB, hWallBB, wWallBB*1.5f,
+         90,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede central2
+        0, 0, -mapLength*(0.425f),
+        XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
+        lWallBB, hWallBB, wWallBB*1.5f,
+         90,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede central3
+        0, 0, -mapLength*(0.675f),
+        XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
+        lWallBB, hWallBB, wWallBB*1.5f,
+         90,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede central4
+        0, 0, -mapLength*(0.725f),
+        XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
+        lWallBB, hWallBB, wWallBB*1.5f,
+         90,
+         WHITE                                                  // r g b a
+    }
+};
 
 #define numVerticalWalls 24
 float verticalWalls[][numWallParams]= {
@@ -257,7 +299,7 @@ float verticalWalls[][numWallParams]= {
     }
 };
 
-#define numHorizontalWalls 10
+#define numHorizontalWalls 16
 float horizontalWalls[][numWallParams] = {
 
     //-------------------
@@ -310,6 +352,11 @@ float horizontalWalls[][numWallParams] = {
          0,
          WHITE                                                  // r g b a
     },
+
+    // --------------------------------------
+    // --------------------------------------
+    // --------------------------------------
+
     {
         //parede esquerda10.1
         -mapWidth*(0.125f), 0, 0,
@@ -327,8 +374,8 @@ float horizontalWalls[][numWallParams] = {
          WHITE                                                  // r g b a
     },
     {
-        //parede esquerda11.1
-        -mapWidth*(0.125f), 0, -mapLength,
+        //parede esquerda11.2
+        -mapWidth*(0.375f), 0, -mapLength*(0.15f),
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
@@ -336,6 +383,38 @@ float horizontalWalls[][numWallParams] = {
     },
     {
         //parede esquerda11.2
+        -mapWidth*(0.125f), 0, -mapLength*(0.35f),
+         XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
+         wWallBB*1.5, hWallBB, lWallBB,
+         0,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda12.1
+        -mapWidth*(0.125f), 0, -mapLength*(0.65f),
+         XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
+         wWallBB*1.5, hWallBB, lWallBB,
+         0,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda12.2
+        -mapWidth*(0.375f), 0, -mapLength*(0.85f),
+         XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
+         wWallBB*1.5, hWallBB, lWallBB,
+         0,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda13.1
+        -mapWidth*(0.125f), 0, -mapLength,
+         XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
+         wWallBB*1.5, hWallBB, lWallBB,
+         0,
+         WHITE                                                  // r g b a
+    },
+    {
+        //parede esquerda13.2
         -mapWidth*(0.375f), 0, -mapLength,
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
@@ -344,7 +423,7 @@ float horizontalWalls[][numWallParams] = {
     }
 };
 
-#define NUMWALLS (numHorizontalWalls+numVerticalWalls)*2
+#define NUMWALLS numMiddleWalls+(numHorizontalWalls+numVerticalWalls)*2
 #define NUMGLASS numGlassWalls*2
 #define factor 50
 
@@ -358,35 +437,38 @@ class Map{
         bool isGlassActive[NUMGLASS];
 
 
+
         Map(){
+
+            createTexture();
 
             //chão
             ground[0].Init(
                 -mapWidth/4, -mapLength/2, //center
                  mapWidth/2, mapLength,    // w, l
                  0, 1, 0,                  // normal
-                 VERDE,                    // r g b a
+                 WHITE,                    // r g b a
                  factor/2, factor
             );
             ground[1].Init(
                 -mapWidth*(0.75f), -mapLength/2, //center
                  mapWidth/2, mapLength*(0.2f),  // w, l
                  0, 1, 0,                        // normal
-                 VERDE,                          // r g b a
+                 WHITE,                          // r g b a
                  factor/2, factor
             );
             ground[2].Init(
                  mapWidth/4, -mapLength/2, //center
                  mapWidth/2, mapLength,    // w, l
                  0, 1, 0,                  // normal
-                 VERDE,                    // r g b a
+                 WHITE,                    // r g b a
                  factor/2, factor
             );
             ground[3].Init(
                  mapWidth*(0.75f), -mapLength/2, //center
                  mapWidth/2, mapLength*(0.2f),   // w, l
                  0, 1, 0,                        // normal
-                 VERDE,                          // r g b a
+                 WHITE,                          // r g b a
                  factor/2, factor
             );
 
@@ -421,6 +503,14 @@ class Map{
                                concreteWallModel, concreteWallTexture);
                 wall_i+=2;
             }
+            for(int l=0; l<numMiddleWalls; l++){
+                walls[wall_i].Init( middleWalls[l][0], middleWalls[l][1], middleWalls[l][2], middleWalls[l][3],
+                               middleWalls[l][4], middleWalls[l][5], middleWalls[l][6], middleWalls[l][7],
+                               middleWalls[l][8], middleWalls[l][9], middleWalls[l][10],
+                               middleWalls[l][11], middleWalls[l][12], middleWalls[l][13],
+                               concreteWallModel, concreteWallTexture);
+                wall_i++;
+            }
 
             int glassWall_i = 0;
             memset(isGlassActive, 1, sizeof(isGlassActive));
@@ -441,17 +531,32 @@ class Map{
 
         }
 
+        void createTexture(){
+            glGenTextures(1, &textureMap[0]);
+            glBindTexture(GL_TEXTURE_2D, textureMap[0]);
+            imagMap.LoadBmpFile(groundTexture); /* Passar a string para const char em C */
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+            glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                imagMap.GetNumCols(),
+                imagMap.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+                imagMap.ImageData());
+        }
+
         void desenhaQuadrado(GLfloat x1, GLfloat y1, GLfloat z1,
                              GLfloat x2, GLfloat y2, GLfloat z2,
                              GLfloat x3, GLfloat y3, GLfloat z3,
                              GLfloat x4, GLfloat y4, GLfloat z4,
                              GLfloat n1, GLfloat n2, GLfloat n3,
-                             GLfloat r, GLfloat g, GLfloat b, GLfloat a,
-                             int texIndex, int repeat
+                             GLfloat r, GLfloat g, GLfloat b, GLfloat a
                              ){
 
             glEnable(GL_TEXTURE_2D);
             //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
+            glBindTexture(GL_TEXTURE_2D, textureMap[0]);
             glPushMatrix();
 
                 glBegin(GL_QUADS);
@@ -459,24 +564,16 @@ class Map{
                     glColor4f(r, g, b, a);
                     glNormal3d(n1, n2, n3);
 
-                    if(texIndex != -1){
-
-                        glTexCoord2f(0.0f, 0.0f);               glVertex3f(x1, y1, z1); // top left
-                        glTexCoord2f(0.0f, repeat*1.0f);        glVertex3f(x2, y2, z2); // bottom left
-                        glTexCoord2f(repeat*1.0f, repeat*1.0f); glVertex3f(x4, y4, z4); // bottom right
-                        glTexCoord2f(repeat*1.0f, 0.0f);        glVertex3f(x3, y3, z3); // top right
-                    }
-                    else{
-                        glVertex3f(x1, y1, z1); // top left
-                        glVertex3f(x2, y2, z2); // bottom left
-                        glVertex3f(x4, y4, z4); // bottom right
-                        glVertex3f(x3, y3, z3); // top right
-                    }
+                    glTexCoord2f(0.0f, 0.0f); glVertex3f(x1, y1, z1); // top left
+                    glTexCoord2f(0.0f, 1.0f); glVertex3f(x2, y2, z2); // bottom left
+                    glTexCoord2f(1.0f, 1.0f); glVertex3f(x4, y4, z4); // bottom right
+                    glTexCoord2f(1.0f, 0.0f); glVertex3f(x3, y3, z3); // top right
 
 
                 glEnd();
             glPopMatrix();
             //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glDisable(GL_TEXTURE_2D);
         }
 
         void drawGround(){
@@ -487,19 +584,6 @@ class Map{
 
 
             for(int i=0; i<NUMGROUNDS; i++){
-
-                /*
-                desenhaQuadrado(
-                    ground[i].centerX - ground[i].width/2, 0, ground[i].centerZ + ground[i].length/2,
-                    ground[i].centerX - ground[i].width/2, 0, ground[i].centerZ - ground[i].length/2,
-                    ground[i].centerX + ground[i].width/2, 0, ground[i].centerZ + ground[i].length/2,
-                    ground[i].centerX + ground[i].width/2, 0, ground[i].centerZ - ground[i].length/2,
-                    ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
-                    ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                    1, 10 // ground texture
-                );
-                */
-
 
                 halfW = ground[i].wFactor/2;
                 halfL = ground[i].lFactor/2;
@@ -520,8 +604,7 @@ class Map{
                             cx + halfW, 0, cz + halfL,
                             cx + halfW, 0, cz - halfL,
                             ground[i].normal[0], ground[i].normal[1], ground[i].normal[2],
-                            ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3],
-                            1, 10 // ground texture
+                            ground[i].color[0], ground[i].color[1], ground[i].color[2], ground[i].color[3]
                         );
 
                         counter++;

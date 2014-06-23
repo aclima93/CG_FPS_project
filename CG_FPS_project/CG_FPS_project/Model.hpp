@@ -14,8 +14,6 @@
 #include <GL/glaux.h>
 #include "RgbImage.h"
 
-#define NUMMODELS 20
-
 #define debug 0
 #define tam_line_aux 100
 using namespace std;
