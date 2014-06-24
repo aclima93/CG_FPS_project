@@ -19,6 +19,8 @@ RgbImage imag;
 string nomes[6] = {"Skybox\\Back.bmp", "Skybox\\Bottom.bmp", "Skybox\\Left.bmp",
                    "Skybox\\Front.bmp", "Skybox\\Right.bmp", "Skybox\\Up.bmp"};
 
+float distance2 = 800;
+
 class SkyBox {
     public:
 
@@ -78,8 +80,8 @@ class SkyBox {
                     glNormal3f(0.0f, 0.0f, 0.0f);
                     glTexCoord2f(0.0f, 1.0f); glVertex3f(300.0,-300.0,300.0); /* Superior esquerdo */
                     glTexCoord2f(0.0f, 0.0f); glVertex3f(-300.0,-300.0,300.0); /* Inferior esquerdo */
-                    glTexCoord2f(1.0f, 0.0f); glVertex3f(-300.0,-300.0,-800.0); /* Inferior direito */
-                    glTexCoord2f(1.0f, 1.0f); glVertex3f(300.0,-300.0,-800.0); /* Superior direito */
+                    glTexCoord2f(1.0f, 0.0f); glVertex3f(-300.0,-300.0,-distance2); /* Inferior direito */
+                    glTexCoord2f(1.0f, 1.0f); glVertex3f(300.0,-300.0,-distance2); /* Superior direito */
 
                     glEnd();
                     glEnable(GL_LIGHTING);
@@ -114,8 +116,8 @@ class SkyBox {
 
                     glColor4f(WHITE);
                     glNormal3f(0.0f, 0.0f, 0.0f);
-                    glTexCoord2f(0.0f, 1.0f); glVertex3f(295.0,300.0,-800.0); /* Superior esquerdo */
-                    glTexCoord2f(0.0f, 0.0f); glVertex3f(295.0,-300.0,-800.0); /* Inferior esquerdo */
+                    glTexCoord2f(0.0f, 1.0f); glVertex3f(295.0,300.0,-distance2); /* Superior esquerdo */
+                    glTexCoord2f(0.0f, 0.0f); glVertex3f(295.0,-300.0,-distance2); /* Inferior esquerdo */
                     glTexCoord2f(1.0f, 0.0f); glVertex3f(295.0,-300.0,300.0); /* Inferior direito */
                     glTexCoord2f(1.0f, 1.0f); glVertex3f(295.0,300.0,300.0); /* Superior direito */
 
@@ -133,8 +135,8 @@ class SkyBox {
 
                     glColor4f(WHITE);
                     glNormal3f(0.0f, 0.0f, 0.0f);
-                    glTexCoord2f(0.0f, 1.0f); glVertex3f(-295.0,300.0,-800.0); /* Superior esquerdo */
-                    glTexCoord2f(0.0f, 0.0f); glVertex3f(-295.0,-300.0,-800.0); /* Inferior esquerdo */
+                    glTexCoord2f(0.0f, 1.0f); glVertex3f(-295.0,300.0,-distance2); /* Superior esquerdo */
+                    glTexCoord2f(0.0f, 0.0f); glVertex3f(-295.0,-300.0,-distance2); /* Inferior esquerdo */
                     glTexCoord2f(1.0f, 0.0f); glVertex3f(-295.0,-300.0,300.0); /* Inferior direito */
                     glTexCoord2f(1.0f, 1.0f); glVertex3f(-295.0,300.0,300.0); /* Superior direito */
 
@@ -154,8 +156,8 @@ class SkyBox {
                     glNormal3f(0.0f, 0.0f, 0.0f);
                     glTexCoord2f(0.0f, 1.0f); glVertex3f(300.0,295.0,300.0); /* Superior esquerdo */
                     glTexCoord2f(0.0f, 0.0f); glVertex3f(-300.0,295.0,300.0); /* Inferior esquerdo */
-                    glTexCoord2f(1.0f, 0.0f); glVertex3f(-300.0,295.0,-800.0); /* Inferior direito */
-                    glTexCoord2f(1.0f, 1.0f); glVertex3f(300.0,295.0,-800.0); /* Superior direito */
+                    glTexCoord2f(1.0f, 0.0f); glVertex3f(-300.0,295.0,-distance2); /* Inferior direito */
+                    glTexCoord2f(1.0f, 1.0f); glVertex3f(300.0,295.0,-distance2); /* Superior direito */
 
                     glEnd();
                     glEnable(GL_LIGHTING);

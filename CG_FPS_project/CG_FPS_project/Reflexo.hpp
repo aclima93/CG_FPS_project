@@ -1,5 +1,5 @@
-#ifndef GLASS_HPP
-#define GLASS_HPP
+#ifndef REFLEXO_HPP
+#define REFLEXO_HPP
 
 #include <iostream>
 #include <vector>
@@ -15,42 +15,52 @@
 
 using namespace std;
 
-class Glass {
+
+class Reflexo {
     public:
 
-        Glass() {}
-        ~Glass() {}
+        Reflexo() {}
+        ~Reflexo() {}
 
-        /* Alfa de transparencia a aplicar ao vidro */
-        float alfaVidro = 0.25f;
+        float alfa = 1.0f;
         float x = -10;
         float y = 10;
-        float z = -10;
+        float z = -40;
         float halfW = 20;
         float halfH = 10;
         float halfL = 1;
 
-        void drawGlass(){
+        void drawMirror(){
 
-            //glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-            glEnable(GL_BLEND); /* Activar BLEND */
-            /* GL_SRC_ALPHA: define para o peso da cor do objecto a desenhar o valor do alfa da sua cor */
-            /* GL_ONE_MINUS_SRC_ALPHA: define para o peso da cor que já está desenhado no ecran é de (1 - alfa),
-             * onde alfa é o nível de transparência do objecto que está a ser desenhado */
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            // Reflexao
+            glEnable(GL_STENCIL_TEST); //Activa o uso do stencil buffer
+            glColorMask(0, 0, 0, 0); //Nao escreve no color buffer
+            glDisable(GL_DEPTH_TEST); //Torna inactivo o teste de profundidade
+            glStencilFunc(GL_ALWAYS, 1, 1);
+            glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+            //Coloca a 1 todos os pixels no stencil buffer que representam o chão
+            glColorMask(1, 1, 1, 1); //Activa a escrita de cor
+            glEnable(GL_DEPTH_TEST); //Activa o teste de profundidade
+
+            glStencilFunc(GL_EQUAL, 1, 1);//O stencil test passa apenas quando o pixel tem o valor 1 no stencil buffer
+            glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); //Stencil buffer read-only
+
+            //Desenha o objecto com uma reflexão vertical ond stencil buffer é 1
+            glEnable(GL_NORMALIZE);
+
+            glLightf(GL_LIGHT1,GL_CONSTANT_ATTENUATION,  5.5);
+
+
 
             /* Desenhar o quadrado em si */
             glBegin (GL_QUADS);
                 /* Defenir o nível de transparencia do vidro */
-                glColor4f(0.0f,0.0f,1.0f, alfaVidro);
+                glColor4f(0.0f,0.0f,1.0f, alfa);
                 /* Ativar o teste de profundidade (z-buffer) */
-                glEnable(GL_DEPTH_TEST);
+                //glEnable(GL_DEPTH_TEST);
 
                 glNormal3f(0.0f, 0.0f, 0.0f);
-                //glTexCoord2f(0.0f, 1.0f); glVertex3f(-10.0,20.0,-10.0); /* Superior esquerdo */
-                //glTexCoord2f(0.0f, 0.0f); glVertex3f(-10.0,10.0,-10.0); /* Inferior esquerdo */
-               // glTexCoord2f(1.0f, 0.0f); glVertex3f(10.0,10.0,-10.0); /* Inferior direito */
-               // glTexCoord2f(1.0f, 1.0f); glVertex3f(10.0,20.0,-10.0); /* Superior direito */
 
                 glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
                 glVertex3f(x- halfW, y+ halfH, z- halfL);	// Top Left Of The Quad (Top)
@@ -83,7 +93,11 @@ class Glass {
                 glVertex3f(x+ halfW, y- halfH,z- halfL);	// Bottom Right Of The Quad (Right)
             glEnd();
 
-            glDisable(GL_BLEND); /* Desactivar o BLEND */
+            glDisable(GL_NORMALIZE);
+            glDisable(GL_STENCIL_TEST);
+            glLightf(GL_LIGHT1,GL_CONSTANT_ATTENUATION,  0.5);
+
+            //glDisable(GL_BLEND); /* Desactivar o BLEND */
         }
 }
 ;

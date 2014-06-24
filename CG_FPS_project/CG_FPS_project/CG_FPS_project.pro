@@ -27,7 +27,8 @@ HEADERS += \
     Physics.hpp \
     Ground.hpp \
     SkyBox.hpp \
-    Glass.hpp
+    Glass.hpp \
+    Reflexo.hpp
 
 OTHER_FILES += \
     CG_FPS_project.pro.user

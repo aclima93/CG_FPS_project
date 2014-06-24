@@ -36,12 +36,12 @@ void initLights(void){
 
     /* Comentar depois!!!!!!!!!!!!!
     //Iluminacao local
-    glLightfv(GL_LIGHT0, GL_POSITION, localPos);
+    //glLightfv(GL_LIGHT0, GL_POSITION, localPos);
     glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
     glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
     glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION, localAttLin);
-    glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
-    */
+    glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);*/
+
 
 
 }

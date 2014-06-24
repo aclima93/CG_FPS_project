@@ -103,7 +103,7 @@ bool nightTime = true;
 
 /*Definir posicao iluminacao local*/
 GLfloat localCor[4] ={1, 1, 1, 1.0};
-GLfloat localPos[][4]={
+const GLfloat localPos[][4]={
     {0, mapHeight*2, (-mapLength*1)/8, 1.0},
     {0, mapHeight*2, (-mapLength*3)/8, 1.0},
     {0, mapHeight*2, (-mapLength*5)/8, 1.0},

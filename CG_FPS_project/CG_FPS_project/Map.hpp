@@ -9,6 +9,8 @@
 #include <string.h>
 #include "Glass.hpp"
 Glass glass2;
+#include "Reflexo.hpp"
+Reflexo reflexo;
 
 #define NUMGROUNDS 4
 
@@ -675,6 +677,9 @@ class Map{
 
             /* Transparency Glass IMPECAVEL!!! */
             glass2.drawGlass();
+
+            /* Merda de espelho */
+            reflexo.drawMirror();
 
         }
 
