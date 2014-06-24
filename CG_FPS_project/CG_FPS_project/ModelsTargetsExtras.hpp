@@ -24,11 +24,12 @@ void drawBullets(){
 
 
 float getCameraAngle(){
-    float x0 = 1, y0 = 0, z0 = 0;
-    float x1 = dxCamera, y1 = dyCamera, z1 = dzCamera;
-    float xz = x0*x1 + z0*z1, y00 = y0*y0, y01 = y0*y1, y11 = y1*y1;
+    float x0=0, z0=1;
+    float x1=xCamera/*+dxCamera*/, z1=zCamera/*+dzCamera*/;
 
-    return acos(xz + y01) / sqrt((xz + y00) * (xz + y11));
+    float res = acos( x0*x1 + z0*z1 / sqrt( (x0*x0 + z0*z0) * (x1*x1 + z1*z1) ));
+    std::cout << "z1:" << z1 << " - x1:" << x1 << " - res:" << res << std::endl;
+    return res;
 }
 
 void drawPlayer(){

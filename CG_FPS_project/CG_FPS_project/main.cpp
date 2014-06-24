@@ -81,13 +81,12 @@ void drawScene(){
 
     drawFog();
 
-    drawPlayer(); // desenha o robot
-
     drawTargets();
     drawExtras();
     drawBullets();
     map.drawMap();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
+    drawPlayer(); // desenha o robot
 
 
 

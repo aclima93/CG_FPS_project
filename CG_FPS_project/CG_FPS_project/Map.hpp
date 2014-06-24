@@ -14,9 +14,9 @@ const float mapWidth = 100; // 5
 const float mapLength = 500; // 10
 const float mapHeight = 25; // 1
 
-#define XSCALE 25
-#define YSCALE 25
-#define ZSCALE 25
+#define XSCALE 75
+#define YSCALE 20
+#define ZSCALE 5
 #define wallScale  XSCALE, YSCALE, ZSCALE
 #define concreteWallModel "Test\\Wall\\Wall.obj"
 #define concreteWallTexture "Test\\Wall\\Wall_texture.bmp"

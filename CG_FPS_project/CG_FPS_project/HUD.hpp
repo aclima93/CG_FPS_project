@@ -214,9 +214,9 @@ class HUD{
                         glColor4f(WHITE);
                         glNormal3f(0.0f, 0.0f, 0.0f);
                         glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0, 0.0);
-                        glTexCoord2f(0.0f, 0.0f); glVertex2f(widthHUDBlock, 0.0);
+                        glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0, heightHUDBlock);
                         glTexCoord2f(1.0f, 0.0f); glVertex2f(widthHUDBlock, heightHUDBlock);
-                        glTexCoord2f(1.0f, 1.0f); glVertex2f(0.0, heightHUDBlock);
+                        glTexCoord2f(1.0f, 1.0f); glVertex2f(widthHUDBlock, 0.0);
 
                     glEnd();
                 glPopMatrix();
@@ -225,13 +225,13 @@ class HUD{
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(bulletInfoText,"%d in chamber", bulletsInGun);
-                desenhaTexto(bulletInfoText, widthHUDBlock/4 -15, heightHUDBlock/2-10, 0);
+                desenhaTexto(bulletInfoText, widthHUDBlock/4 -5, heightHUDBlock/2-10, 0);
             glPopMatrix();
 
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(clipsInfoText,"%d remaining", bulletsLeft);
-                desenhaTexto(clipsInfoText, widthHUDBlock/4 -15, heightHUDBlock/2+10, 0);
+                desenhaTexto(clipsInfoText, widthHUDBlock/4 -5, heightHUDBlock/2+10, 0);
             glPopMatrix();
 
         }
@@ -274,13 +274,13 @@ class HUD{
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(timerInfoText,"Score: %d", score);
-                desenhaTexto(timerInfoText, wCenterScreen -15, heightHUDBlock/3 -10 ,0);
+                desenhaTexto(timerInfoText, wCenterScreen -35, heightHUDBlock/3 -10 ,0);
             glPopMatrix();
 
             glPushMatrix();
                 glColor3f(HUDColor);
                 sprintf(scoreInfoText,"%d:%d:%d", minutes, secs, miliseconds);
-                desenhaTexto(scoreInfoText, wCenterScreen -15 , heightHUDBlock/3 +10 ,0);
+                desenhaTexto(scoreInfoText, wCenterScreen -35 , heightHUDBlock/3 +10 ,0);
             glPopMatrix();
 
 
