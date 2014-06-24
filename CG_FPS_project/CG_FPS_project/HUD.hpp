@@ -15,7 +15,7 @@ int minutes = 0;
 int secs = 0;
 int miliseconds = 0;
 
-const int msecCallback = 250;
+const int msecCallback = 150;//250;
 const int msecDisplayCallback = msecCallback * 10;
 
 const float widthHUDBlock = 200;

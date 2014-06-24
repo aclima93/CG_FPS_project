@@ -38,6 +38,7 @@ HUD hud;
 Map map;
 Sounds sounds;
 
+bool paused = false;
 
 float xStart = 0;
 float yStart = mapHeight/2;
@@ -60,8 +61,8 @@ bool isMenuActive = false;
 int numGameModes = 5;
 const char* gameModes[] = { "Time Attack", "No Bullet Left Behind", "Zen", "Highscores", "Quit Game" };
 
-std::vector<Target> targets(NUMTARGETS); //Target targets[NUMTARGETS];
-std::vector<Target> extras(NUMEXTRAS); //Target extras[NUMEXTRAS];
+std::vector<Target> targets(NUMTARGETS);
+std::vector<Target> extras(NUMEXTRAS);
 
 
 //------------------------------------------------------------ Global (ambiente)

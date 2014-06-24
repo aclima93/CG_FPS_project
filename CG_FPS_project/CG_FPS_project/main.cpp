@@ -10,8 +10,26 @@
 
 
 
-void init(void)
-{
+void initGame(void){
+
+    //redefine constants and stuffs
+    xStart = 0;
+    yStart = mapHeight/2;
+    zStart = -7.5;
+
+    minutes = 0;
+    secs = 0;
+    miliseconds = 0;
+
+    numTargetsHit = 0;
+    numExtrasHit = 0;
+    score = 0;
+
+    bulletsInGun = CLIPSIZE;
+    bulletsLeft = CLIPSIZE * NUMCLIPS;
+    bulletIndex = 0;
+
+
 
     //……………………………………………………………………………………………………………………………Lighting set up
     initLights();
@@ -145,7 +163,7 @@ void display(void){
     glViewport (0, 0, wScreen, hScreen);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(100.0, wScreen/hScreen, 0.1, 1000.0);
+    gluPerspective(100.0, wScreen/hScreen, 0.1, 2000.0);
     glMatrixMode(GL_MODELVIEW);
 
     glutSetCursor(GLUT_CURSOR_NONE);
@@ -188,15 +206,16 @@ void updateGameTimer(){
 
 void Timer(int value){
 
+    if(!paused){
+        camera.GetPos(xCamera, yCamera, zCamera);
+        camera.GetDirectionVector(dxCamera, dyCamera, dzCamera);
 
-    camera.GetPos(xCamera, yCamera, zCamera);
-    camera.GetDirectionVector(dxCamera, dyCamera, dzCamera);
+        updateGameTimer();
+        updateBullets();
 
-    updateGameTimer();
-    updateBullets();
-
-    if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
-        glutPostRedisplay(); // flag que chama a função de display na próxima iteração
+        if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
+            glutPostRedisplay(); // flag que chama a função de display na próxima iteração
+        }
     }
 
     glutTimerFunc(msecCallback, Timer, ++value);
@@ -211,7 +230,7 @@ int main(int argc, char** argv){
     glutInitWindowPosition (0, 0);
     glutCreateWindow ("CG_FPS_PROJECT : (A, W, S, D) - (R, Left Mouse)");
 
-    init();
+    initGame();
 
     glutReshapeFunc(resize);
 
