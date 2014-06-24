@@ -32,7 +32,7 @@ class BoundingBox{
             y = yy;
             z = zz;
 
-            //if(r == 0){
+            if(r == 0){
                 w = ww;
                 h = hh;
                 l = ll;
@@ -40,8 +40,8 @@ class BoundingBox{
                 halfW = w/2;
                 halfH = h/2;
                 halfL = l/2;
-            /*}
-            else if(r == 90){
+            }
+            else if(r == 90 || r == -90){
                 w = ll;
                 h = hh;
                 l = ww;
@@ -49,7 +49,7 @@ class BoundingBox{
                 halfW = w/2;
                 halfH = h/2;
                 halfL = l/2;
-            }*/
+            }
 
             rotation = r;
 
@@ -89,10 +89,10 @@ class BoundingBox{
                         glVertex3f(x- halfW, y- halfH, z- halfL);	// Bottom Left Of The Quad (Left)
                         glVertex3f(x- halfW, y- halfH, z+ halfL);	// Bottom Right Of The Quad (Left)
 
-                        glVertex3f(x+ halfW, y+ halfH,z- halfL);	// Top Right Of The Quad (Right)
-                        glVertex3f(x+ halfW, y+ halfH,z+ halfL);	// Top Left Of The Quad (Right)
-                        glVertex3f(x+ halfW, y- halfH,z+ halfL);	// Bottom Left Of The Quad (Right)
-                        glVertex3f(x+ halfW, y- halfH,z- halfL);	// Bottom Right Of The Quad (Right)
+                        glVertex3f(x+ halfW, y+ halfH, z- halfL);	// Top Right Of The Quad (Right)
+                        glVertex3f(x+ halfW, y+ halfH, z+ halfL);	// Top Left Of The Quad (Right)
+                        glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Bottom Left Of The Quad (Right)
+                        glVertex3f(x+ halfW, y- halfH, z- halfL);	// Bottom Right Of The Quad (Right)
 
                     glEnd();			// End Drawing The Paralellogram
 
@@ -100,7 +100,6 @@ class BoundingBox{
                 glPopMatrix();
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
-
         }
 
         //bullet collisions detection

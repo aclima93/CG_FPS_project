@@ -29,6 +29,8 @@ void initGame(void){
     bulletsLeft = CLIPSIZE * NUMCLIPS;
     bulletIndex = 0;
 
+    memset(map.isGlassActive, 1, sizeof(map.isGlassActive));
+
 
 
     //……………………………………………………………………………………………………………………………Lighting set up
@@ -105,11 +107,7 @@ void drawGrid(){
 
 void drawScene(){
 
-    draw_local_lights(); // fuck, que atraso tão grande x]
-
-    //grelha no chão
-    //drawGrid();
-
+    //draw_local_lights(); // fuck, que atraso tão grande x]
 
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
@@ -118,13 +116,6 @@ void drawScene(){
     glEnable(GL_BLEND); //Activar as funcoes de BLEND
     glEnable(GL_DEPTH_TEST); //Activar o "teste de profundidade", z-buffer
 
-
-    /*
-    glBlendFunc(GL_ONE, GL_ZERO);
-    draw_esfera1();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    draw_esfera2();
-    */
 
     skybox.drawSkyBox();
 
@@ -228,7 +219,7 @@ int main(int argc, char** argv){
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
     glutInitWindowSize (wScreen, hScreen);
     glutInitWindowPosition (0, 0);
-    glutCreateWindow ("CG_FPS_PROJECT : (A, W, S, D) - (R, Left Mouse)");
+    glutCreateWindow ("|| CG_FPS_PROJECT : (A, W, S, D) - (R, Left Mouse) - (P, Spacebar) ||");
 
     initGame();
 

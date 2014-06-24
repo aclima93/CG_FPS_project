@@ -36,7 +36,6 @@ const float wWallBB = 15;
 const float hWallBB = mapHeight;
 const float lWallBB = 4;
 
-// walls and shits
 
 #define numWallParams 14
 
@@ -46,7 +45,7 @@ float glassWalls[][numWallParams] = {
         //vidro esquerda1
         -mapWidth/2, 0, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
          XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
-         lWallBB/4, hWallBB, wWallBB*2,
+         wWallBB*2, hWallBB, lWallBB/4,
          90,
          VIDRO                                                    // r g b a
     },
@@ -54,7 +53,7 @@ float glassWalls[][numWallParams] = {
         //vidro esquerda2
         -mapWidth/2, 0, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
          XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
-         lWallBB/4, hWallBB, wWallBB*2,
+         wWallBB*2, hWallBB, lWallBB/4,
          90,
          VIDRO                                                    // r g b a
     }
@@ -70,7 +69,7 @@ float middleWalls[][numWallParams]= {
         //parede central1
         0, 0, -mapLength*(0.375f),
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
-        lWallBB, hWallBB, wWallBB*1.5f,
+        wWallBB*1.5f, hWallBB, lWallBB,
          90,
          WHITE                                                  // r g b a
     },
@@ -78,7 +77,7 @@ float middleWalls[][numWallParams]= {
         //parede central2
         0, 0, -mapLength*(0.425f),
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
-        lWallBB, hWallBB, wWallBB*1.5f,
+        wWallBB*1.5f, hWallBB, lWallBB,
          90,
          WHITE                                                  // r g b a
     },
@@ -86,7 +85,7 @@ float middleWalls[][numWallParams]= {
         //parede central3
         0, 0, -mapLength*(0.675f),
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
-        lWallBB, hWallBB, wWallBB*1.5f,
+        wWallBB*1.5f, hWallBB, lWallBB,
          90,
          WHITE                                                  // r g b a
     },
@@ -94,7 +93,7 @@ float middleWalls[][numWallParams]= {
         //parede central4
         0, 0, -mapLength*(0.725f),
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
-        lWallBB, hWallBB, wWallBB*1.5f,
+        wWallBB*1.5f, hWallBB, lWallBB,
          90,
          WHITE                                                  // r g b a
     }
@@ -511,7 +510,6 @@ class Map{
             }
 
             int glassWall_i = 0;
-            memset(isGlassActive, 1, sizeof(isGlassActive));
             for(int k=0; k<numGlassWalls; k++){
                 glass[glassWall_i].Init( glassWalls[k][0], glassWalls[k][1], glassWalls[k][2], glassWalls[k][3],
                                glassWalls[k][4], glassWalls[k][5], glassWalls[k][6], glassWalls[k][7],
@@ -553,7 +551,6 @@ class Map{
                              ){
 
             glEnable(GL_TEXTURE_2D);
-            //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
             glBindTexture(GL_TEXTURE_2D, textureMap[0]);
             glPushMatrix();
 
@@ -570,7 +567,6 @@ class Map{
 
                 glEnd();
             glPopMatrix();
-            //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             glDisable(GL_TEXTURE_2D);
         }
 
@@ -609,9 +605,7 @@ class Map{
 
                     }
                 }
-                //std::cout << counter << std::endl;
             }
-            //exit(0);
 
         }
 
@@ -624,14 +618,7 @@ class Map{
                                           walls[i].color[0], walls[i].color[1], walls[i].color[2] );
 
                 if(DEBUG_MODE){
-                    glPushMatrix();
-
-                        //glTranslatef(walls[i].x, walls[i].y, walls[i].z);
-                        glRotatef(walls[i].rotation, 0.0f, 1.0f, 0.0f);   //Y
-                        walls[i].boundingBox.drawBoundingBox();
-                        //glTranslatef(0, 0, 0);
-
-                    glPopMatrix();
+                    walls[i].boundingBox.drawBoundingBox();
                 }
             }
         }
@@ -648,14 +635,7 @@ class Map{
                                               glass[i].color[0], glass[i].color[1], glass[i].color[2] );
 
                     if(DEBUG_MODE){
-                        glPushMatrix();
-
-                            //glTranslatef(glass[i].x, glass[i].y, glass[i].z);
-                            glRotatef(glass[i].rotation, 0.0f, 1.0f, 0.0f);   //Y
-                            glass[i].boundingBox.drawBoundingBox();
-                            //glTranslatef(0, 0, 0);
-
-                        glPopMatrix();
+                        glass[i].boundingBox.drawBoundingBox();
                     }
 
                 }

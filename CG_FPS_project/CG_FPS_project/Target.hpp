@@ -34,8 +34,7 @@ class Target{
         Model model;
 
         Target(){}
-        ~Target(){
-        }
+        ~Target(){}
 
         void Init(float xx, float yy, float zz,
                   float ww, float hh, float ll,
@@ -143,16 +142,12 @@ class Target{
         void drawBoundingBoxes(){
 
             glPushMatrix();
-
                 glTranslatef(x, y, z);
-                glRotatef(rotation, 0.0f, 1.0f, 0.0f);   //Y
-
-                    for(int i=0; i<numBoundingBoxes; i++){
-                        boundingBoxes[i].drawBoundingBox();
-                    }
-                glTranslatef(0, 0, 0);
-
+                for(int i=0; i<numBoundingBoxes; i++){
+                    boundingBoxes[i].drawBoundingBox();
+                }
             glPopMatrix();
+
         }
 
 
