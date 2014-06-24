@@ -66,48 +66,8 @@ void initGame(void){
 //================================================================================
 //======================================================================== DISPLAY
 
-void drawGrid(){
-
-
-    glPushMatrix();
-
-        for(float i = -300; i <= 300; i += 5)
-        {
-            glBegin(GL_LINES);
-                glColor3ub(150, 190, 150);
-                glVertex3f(-500, 0, i);
-                glVertex3f(500, 0, i);
-                glVertex3f(i, 0,-500);
-                glVertex3f(i, 0, 500);
-            glEnd();
-        }
-
-
-        //============================================Eixos
-
-        glColor4f(AZUL);
-        glBegin(GL_LINES);
-            glVertex3i(0,0,-zC);
-            glVertex3i(0,0, zC);
-        glEnd();
-        glBegin(GL_LINES);
-            glVertex3i(0,-yC,0);
-            glVertex3i(0,yC,0);
-        glEnd();
-        glBegin(GL_LINES);
-            glVertex3i(-xC,0,0);
-            glVertex3i( xC,0,0);
-        glEnd();
-
-    glPopMatrix();
-
-
-}
-
 
 void drawScene(){
-
-    //draw_local_lights(); // fuck, que atraso tão grande x]
 
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
@@ -120,10 +80,10 @@ void drawScene(){
     skybox.drawSkyBox();
 
     drawFog();
-    map.drawMap();
     drawTargets();
     drawExtras();
     drawBullets();
+    map.drawMap();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
 
 

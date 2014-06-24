@@ -43,7 +43,7 @@ const float lWallBB = 4;
 float glassWalls[][numWallParams] = {
     {
         //vidro esquerda1
-        -mapWidth/2, 0, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
+        -mapWidth/2, mapHeight/2, -mapLength*( (firstGlassStart + firstGlassEnd)/2 ),
          XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
          wWallBB*2, hWallBB, lWallBB/4,
          90,
@@ -51,7 +51,7 @@ float glassWalls[][numWallParams] = {
     },
     {
         //vidro esquerda2
-        -mapWidth/2, 0, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
+        -mapWidth/2, mapHeight/2, -mapLength*( (secondGlassStart + secondGlassEnd)/2 ),
          XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
          wWallBB*2, hWallBB, lWallBB/4,
          90,
@@ -627,12 +627,68 @@ class Map{
 
             for(int i=0; i<NUMGLASS; i++){
 
+                float halfW = 0.1;
+                float halfH = mapHeight/2;
+                float halfL = mapLength*(0.05)/2;
+
                 if( isGlassActive[i] ){
 
+                    /*
                     glass[i].model.drawModel( glass[i].x, glass[i].y, glass[i].z,
                                               glass[i].xScale, glass[i].yScale, glass[i].zScale,
                                               glass[i].rotation,
                                               glass[i].color[0], glass[i].color[1], glass[i].color[2] );
+                    */
+
+
+                    glEnable(GL_BLEND); /* Activar BLEND */
+                    /* GL_SRC_ALPHA: define para o peso da cor do objecto a desenhar o valor do alfa da sua cor
+                     * GL_ONE_MINUS_SRC_ALPHA: define para o peso da cor que já está desenhado no ecran é de (1 - alfa),
+                     * onde alfa é o nível de transparência do objecto que está a ser desenhado */
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+                    /* Desenhar o quadrado em si */
+                    glBegin (GL_QUADS);
+
+                        glColor4f(VIDRO); // Defenir o nível de transparencia do vidro
+                        glEnable(GL_DEPTH_TEST); // Ativar o teste de profundidade (z-buffer)
+
+                        glNormal3f(0.0f, 0.0f, 0.0f);
+
+                        glVertex3f(glass[i].x+ halfW, glass[i].y+ halfH, glass[i].z- halfL );	// Top Right Of The Quad (Top)
+                        glVertex3f(glass[i].x- halfW, glass[i].y+ halfH, glass[i].z- halfL);	// Top Left Of The Quad (Top)
+                        glVertex3f(glass[i].x- halfW, glass[i].y+ halfH, glass[i].z+ halfL);	// Bottom Left Of The Quad (Top)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y+ halfH, glass[i].z+ halfL);	// Bottom Right Of The Quad (Top)
+
+                        glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z+ halfL);	// Top Right Of The Quad (Bottom)
+                        glVertex3f(glass[i].x- halfW, glass[i].y- halfH, glass[i].z+ halfL);	// Top Left Of The Quad (Bottom)
+                        glVertex3f(glass[i].x- halfW, glass[i].y- halfH, glass[i].z- halfL);	// Bottom Left Of The Quad (Bottom)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z- halfL);	// Bottom Right Of The Quad (Bottom)
+
+                        glVertex3f(glass[i].x+ halfW, glass[i].y+ halfH, glass[i].z+ halfL);	// Top Right Of The Quad (Front)
+                        glVertex3f(glass[i].x- halfW, glass[i].y+ halfH, glass[i].z+ halfL);	// Top Left Of The Quad (Front)
+                        glVertex3f(glass[i].x- halfW, glass[i].y- halfH, glass[i].z+ halfL);	// Bottom Left Of The Quad (Front)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z+ halfL);	// Bottom Right Of The Quad (Front)
+
+                        glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z- halfL);	// Top Right Of The Quad (Back)
+                        glVertex3f(glass[i].x- halfW, glass[i].y- halfH, glass[i].z- halfL);	// Top Left Of The Quad (Back)
+                        glVertex3f(glass[i].x- halfW, glass[i].y+ halfH, glass[i].z- halfL);	// Bottom Left Of The Quad (Back)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y+ halfH, glass[i].z- halfL);	// Bottom Right Of The Quad (Back)
+
+                        glVertex3f(glass[i].x- halfW, glass[i].y+ halfH, glass[i].z+ halfL);	// Top Right Of The Quad (Left)
+                        glVertex3f(glass[i].x- halfW, glass[i].y+ halfH, glass[i].z- halfL);	// Top Left Of The Quad (Left)
+                        glVertex3f(glass[i].x- halfW, glass[i].y- halfH, glass[i].z- halfL);	// Bottom Left Of The Quad (Left)
+                        glVertex3f(glass[i].x- halfW, glass[i].y- halfH, glass[i].z+ halfL);	// Bottom Right Of The Quad (Left)
+
+                        glVertex3f(glass[i].x+ halfW, glass[i].y+ halfH, glass[i].z- halfL);	// Top Right Of The Quad (Right)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y+ halfH, glass[i].z+ halfL);	// Top Left Of The Quad (Right)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z+ halfL);	// Bottom Left Of The Quad (Right)
+                        glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z- halfL);	// Bottom Right Of The Quad (Right)
+                    glEnd();
+
+                    glDisable(GL_BLEND); /* Desactivar o BLEND */
+
+
 
                     if(DEBUG_MODE){
                         glass[i].boundingBox.drawBoundingBox();
@@ -643,6 +699,7 @@ class Map{
             }
         }
 
+
         void drawMap(){
 
             drawGround();
@@ -651,7 +708,6 @@ class Map{
             drawGlass();
 
         }
-
 
 };
 
