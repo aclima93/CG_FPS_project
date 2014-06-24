@@ -54,6 +54,7 @@ void initGame(void){
     camera.SetPos( xStart, yStart, zStart);
 
 
+    player.Init(ROBOT_OBJ, ROBOT_TEXTURE);
     createTargetsAndExtras();
 
     /* Sky Box */
@@ -65,7 +66,6 @@ void initGame(void){
 
 //================================================================================
 //======================================================================== DISPLAY
-
 
 void drawScene(){
 
@@ -80,6 +80,9 @@ void drawScene(){
     skybox.drawSkyBox();
 
     drawFog();
+
+    drawPlayer(); // desenha o robot
+
     drawTargets();
     drawExtras();
     drawBullets();
@@ -176,10 +179,10 @@ void Timer(int value){
 int main(int argc, char** argv){
 
     glutInit(&argc, argv);
-    glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
-    glutInitWindowSize (wScreen, hScreen);
-    glutInitWindowPosition (0, 0);
-    glutCreateWindow ("|| CG_FPS_PROJECT : (A, W, S, D) - (R, Left Mouse) - (P, Spacebar) ||");
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
+    glutInitWindowSize(wScreen, hScreen);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("|| CG_FPS_PROJECT : (A, W, S, D) - (R, Left Mouse) - (P, Spacebar) ||");
 
     initGame();
 

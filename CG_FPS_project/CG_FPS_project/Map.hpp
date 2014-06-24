@@ -641,13 +641,13 @@ class Map{
                     */
 
 
-                    glEnable(GL_BLEND); /* Activar BLEND */
+                    glEnable(GL_BLEND); // Activar BLEND
                     /* GL_SRC_ALPHA: define para o peso da cor do objecto a desenhar o valor do alfa da sua cor
                      * GL_ONE_MINUS_SRC_ALPHA: define para o peso da cor que já está desenhado no ecran é de (1 - alfa),
                      * onde alfa é o nível de transparência do objecto que está a ser desenhado */
                     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-                    /* Desenhar o quadrado em si */
+                    // Desenhar o quadrado em si
                     glBegin (GL_QUADS);
 
                         glColor4f(VIDRO); // Defenir o nível de transparencia do vidro
@@ -686,7 +686,7 @@ class Map{
                         glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z- halfL);	// Bottom Right Of The Quad (Right)
                     glEnd();
 
-                    glDisable(GL_BLEND); /* Desactivar o BLEND */
+                    glDisable(GL_BLEND); // Desactivar o BLEND
 
 
 
@@ -703,7 +703,6 @@ class Map{
         void drawMap(){
 
             drawGround();
-
             drawWalls();
             drawGlass();
 

@@ -37,6 +37,7 @@ Camera camera;
 HUD hud;
 Map map;
 Sounds sounds;
+Model player;
 
 bool paused = false;
 

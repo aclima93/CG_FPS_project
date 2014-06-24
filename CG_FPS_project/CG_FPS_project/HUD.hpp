@@ -6,10 +6,7 @@
 #include "RgbImage.h"
 #include <string>
 
-
-#define HUDColor 0.0f, 0.635f, 0.909f
-
-GLint wScreen=1366, hScreen=800;
+GLint wScreen=1350, hScreen=730;
 GLfloat xC=50.0, yC=50.0, zC=50.0; // Sistema Coordenadas
 int minutes = 0;
 int secs = 0;
@@ -151,10 +148,10 @@ class HUD{
 
                     glColor4f(WHITE);
                     glNormal3f(0.0f, 0.0f, 0.0f);
-                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - heightHUDBlock);
-                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + heightHUDBlock);
-                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen + heightHUDBlock);
-                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen - heightHUDBlock);
+                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - heightHUDBlock/2);
+                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + heightHUDBlock/2);
+                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen + heightHUDBlock/2);
+                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen - heightHUDBlock/2);
 
                     glEnd();
                 glPopMatrix();
@@ -162,12 +159,12 @@ class HUD{
                 glPushMatrix();
                     glColor3f(HUDColor);
                     sprintf(gameOverText1,"Game Over");
-                    desenhaTexto(gameOverText1, wCenterScreen - 15, hCenterScreen -10, 0);
+                    desenhaTexto(gameOverText1, wCenterScreen - 45, hCenterScreen -10, 0);
                 glPopMatrix();
                 glPushMatrix();
                     glColor3f(HUDColor);
                     sprintf(gameOverText2,"Press Spacebar to Restart");
-                    desenhaTexto(gameOverText2, wCenterScreen - 30, hCenterScreen + 10, 0);
+                    desenhaTexto(gameOverText2, wCenterScreen - 100, hCenterScreen +20, 0);
                 glPopMatrix();
 
             }
@@ -302,18 +299,29 @@ class HUD{
                     glVertex2f( wScreen/8, (hScreen*7)/8);
 
                 glEnd();
-            glPopMatrix();
 
             // side line
-            glPushMatrix();
                 glBegin(GL_QUADS);
-                    glColor3f(HUDColor);
 
                     glVertex2f( wScreen/8, (hScreen*7)/8 );
                     glVertex2f( wScreen/8, hScreen );
                     glVertex2f( wScreen/8+3, hScreen);
                     glVertex2f( wScreen/8+3, (hScreen*7)/8 );
 
+                glEnd();
+
+
+            // position
+                int segments = 5;
+                float t;
+                int r = 2;
+
+                glBegin( GL_TRIANGLE_FAN );
+                    glVertex2f((wScreen*0.55f)/9, (hScreen*7.5f)/8);
+                    for( int n = 0; n <= segments; n++ ) {
+                        t = 2*M_PI*(float)n/(float)segments;
+                        glVertex2f((wScreen*0.55f)/9 + sin(t)*r, (hScreen*7.5f)/8 + cos(t)*r);
+                    }
                 glEnd();
             glPopMatrix();
 

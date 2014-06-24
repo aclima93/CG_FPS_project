@@ -12,6 +12,29 @@ void drawTargets(){
     }
 }
 
+void drawBullets(){
+
+    for(int i=0; i<NUMBULLETS; i++){
+        bullets[i].draw();
+    }
+}
+
+#define ROBOT_OBJ "Robot\\robot.obj"
+#define ROBOT_TEXTURE "Robot\\metal.bmp"
+
+
+float getCameraAngle(){
+    float x0 = 1, y0 = 0, z0 = 0;
+    float x1 = dxCamera, y1 = dyCamera, z1 = dzCamera;
+    float xz = x0*x1 + z0*z1, y00 = y0*y0, y01 = y0*y1, y11 = y1*y1;
+
+    return acos(xz + y01) / sqrt((xz + y00) * (xz + y11));
+}
+
+void drawPlayer(){
+     player.drawModel(xCamera-0.01, yCamera-0.5, zCamera-0.01, 0.1, 0.1, -0.1, getCameraAngle(), 1,1,1);
+}
+
 #define TARGET_HEIGHT 8
 
 void initPositions(){
@@ -88,7 +111,7 @@ void initPositions(){
         possiblePositions[i][0] = - possiblePositions[i-half][0];
         possiblePositions[i][1] =   possiblePositions[i-half][1];
         possiblePositions[i][2] =   possiblePositions[i-half][2];
-        possiblePositions[i][3] =   -possiblePositions[i-half][3];
+        possiblePositions[i][3] =   possiblePositions[i-half][3];
     }
 
 }
@@ -234,9 +257,3 @@ void createTargetsAndExtras(){
 }
 
 
-void drawBullets(){
-
-    for(int i=0; i<NUMBULLETS; i++){
-        bullets[i].draw();
-    }
-}
