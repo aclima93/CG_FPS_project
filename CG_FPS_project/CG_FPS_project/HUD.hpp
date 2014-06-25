@@ -148,7 +148,7 @@ class HUD{
                 glPushMatrix();
                     glBegin(GL_QUADS);
 
-                    glColor4f(WHITE);
+                    glColor4f(WHITE_HUD);
                     glNormal3f(0.0f, 0.0f, 0.0f);
                     glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - heightHUDBlock/2);
                     glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + heightHUDBlock/2);
@@ -177,7 +177,7 @@ class HUD{
                 glPushMatrix();
                     glBegin(GL_QUADS);
 
-                    glColor4f(WHITE);
+                    glColor4f(WHITE_HUD);
                     glNormal3f(0.0f, 0.0f, 0.0f);
                     glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - heightHUDBlock/2);
                     glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + heightHUDBlock/2);
@@ -209,7 +209,7 @@ class HUD{
                 glPushMatrix();
 
                     glBegin(GL_QUADS);
-                    glColor4f(WHITE);
+                    glColor4f(WHITE_HUD);
                     glNormal3f(0.0f, 0.0f, 0.0f);
 
                         glTexCoord2f(0.0f, 1.0f); glVertex2f(wScreen - widthHUDBlock, 0.0);
@@ -241,7 +241,7 @@ class HUD{
             glBindTexture(GL_TEXTURE_2D, hudTexture[0]);
                 glPushMatrix();
                     glBegin(GL_QUADS);
-                        glColor4f(WHITE);
+                        glColor4f(WHITE_HUD);
                         glNormal3f(0.0f, 0.0f, 0.0f);
                         glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0, 0.0);
                         glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0, heightHUDBlock);
@@ -290,7 +290,7 @@ class HUD{
                 glPushMatrix();
                     glBegin(GL_QUADS);
 
-                    glColor4f(WHITE);
+                    glColor4f(WHITE_HUD);
                     glNormal3f(0.0f, 0.0f, 0.0f);
                     glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
                     glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
@@ -370,6 +370,9 @@ class HUD{
                 glClear(GL_DEPTH_BUFFER_BIT);
 
                 glDisable(GL_LIGHTING);
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
                 drawGunInfo();
                 drawTimeInfo();
                 drawTargetsInfo();
@@ -377,6 +380,8 @@ class HUD{
                 glPushMatrix();
                     glTranslatef(0, -crosshairLength, 0);
                     drawCrosshair();
+
+                glDisable(GL_BLEND);
                 glPopMatrix();
                 glEnable(GL_LIGHTING);
 
