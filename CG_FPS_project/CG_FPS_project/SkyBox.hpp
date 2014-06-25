@@ -25,32 +25,32 @@ float distance3 = 1000-5;//295;
 float distance4 = 1000+5;//302;
 float distance5 = 1000-5;//795;
 
-class SkyBox {
-    public:
+    class SkyBox {
+        public:
 
-        SkyBox() {}
-        ~SkyBox() {}
+            SkyBox() {}
+            ~SkyBox() {}
 
-        void createTexture(){
-            int x;
-            for(x=0;x<6;x++){
-                //cout << "Textura Imagem: " << x << endl;
-                glGenTextures(1, &texture[x]);
-                glBindTexture(GL_TEXTURE_2D, texture[x]);
-                imag.LoadBmpFile(nomes[x].c_str()); /* Passar a string para const char em C */
-                glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-                glTexImage2D(GL_TEXTURE_2D, 0, 3,
-                    imag.GetNumCols(),
-                    imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
-                    imag.ImageData());
-             }
-        }
+            void createTexture(){
+                int x;
+                for(x=0;x<6;x++){
+                    //cout << "Textura Imagem: " << x << endl;
+                    glGenTextures(1, &texture[x]);
+                    glBindTexture(GL_TEXTURE_2D, texture[x]);
+                    imag.LoadBmpFile(nomes[x].c_str()); /* Passar a string para const char em C */
+                    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+                    glTexImage2D(GL_TEXTURE_2D, 0, 3,
+                        imag.GetNumCols(),
+                        imag.GetNumRows(), 0, GL_RGB, GL_UNSIGNED_BYTE,
+                        imag.ImageData());
+                 }
+            }
 
-        void drawSkyBox(){
+            void drawSkyBox(){
 
             /* Aplicar as texturas nas imegens da SkyBox */
 

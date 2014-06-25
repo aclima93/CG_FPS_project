@@ -8,6 +8,9 @@
 #include "Colors.hpp"
 #include <string.h>
 
+#include "Reflexao.hpp"
+Reflexao reflex;
+
 #define NUMGROUNDS 4
 
 const float mapWidth = 100; // 5
@@ -441,6 +444,8 @@ class Map{
 
         void Init(){
 
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // MERDA REFLEXOESSS
+
             //chão
             ground[0].Init(
                 -mapWidth/4, -mapLength/2, //center
@@ -695,12 +700,15 @@ class Map{
         }
 
 
+
         void drawMap(){
 
-            drawGround();
+            //drawGround();
 
             drawWalls();
             drawGlass();
+
+            reflex.drawReflexao();
 
         }
 
