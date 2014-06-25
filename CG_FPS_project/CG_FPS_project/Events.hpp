@@ -150,6 +150,7 @@ void keyboardOperations(){
                 if( checkPlayerWallCollisions() ){
                     camera.Move(-g_translation_speed*bounceFactor); // undo
                 }
+                sounds.playWalkingSound();
             }
 
             //--------------------------- back
@@ -158,6 +159,7 @@ void keyboardOperations(){
                 if( checkPlayerWallCollisions() ){
                     camera.Move(g_translation_speed*bounceFactor); // undo
                 }
+                sounds.playWalkingSound();
             }
 
             //--------------------------- right
@@ -166,6 +168,7 @@ void keyboardOperations(){
                 if( checkPlayerWallCollisions() ){
                     camera.Strafe(-g_translation_speed*bounceFactor); // undo
                 }
+                sounds.playWalkingSound();
             }
 
             //--------------------------- left
@@ -174,6 +177,7 @@ void keyboardOperations(){
                 if( checkPlayerWallCollisions() ){
                     camera.Strafe(g_translation_speed*bounceFactor); // undo
                 }
+                sounds.playWalkingSound();
             }
 
 

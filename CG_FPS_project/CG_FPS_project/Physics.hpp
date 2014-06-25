@@ -99,7 +99,7 @@ int checkTargetCollisions(float x, float y, float z, float dx, float dy, float d
         //if there's a collision inside this target's outer bounding box check the ones inside
         if( targets[i].checkCollision(x, y, z, dx, dy, dz) != -1 ){
 
-            std::cout << " Acertei na OUTER BB do alvo " << i << "\n";
+            //std::cout << " Acertei na OUTER BB do alvo " << i << "\n";
 
             int jMax = targets[i].numBoundingBoxes;
             float distance;
@@ -109,7 +109,7 @@ int checkTargetCollisions(float x, float y, float z, float dx, float dy, float d
                 distance = targets[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
 
                 if( distance != -1 ){
-                    std::cout << " Acertei na BB " << j << " do alvo " << i << "\n";
+                    //std::cout << " Acertei na BB " << j << " do alvo " << i << "\n";
                     numTargetsHit++;
                     targets.erase( targets.begin()+ i ); // remove this target
                     bullets[bulletIndex].isActive = false;
@@ -133,7 +133,7 @@ int checkExtraCollisions(float x, float y, float z, float dx, float dy, float dz
         //if there's a collision inside this target's outer bounding box check the ones inside
         if( extras[i].checkCollision(x, y, z, dx, dy, dz) != -1 ){
 
-            std::cout << " Acertei na OUTER BB do extra " << i << "\n";
+            //std::cout << " Acertei na OUTER BB do extra " << i << "\n";
 
             int jMax = extras[i].numBoundingBoxes;
             float distance;
@@ -143,7 +143,7 @@ int checkExtraCollisions(float x, float y, float z, float dx, float dy, float dz
                distance = extras[i].boundingBoxes[j].checkCollision(x, y, z, dx, dy, dz);
 
                if( distance != -1 ){
-                   std::cout << " Acertei na BB " << j << " do extra " << i << "\n";
+                   //std::cout << " Acertei na BB " << j << " do extra " << i << "\n";
                    numExtrasHit++;
                    extras.erase( extras.begin()+ i ); // remove this target
                    return 1; // stop the bullet in mid-flight
@@ -181,22 +181,24 @@ void shootGun(){
 
 
             //play metalic hit sound
+            sounds.playMetalSound();
         }
         else if( checkExtraCollisions(x, y, z, dx, dy, dz) != -1){
             score += extraValue;
 
 
             //play metalic hit sound
+            sounds.playMetalSound();
         }
         else if( checkGlassCollisions(x, y, z, dx, dy, dz) != -1){
-
-
             //play glass breaking sound
+            sounds.playGlassBreakingSound();
         }
         else if( checkWallCollisions(x, y, z, dx, dy, dz) != -1){
 
 
             //play wall hit sound
+            sounds.playShotWallSound();
         }
 
 

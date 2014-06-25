@@ -64,6 +64,8 @@ void initGame(void){
     /* Sky Box */
     skybox.createTexture();
 
+    sounds.playMusic(0);
+
 
 }
 

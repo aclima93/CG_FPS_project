@@ -62,14 +62,9 @@ void updateRain(){
     par_sys[pi].fade = float(rand()%100)/1000.0f+0.003f;
 
 
-    //if( (rand()%2) == 0){
-        par_sys[pi].xpos = (float) (rand() % mapWidth/**(1.5f)*//PARTICLE_FACTOR);
-    //}
-    //else{
-    //    par_sys[pi].xpos = (float) (rand() % mapWidth*(-1.5f)/PARTICLE_FACTOR);
-    //}
+    par_sys[pi].xpos = (float) (rand() % mapWidth/PARTICLE_FACTOR);
     par_sys[pi].ypos = mapHeight*2;
-    par_sys[pi].zpos = (float) (rand() % mapLength/**(1.25f)*//(PARTICLE_FACTOR*2)*(-1) /*+ mapLength*(0.25f)/(PARTICLE_FACTOR*2)*/);
+    par_sys[pi].zpos = (float) (rand() % mapLength/(PARTICLE_FACTOR*2)*(-1));
 
 
     par_sys[pi].red = 0.5;
@@ -78,6 +73,7 @@ void updateRain(){
 
     par_sys[pi].vel = velocity;
     par_sys[pi].gravity = -200;//9.8;
+
 }
 
 
@@ -117,46 +113,14 @@ void initParticles(){
 // For Rain
 void drawRain() {
 
-    //int i, j;
+
+
     float x, y, z;
-
-    /*
-    // GROUND?!
-    glColor3f(r, g, b);
-    glBegin(GL_QUADS);
-        // along z - y const
-        for (i = -10; i+1 < 11; i++) {
-            // along x - y const
-            for (j = -10; j+1 < 11; j++) {
-                glColor3fv(ground_colors[i+10][j+10]);
-                glVertex3f(ground_points[j+10][i+10][0],
-                            ground_points[j+10][i+10][1],
-                            ground_points[j+10][i+10][2] + zoom);
-                glColor3fv(ground_colors[i+10][j+1+10]);
-                glVertex3f(ground_points[j+1+10][i+10][0],
-                            ground_points[j+1+10][i+10][1],
-                            ground_points[j+1+10][i+10][2] + zoom);
-                glColor3fv(ground_colors[i+1+10][j+1+10]);
-                glVertex3f(ground_points[j+1+10][i+1+10][0],
-                            ground_points[j+1+10][i+1+10][1],
-                            ground_points[j+1+10][i+1+10][2] + zoom);
-                glColor3fv(ground_colors[i+1+10][j+10]);
-                glVertex3f(ground_points[j+10][i+1+10][0],
-                            ground_points[j+10][i+1+10][1],
-                            ground_points[j+10][i+1+10][2] + zoom);
-            }
-
-        }
-    glEnd();
-    */
-
-
-
     float wx=0, wz=0;
 
     for(pi = 0; pi < MAX_PARTICLES; pi=pi+2) {
 
-        if(par_sys[pi].alive == true) {
+        if(par_sys[pi].alive == true && !paused) {
 
             x = par_sys[pi].xpos;
             y = par_sys[pi].ypos;
