@@ -12,87 +12,66 @@ void initLights(void){
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
     //Iluminacao global
-    /*
     if( dayTime){
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzGlobalCor);
     }
     if( nightTime){
 
-        for(int i=0; i<numLights; i++){
-*/
-    int i=numLights;
+        /*
+        for(int i=1; i<=numLights; i++){
+        //int i=0;
+
             glEnable(GL_LIGHT0+i);
+            GLfloat position [] = {extras[i].x, extras[i].y, extras[i].z, 1};
 
             glLightfv(GL_LIGHT0+i, GL_AMBIENT, light_ambient[i]);
             glLightfv(GL_LIGHT0+i, GL_DIFFUSE, light_diffuse[i]);
             glLightfv(GL_LIGHT0+i, GL_SPECULAR, light_specular[i]);
-            glLightfv(GL_LIGHT0+i, GL_POSITION, localPos[i]);
-            /*
+            glLightfv(GL_LIGHT0+i, GL_POSITION, position);
+
         }
+        */
 
     }
-    */
-
-
-    /* Comentar depois!!!!!!!!!!!!!
-    //Iluminacao local
-    glLightfv(GL_LIGHT0, GL_POSITION, localPos);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, localCor);
-    glLightf (GL_LIGHT0, GL_CONSTANT_ATTENUATION, localAttCon);
-    glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION, localAttLin);
-    glLightf (GL_LIGHT0, GL_QUADRATIC_ATTENUATION,localAttQua);
-    */
-
 
 }
 
-void draw_esfera1( ){
-
-    glPushMatrix();
-        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat1);
-        glTranslatef(-raioEsf, 5, -raioEsf);
-        glutSolidSphere(raioEsf, 50, 50);
-    glPopMatrix();
-}
-
-void draw_esfera2( ){
-
-    glPushMatrix();
-        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat2);
-        glTranslatef(0, 5, 0);
-        glutSolidSphere(raioEsf, 50, 50);
-    glPopMatrix();
-}
-
-void draw_local_lights( ){
-
-    for(int i=0; i<numLights; i++){
-        glPushMatrix();
-            //glColor3f( localCor[0], localCor[1], localCor[2] );
-            glTranslatef( localPos[i][0], localPos[i][1], localPos[i][2] );
-            glutSolidSphere( raioEsf, 5, 5 );
-        glPopMatrix();
-    }
-}
 
 void drawFlashlightLight(){
 
 
     if(nightTime){
+
         //  Direccao do FOCO=lanterna
         float dx, dy, dz;
         GLfloat lightpos[] = {xCamera, yCamera, zCamera, 1}; // o 1 indica luz no ponto e não no infinito
         camera.GetDirectionVector(dx, dy, dz);
         GLfloat spotDirection[] = {dx, dy, dz};
 
-        glEnable(GL_LIGHT0+numLights);
-        glLightfv(GL_LIGHT0+numLights, GL_POSITION, lightpos);
-        glLightf(GL_LIGHT0+numLights, GL_SPOT_CUTOFF, 15); // angulo de corte do foco
-        glLightfv(GL_LIGHT0+numLights,GL_SPOT_DIRECTION, spotDirection ); //Definir direccao do foco
+        glEnable(GL_LIGHT0);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient[0]);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse[0]);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular[0]);
+        glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+        glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 15); // angulo de corte do foco
+        glLightfv(GL_LIGHT0,GL_SPOT_DIRECTION, spotDirection ); //Definir direccao do foco
+        glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 2.0);
 
-        glLightf(GL_LIGHT0+numLights, GL_CONSTANT_ATTENUATION, 2.0);
-        //glLightf(GL_LIGHT0+numLights, GL_LINEAR_ATTENUATION, 1.0);
-        //glLightf(GL_LIGHT0+numLights, GL_QUADRATIC_ATTENUATION, 0.5);
+
+        GLfloat otherSpotDirection[] = {0, -1, 0};
+
+        for(int i=1; i<=numLights; i++){
+
+            GLfloat position [] = {extras[i-1].x, mapHeight*(1.5f), extras[i-1].z, 1};
+            glEnable(GL_LIGHT0+i);
+            glLightfv(GL_LIGHT0+i, GL_AMBIENT, light_ambient[i]);
+            glLightfv(GL_LIGHT0+i, GL_DIFFUSE, light_diffuse[i]);
+            glLightfv(GL_LIGHT0+i, GL_SPECULAR, light_specular[i]);
+            glLightfv(GL_LIGHT0+i, GL_POSITION, position);
+            glLightf(GL_LIGHT0+i, GL_SPOT_CUTOFF, 5); // angulo de corte do foco
+            glLightfv(GL_LIGHT0+i,GL_SPOT_DIRECTION, otherSpotDirection ); //Definir direccao do foco
+            glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION, 2.0);
+        }
 
 
 
@@ -102,8 +81,6 @@ void drawFlashlightLight(){
 
 
 void drawFog(){
-
-
 
     GLfloat fogColor[] = {0.5f, 0.5f, 0.5f, 1};
     //GLfloat distanceFromOrigin = sqrt( xCamera*xCamera + yCamera*yCamera + zCamera*zCamera );

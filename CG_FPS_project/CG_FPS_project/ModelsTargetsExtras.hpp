@@ -28,7 +28,7 @@ float getCameraAngle(){
 }
 
 void drawPlayer(){
-     player.drawModel(xCamera, yCamera-0.50, zCamera, 0.1, 0.1, -0.1, getCameraAngle()+90, 1,1,1);
+     player.drawModel(xCamera, yCamera-0.50, zCamera-0.025, 0.3, 0.3, -0.3, getCameraAngle()+90, 1,1,1);
 }
 
 #define TARGET_HEIGHT 8
@@ -116,14 +116,14 @@ void initPositions(){
 #define CAMO_CITY_TEXTURE "Test\\Camo3\\Camo3.bmp"
 #define CAMO_CITY_OBJ "Test\\Camo3\\camo3.obj"
 
-#define CAMO_JUNGLE_TEXTURE "Test\\Camo2\\Camo-Wallpaper-Picture.bmp"
-#define CAMO_JUNGLE_OBJ "Test\\Camo2\\camo2.obj"
+#define CAMO_JUNGLE_TEXTURE "Test\\Camo4\\Camo4.bmp"
+#define CAMO_JUNGLE_OBJ "Test\\Camo4\\camo4.obj"
 
 #define CAMO_SNOW_TEXTURE "Test\\Camo1\\Camo-Wallpaper.bmp"
 #define CAMO_SNOW_OBJ "Test\\Camo1\\camo1.obj"
 
-#define CAMO_CIVILLIAN_TEXTURE "Test\\Camo4\\Camo4.bmp"
-#define CAMO_CIVILLIAN_OBJ "Test\\Camo4\\camo4.obj"
+#define CAMO_CIVILLIAN_TEXTURE "Test\\Camo2\\Camo-Wallpaper-Picture.bmp"
+#define CAMO_CIVILLIAN_OBJ "Test\\Camo2\\camo2.obj"
 
 void createTargetsAndExtras(){
 

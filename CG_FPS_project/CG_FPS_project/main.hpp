@@ -66,11 +66,7 @@ std::vector<Target> extras(NUMEXTRAS);
 
 //------------------------------------------------------------ Global (ambiente)
 
-GLfloat  mat1[] = {0.5f, .97f, 1.f, .5f};		// 'cor' da 1ª
-GLfloat  mat2[] = {1.f, .5f, 0.f, .5f};			// 'cor' da 2ª
-GLfloat  raioEsf   = 1.75;						// raio das esferas
-
-int numLights = 0;//4;
+int numLights = NUMEXTRAS;//4;
 GLfloat light_ambient[][4] = {
     { 0.0, 0.0, 0.0, 1.0 },
     { 0.0, 0.0, 0.0, 1.0 },
@@ -78,16 +74,16 @@ GLfloat light_ambient[][4] = {
     { 0.0, 0.0, 0.0, 1.0 }
     };
 GLfloat light_diffuse[][4] = {
-    { 1, 0.9, 0.6, 1.0},//1.0, 1.0, 1.0, 1.0 },
-    { 1.0, 1.0, 1.0, 1.0 },
-    { 1.0, 1.0, 1.0, 1.0 },
-    { 1.0, 1.0, 1.0, 1.0 }
+    { 1.0, 0.9, 0.6, 1.0},//1.0, 1.0, 1.0, 1.0 },
+    { 0.0, 1.0, 0.0, 1.0 },
+    { 0.0, 1.0, 0.0, 1.0 },
+    { 0.0, 1.0, 0.0, 1.0 }
     };
 GLfloat light_specular[][4] = {
     { 0.5, 0.5, 0.5, 1.0},//1.0, 1.0, 1.0, 1.0 },
-    { 1.0, 1.0, 1.0, 1.0 },
-    { 1.0, 1.0, 1.0, 1.0 },
-    { 1.0, 1.0, 1.0, 1.0 }
+    { 0.5, 0.5, 0.5, 1.0 },
+    { 0.5, 0.5, 0.5, 1.0 },
+    { 0.5, 0.5, 0.5, 1.0 }
     };
 GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat mat_shininess[] = { 50.0 };
@@ -99,17 +95,6 @@ bool nightTime = true;
 
 /*Definir posicao iluminacao local*/
 GLfloat localCor[4] ={1, 1, 1, 1.0};
-GLfloat localPos[][4]={
-    {0, mapHeight*2, (-mapLength*1)/8, 1.0},
-    {0, mapHeight*2, (-mapLength*3)/8, 1.0},
-    {0, mapHeight*2, (-mapLength*5)/8, 1.0},
-    {0, mapHeight*2, (-mapLength*7)/8, 1.0}
-    };
-
-/*Atenuacoes iluminacao local*/
-GLfloat localAttCon = 1.0;
-GLfloat localAttLin = 0.05;
-GLfloat localAttQua = 0.0;
 
 
 void drawTargets();

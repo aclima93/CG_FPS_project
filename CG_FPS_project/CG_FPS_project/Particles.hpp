@@ -117,10 +117,10 @@ void initParticles(){
 // For Rain
 void drawRain() {
 
-    int i, j;
+    //int i, j;
     float x, y, z;
 
-
+    /*
     // GROUND?!
     glColor3f(r, g, b);
     glBegin(GL_QUADS);
@@ -148,6 +148,7 @@ void drawRain() {
 
         }
     glEnd();
+    */
 
 
 
@@ -191,6 +192,7 @@ void drawRain() {
                         glVertex3f(wx*x, y+0.5, wz*z);
                     glEnd();
 
+                    /*
                     // Draw particles
                     glColor3f(0.5, 0.5, 1.0);
                     glBegin(GL_LINES);
@@ -204,6 +206,7 @@ void drawRain() {
                         glVertex3f(wx*(x+offsetRain), y, wz*(z-offsetRain));
                         glVertex3f(wx*(x+offsetRain), y+0.5, wz*(z-offsetRain));
                     glEnd();
+                    */
 
                     // Draw particles
                     glColor3f(0.5, 0.5, 1.0);

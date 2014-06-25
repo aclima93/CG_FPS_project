@@ -90,7 +90,7 @@ void drawScene(){
     drawTargets();
     drawExtras();
     drawBullets();
-    //map.drawMap();
+    map.drawMap();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
     drawPlayer(); // desenha o robot
 
@@ -146,11 +146,13 @@ void updateGameTimer(){
 
     if( bulletsLeft+bulletsInGun > 0 && numTargetsHit+numExtrasHit < NUMTARGETS+NUMEXTRAS ){
 
+
         miliseconds = difftime(timer, time(NULL));
         secs = (int) (miliseconds / 1000) % 60 ;
         minutes = (int) ((miliseconds / (1000*60)) % 60);
 
-        //miliseconds = miliseconds - ( (secs*1000) + (minutes*1000*60) );
+        miliseconds = -(miliseconds - ( (secs*1000) + (minutes*1000*60) ));
+
 
         /*
         miliseconds += msecCallback;
