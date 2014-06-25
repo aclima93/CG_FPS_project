@@ -9,8 +9,8 @@
 #include <GL/gl.h>
 
 
-#define MAX_PARTICLES 1000 // water drops
-#define PARTICLE_FACTOR 10 // resulting in 10000
+#define MAX_PARTICLES 250 // water drops
+#define PARTICLE_FACTOR 4 // resulting in 10000
 
 float slowdown = 2.0;
 float velocity = 0.0;
@@ -20,6 +20,8 @@ float tilt = 0.0;
 
 int fall;
 int pi;
+
+float offsetRain = 10;
 
 //floor colors
 float r = 0.0;
@@ -60,14 +62,14 @@ void updateRain(){
     par_sys[pi].fade = float(rand()%100)/1000.0f+0.003f;
 
 
-    if( (rand()%2) == 0){
-        par_sys[pi].xpos = (float) (rand() % mapWidth*(1.5f));
-    }
-    else{
-        par_sys[pi].xpos = (float) (rand() % mapWidth*(-1.5f));
-    }
-    par_sys[pi].ypos = mapHeight*3;
-    par_sys[pi].zpos = (float) (rand() % mapLength*(1.25f))*(-1) + mapLength*(0.25f);
+    //if( (rand()%2) == 0){
+        par_sys[pi].xpos = (float) (rand() % mapWidth/**(1.5f)*//PARTICLE_FACTOR);
+    //}
+    //else{
+    //    par_sys[pi].xpos = (float) (rand() % mapWidth*(-1.5f)/PARTICLE_FACTOR);
+    //}
+    par_sys[pi].ypos = mapHeight*2;
+    par_sys[pi].zpos = (float) (rand() % mapLength/**(1.25f)*//(PARTICLE_FACTOR*2)*(-1) /*+ mapLength*(0.25f)/(PARTICLE_FACTOR*2)*/);
 
 
     par_sys[pi].red = 0.5;
@@ -75,7 +77,7 @@ void updateRain(){
     par_sys[pi].blue = 1.0;
 
     par_sys[pi].vel = velocity;
-    par_sys[pi].gravity = -9.8;
+    par_sys[pi].gravity = -200;//9.8;
 }
 
 
@@ -87,7 +89,8 @@ void initParticles(){
     glClearDepth(1.0);
     glEnable(GL_DEPTH_TEST);
 
-    /*
+
+
     // Ground Verticies
     // Ground Colors
     for (z = 0; z < 21; z++) {
@@ -102,7 +105,8 @@ void initParticles(){
             ground_colors[z][x][3] = 0.0; // acummulation factor
         }
     }
-    */
+
+
 
     // Initialize particles
     for(pi = 0; pi < MAX_PARTICLES; pi++) {
@@ -112,21 +116,50 @@ void initParticles(){
 
 // For Rain
 void drawRain() {
+
+    int i, j;
     float x, y, z;
+
+
+    // GROUND?!
+    glColor3f(r, g, b);
+    glBegin(GL_QUADS);
+        // along z - y const
+        for (i = -10; i+1 < 11; i++) {
+            // along x - y const
+            for (j = -10; j+1 < 11; j++) {
+                glColor3fv(ground_colors[i+10][j+10]);
+                glVertex3f(ground_points[j+10][i+10][0],
+                            ground_points[j+10][i+10][1],
+                            ground_points[j+10][i+10][2] + zoom);
+                glColor3fv(ground_colors[i+10][j+1+10]);
+                glVertex3f(ground_points[j+1+10][i+10][0],
+                            ground_points[j+1+10][i+10][1],
+                            ground_points[j+1+10][i+10][2] + zoom);
+                glColor3fv(ground_colors[i+1+10][j+1+10]);
+                glVertex3f(ground_points[j+1+10][i+1+10][0],
+                            ground_points[j+1+10][i+1+10][1],
+                            ground_points[j+1+10][i+1+10][2] + zoom);
+                glColor3fv(ground_colors[i+1+10][j+10]);
+                glVertex3f(ground_points[j+10][i+1+10][0],
+                            ground_points[j+10][i+1+10][1],
+                            ground_points[j+10][i+1+10][2] + zoom);
+            }
+
+        }
+    glEnd();
+
+
+
+    float wx=0, wz=0;
 
     for(pi = 0; pi < MAX_PARTICLES; pi=pi+2) {
 
         if(par_sys[pi].alive == true) {
+
             x = par_sys[pi].xpos;
             y = par_sys[pi].ypos;
             z = par_sys[pi].zpos + zoom;
-
-            // Draw particles
-            glColor3f(0.5, 0.5, 1.0);
-            glBegin(GL_LINES);
-                glVertex3f(x, y, z);
-                glVertex3f(x, y+0.5, z);
-            glEnd();
 
             // Update values
             //Move
@@ -146,8 +179,54 @@ void drawRain() {
             if(par_sys[pi].life < 0.0) {
                 updateRain();
             }
+
+
+            for(wx = -3; wx <4; wx +=2 ){
+                for(wz = 1 ; wz <5 ; wz ++){
+
+                    // Draw particles
+                    glColor3f(0.5, 0.5, 1.0);
+                    glBegin(GL_LINES);
+                        glVertex3f(wx*x, y, wz*z);
+                        glVertex3f(wx*x, y+0.5, wz*z);
+                    glEnd();
+
+                    // Draw particles
+                    glColor3f(0.5, 0.5, 1.0);
+                    glBegin(GL_LINES);
+                        glVertex3f(wx*(x+offsetRain), y, wz*(z+offsetRain));
+                        glVertex3f(wx*(x+offsetRain), y+0.5, wz*(z+offsetRain));
+                    glEnd();
+
+                    // Draw particles
+                    glColor3f(0.5, 0.5, 1.0);
+                    glBegin(GL_LINES);
+                        glVertex3f(wx*(x+offsetRain), y, wz*(z-offsetRain));
+                        glVertex3f(wx*(x+offsetRain), y+0.5, wz*(z-offsetRain));
+                    glEnd();
+
+                    // Draw particles
+                    glColor3f(0.5, 0.5, 1.0);
+                    glBegin(GL_LINES);
+                        glVertex3f(wx*(x-offsetRain), y, wz*(z+offsetRain));
+                        glVertex3f(wx*(x-offsetRain), y+0.5, wz*(z+offsetRain));
+                    glEnd();
+
+                    // Draw particles
+                    glColor3f(0.5, 0.5, 1.0);
+                    glBegin(GL_LINES);
+                        glVertex3f(wx*(x-offsetRain), y, wz*(z-offsetRain));
+                        glVertex3f(wx*(x-offsetRain), y+0.5, wz*(z-offsetRain));
+                    glEnd();
+
+
+
+                }
+            }
+
         }
     }
+
 }
 
 

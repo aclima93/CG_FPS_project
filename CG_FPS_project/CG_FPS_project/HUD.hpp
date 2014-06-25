@@ -11,6 +11,7 @@ GLfloat xC=50.0, yC=50.0, zC=50.0; // Sistema Coordenadas
 int minutes = 0;
 int secs = 0;
 int miliseconds = 0;
+time_t timer;
 
 const int msecCallback = 150;//250;
 const int msecDisplayCallback = msecCallback * 50;
@@ -278,8 +279,23 @@ class HUD{
             glOrtho(xC, -xC, -yC, yC, zC, -zC);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
+
+            //fundo negro do minimap
+            glPushMatrix();
+                glBegin(GL_QUADS);
+                    glColor4f(BLACK);
+                    glNormal3f(0.0f, 0.0f, 0.0f);
+                    glVertex2f(-500, 500);
+                    glVertex2f(500, 500);
+                    glVertex2f(500, -500);
+                    glVertex2f(-500, -500);
+
+                glEnd();
+            glPopMatrix();
+
             //               onde está           para onde está a olhar          vector up
             gluLookAt( x, minimapViewHeight, z,          x, 0, z,           dx, 0, dz);
+
 
         }
 

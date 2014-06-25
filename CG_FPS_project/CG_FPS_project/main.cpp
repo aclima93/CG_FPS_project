@@ -22,11 +22,7 @@ void initGame(void){
     secs = 0;
     miliseconds = 0;
 
-    time_t timer;
-    double seconds;
     time(&timer);  // get current time
-    //timeReferrence =
-    //        seconds = difftime(timer,mktime(&y2k));
 
     numTargetsHit = 0;
     numExtrasHit = 0;
@@ -94,7 +90,7 @@ void drawScene(){
     drawTargets();
     drawExtras();
     drawBullets();
-    map.drawMap();
+    //map.drawMap();
     camera.Refresh(); // não me tires daqui senão o minimapa fica diferente!
     drawPlayer(); // desenha o robot
 
@@ -150,6 +146,13 @@ void updateGameTimer(){
 
     if( bulletsLeft+bulletsInGun > 0 && numTargetsHit+numExtrasHit < NUMTARGETS+NUMEXTRAS ){
 
+        miliseconds = difftime(timer, time(NULL));
+        secs = (int) (miliseconds / 1000) % 60 ;
+        minutes = (int) ((miliseconds / (1000*60)) % 60);
+
+        //miliseconds = miliseconds - ( (secs*1000) + (minutes*1000*60) );
+
+        /*
         miliseconds += msecCallback;
 
         if(miliseconds > 999){
@@ -160,6 +163,8 @@ void updateGameTimer(){
             secs = 0;
             minutes++;
         }
+        */
+
     }
     else{
         gameOver = true;
@@ -175,7 +180,6 @@ void Timer(int value){
 
         updateGameTimer();
         updateBullets();
-        //updateRain();
 
         if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
             glutPostRedisplay(); // flag que chama a função de display na próxima iteração
