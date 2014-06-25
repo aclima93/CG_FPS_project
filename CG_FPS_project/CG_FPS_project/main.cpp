@@ -144,6 +144,7 @@ void updateGameTimer(){
     if( bulletsLeft+bulletsInGun > 0 && numTargetsHit+numExtrasHit < NUMTARGETS+NUMEXTRAS ){
 
 
+        /*
         miliseconds = difftime(timer, time(NULL));
         //secs = (int) (miliseconds / 1000) % 60 ;
         //minutes = (int) ((miliseconds / (1000*60)) % 60);
@@ -162,9 +163,10 @@ void updateGameTimer(){
         if(minutes > 9){
             gameOver = true; // i'd stay away from FPSs if I were you...
         }
+        */
 
-        /*
-        //miliseconds += msecCallback;
+
+        miliseconds += msecCallback;
 
         if(miliseconds > 999){
             miliseconds = 0 + (miliseconds - 1000);
@@ -177,7 +179,7 @@ void updateGameTimer(){
         if(minutes > 9){
             gameOver = true; // i'd stay away from FPSs if I were you...
         }
-        */
+
 
 
     }
