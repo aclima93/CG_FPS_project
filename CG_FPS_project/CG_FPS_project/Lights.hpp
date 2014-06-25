@@ -68,7 +68,7 @@ void drawFlashlightLight(){
             glLightfv(GL_LIGHT0+i, GL_DIFFUSE, light_diffuse[i]);
             glLightfv(GL_LIGHT0+i, GL_SPECULAR, light_specular[i]);
             glLightfv(GL_LIGHT0+i, GL_POSITION, position);
-            glLightf(GL_LIGHT0+i, GL_SPOT_CUTOFF, 5); // angulo de corte do foco
+            glLightf(GL_LIGHT0+i, GL_SPOT_CUTOFF, 10); // angulo de corte do foco
             glLightfv(GL_LIGHT0+i,GL_SPOT_DIRECTION, otherSpotDirection ); //Definir direccao do foco
             glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION, 2.0);
         }
@@ -87,7 +87,7 @@ void drawFog(){
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, fogColor);
 
-    glFogi(GL_FOG_MODE, GL_EXP2); glFogf(GL_FOG_DENSITY, 0.0015f);
+    glFogi(GL_FOG_MODE, GL_EXP2); glFogf(GL_FOG_DENSITY, 0.005f);
     //glFogi(xCamera, yCamera);//GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);        // Set Fog Based On Vertice Coordinates
     glFogf(GL_FOG_START, 0);
     glFogf(GL_FOG_END, -mapLength);
