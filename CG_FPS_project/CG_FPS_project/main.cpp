@@ -30,6 +30,7 @@ void initGame(void){
     bulletIndex = 0;
 
     memset(map.isGlassActive, 1, sizeof(map.isGlassActive));
+    memset(keyStates, 0, sizeof(keyStates));
 
 
 
@@ -106,7 +107,6 @@ GLvoid resize(GLsizei width, GLsizei height){
 
 
 void display(void){
-
 
     //================================================================= Viewport1 (minimap)
     glDisable(GL_LIGHTING);
@@ -191,6 +191,8 @@ void updateGameTimer(){
 
 void Timer(int value){
 
+    keyboardOperations();
+
     if(!paused){
         camera.GetPos(xCamera, yCamera, zCamera);
         camera.GetDirectionVector(dxCamera, dyCamera, dzCamera);
@@ -228,6 +230,7 @@ int main(int argc, char** argv){
     //createMainMenu();
 
     glutKeyboardFunc(keyboard);
+    glutKeyboardUpFunc(keyboardUp);
     glutSpecialFunc(teclasNotAscii);
     glutMouseFunc(mouseClicks);
     glutMotionFunc(mouseMotion);

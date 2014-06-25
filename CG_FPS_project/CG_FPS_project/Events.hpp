@@ -122,101 +122,95 @@ void mouseClicks(int button, int state, int x, int y) {
 
 }
 
-void keyboard(unsigned char key, int x, int y){
 
-    if(key||x||y){}
+void keyboardUp(unsigned char key, int x, int y) {
+    if(x||y){}
+    keyStates[key] = false;
+}
+void keyboard(unsigned char key, int x, int y){
+    if(x||y){}
+    keyStates[key] = true;
+}
+
+void keyboardOperations(){
 
     if(!gameOver){
 
-        switch(key){
-            //--------------------------- (Un)Pause
-            case 'P':
-            case 'p':
-                paused = !paused;
-                break;
+
+        //--------------------------- (Un)Pause
+        if(keyStates['P'] || keyStates['p']){
+            paused = !paused;
         }
 
         if(!paused){
-            switch (key){
 
-                //--------------------------- forward
-                case 'W':
-                case 'w':
-                    camera.Move(g_translation_speed);
-                    if( checkPlayerWallCollisions() ){
-                        camera.Move(-g_translation_speed*bounceFactor); // undo
-                    }
-                    break;
-
-                //--------------------------- back
-                case 'S':
-                case 's':
-                    camera.Move(-g_translation_speed);
-                    if( checkPlayerWallCollisions() ){
-                        camera.Move(g_translation_speed*bounceFactor); // undo
-                    }
-                    break;
-
-                //--------------------------- right
-                case 'A':
-                case 'a':
-                    camera.Strafe(g_translation_speed);
-                    if( checkPlayerWallCollisions() ){
-                        camera.Strafe(-g_translation_speed*bounceFactor); // undo
-                    }
-                    break;
-
-                //--------------------------- left
-                case 'D':
-                case 'd':
-                    camera.Strafe(-g_translation_speed);
-                    if( checkPlayerWallCollisions() ){
-                        camera.Strafe(g_translation_speed*bounceFactor); // undo
-                    }
-                    break;
-
-                //--------------------------- reload
-                case 'R':
-                case 'r':
-                    reloadGun();
-                    break;
-
-                //--------------------------- main menu
-                case 'M':
-                case 'm':
-                    isMenuActive = !isMenuActive;
-                    break;
-
-
-                // ------------------------------ move vertically for DEBUG
-                //--------------------------- up
-                case 'U':
-                case 'u':
-                    if(DEBUG_MODE) camera.Fly(g_translation_speed);
-                    break;
-                //--------------------------- down
-                case 'J':
-                case 'j':
-                    if(DEBUG_MODE) camera.Fly(-g_translation_speed);
-                    break;
+            //--------------------------- forward
+            if(keyStates['W'] || keyStates['w']){
+                camera.Move(g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Move(-g_translation_speed*bounceFactor); // undo
+                }
             }
+
+            //--------------------------- back
+            if(keyStates['S'] || keyStates['s']){
+                camera.Move(-g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Move(g_translation_speed*bounceFactor); // undo
+                }
+            }
+
+            //--------------------------- right
+            if(keyStates['A'] || keyStates['a']){
+                camera.Strafe(g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Strafe(-g_translation_speed*bounceFactor); // undo
+                }
+            }
+
+            //--------------------------- left
+            if(keyStates['D'] || keyStates['d']){
+                camera.Strafe(-g_translation_speed);
+                if( checkPlayerWallCollisions() ){
+                    camera.Strafe(g_translation_speed*bounceFactor); // undo
+                }
+            }
+
+
+            //--------------------------- reload
+            if(keyStates['R'] || keyStates['r']){
+                reloadGun();
+            }
+
+            //--------------------------- main menu
+            if(keyStates['M'] || keyStates['m']){
+                isMenuActive = !isMenuActive;
+            }
+
+
+            // ------------------------------ move vertically for DEBUG
+            //--------------------------- up
+            if(keyStates['U'] || keyStates['u']){
+                if(DEBUG_MODE) camera.Fly(g_translation_speed);
+            }
+            //--------------------------- down
+            if(keyStates['J'] || keyStates['j']){
+                if(DEBUG_MODE) camera.Fly(-g_translation_speed);
+            }
+
         }
     }
 
 
-    switch(key) {
+    // restart game
+    if(keyStates[' ']){
+        gameOver = false;
+        initGame();
+    }
 
-        // restart game
-        case ' ':
-            gameOver = false;
-            initGame();
-            //exit(0);
-            break;
-
-        //--------------------------- Escape
-        case 27:
-            exit(0);
-            break;
+    //--------------------------- Escape
+    if(keyStates[27]){
+        exit(0);
     }
 
     glutPostRedisplay();
