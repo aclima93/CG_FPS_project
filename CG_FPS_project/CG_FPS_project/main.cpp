@@ -14,9 +14,6 @@
 void initGame(void){
 
     //redefine constants and stuffs
-    xStart = 0;
-    yStart = mapHeight/2;
-    zStart = -7.5;
 
     minutes = 0;
     secs = 0;
@@ -148,14 +145,26 @@ void updateGameTimer(){
 
 
         miliseconds = difftime(timer, time(NULL));
-        secs = (int) (miliseconds / 1000) % 60 ;
-        minutes = (int) ((miliseconds / (1000*60)) % 60);
+        //secs = (int) (miliseconds / 1000) % 60 ;
+        //minutes = (int) ((miliseconds / (1000*60)) % 60);
 
-        miliseconds = -(miliseconds - ( (secs*1000) + (minutes*1000*60) ));
+        miliseconds = -(miliseconds - ( (((miliseconds / 1000) % 60)*1000) + (((miliseconds / (1000*60)) % 60)*1000*60) ));
 
+
+        if(miliseconds > 59){
+            miliseconds = 0;
+            secs++;
+        }
+        if(secs > 59){
+            secs = 0;
+            minutes++;
+        }
+        if(minutes > 9){
+            gameOver = true; // i'd stay away from FPSs if I were you...
+        }
 
         /*
-        miliseconds += msecCallback;
+        //miliseconds += msecCallback;
 
         if(miliseconds > 999){
             miliseconds = 0 + (miliseconds - 1000);
@@ -165,7 +174,11 @@ void updateGameTimer(){
             secs = 0;
             minutes++;
         }
+        if(minutes > 9){
+            gameOver = true; // i'd stay away from FPSs if I were you...
+        }
         */
+
 
     }
     else{

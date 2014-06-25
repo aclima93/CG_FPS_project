@@ -19,7 +19,7 @@ RgbImage imag;
 string nomes[6] = {"Skybox\\Back.bmp", "Skybox\\Bottom.bmp", "Skybox\\Left.bmp",
                    "Skybox\\Front.bmp", "Skybox\\Right.bmp", "Skybox\\Up.bmp"};
 
-float d = 250;
+float d = 300;
 float halfD = (d*3)/4;
 float distance1 = d+5;//800;
 float distance2 = d+10;//300;

@@ -12,7 +12,7 @@
 
 //debug
 #define DEBUG 1
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 
 #include <GL/freeglut.h>
 #include <GL/glut.h>
@@ -41,9 +41,9 @@ Model player;
 
 float xStart = 0;
 float yStart = mapHeight/2;
-float zStart = -7.5;
+float zStart = -15;
 
-float playerRadius = 5;
+float playerRadius = 7.5;
 
 float xCamera;
 float yCamera;

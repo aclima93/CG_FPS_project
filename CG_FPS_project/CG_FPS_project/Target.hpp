@@ -14,7 +14,7 @@
 
 #define NUMTARGETS 10 // terrorists
 #define NUMEXTRAS 3 // civillians
-#define NUMPOSSIBLE 24
+#define NUMPOSSIBLE 16
 #define NUMBOUNDINGBOXES 6
 
 std::vector< std::vector<float> > possiblePositions(NUMPOSSIBLE, std::vector<float>(4));
