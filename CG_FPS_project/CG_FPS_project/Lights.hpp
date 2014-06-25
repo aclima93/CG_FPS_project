@@ -110,7 +110,7 @@ void drawFog(){
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, fogColor);
 
-    glFogi(GL_FOG_MODE, GL_EXP2); glFogf(GL_FOG_DENSITY, 0.00075f);
+    glFogi(GL_FOG_MODE, GL_EXP2); glFogf(GL_FOG_DENSITY, 0.0015f);
     //glFogi(xCamera, yCamera);//GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);        // Set Fog Based On Vertice Coordinates
     glFogf(GL_FOG_START, 0);
     glFogf(GL_FOG_END, -mapLength);

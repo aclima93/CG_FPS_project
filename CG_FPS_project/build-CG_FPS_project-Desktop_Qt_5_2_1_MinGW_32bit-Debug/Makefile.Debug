@@ -171,6 +171,7 @@ debug/main.o: ../CG_FPS_project/main.cpp ../CG_FPS_project/main.hpp \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/SFML/Audio/SoundBufferRecorder.hpp \
 		../../../../../../Qt/Qt5.2.1/5.2.1/mingw48_32/include/SFML/Audio/SoundRecorder.hpp \
 		../CG_FPS_project/SkyBox.hpp \
+		../CG_FPS_project/Particles.hpp \
 		../CG_FPS_project/ModelsTargetsExtras.hpp \
 		../CG_FPS_project/Physics.hpp \
 		../CG_FPS_project/Lights.hpp \

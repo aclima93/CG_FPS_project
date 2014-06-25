@@ -19,11 +19,12 @@ RgbImage imag;
 string nomes[6] = {"Skybox\\Back.bmp", "Skybox\\Bottom.bmp", "Skybox\\Left.bmp",
                    "Skybox\\Front.bmp", "Skybox\\Right.bmp", "Skybox\\Up.bmp"};
 
-float distance1 = 1000+5;//800;
-float distance2 = 1000+10;//300;
-float distance3 = 1000-5;//295;
-float distance4 = 1000+5;//302;
-float distance5 = 1000-5;//795;
+float d = 750;
+float distance1 = d+5;//800;
+float distance2 = d+10;//300;
+float distance3 = d-5;//295;
+float distance4 = d+5;//302;
+float distance5 = d-5;//795;
 
 class SkyBox {
     public:

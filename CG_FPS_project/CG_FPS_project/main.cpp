@@ -6,6 +6,7 @@
 #include "Physics.hpp"
 #include "Lights.hpp"
 #include "Events.hpp"
+#include "Particles.hpp"
 
 
 
@@ -20,6 +21,12 @@ void initGame(void){
     minutes = 0;
     secs = 0;
     miliseconds = 0;
+
+    time_t timer;
+    double seconds;
+    time(&timer);  // get current time
+    //timeReferrence =
+    //        seconds = difftime(timer,mktime(&y2k));
 
     numTargetsHit = 0;
     numExtrasHit = 0;
@@ -42,6 +49,8 @@ void initGame(void){
     glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
     glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+    initParticles();
 
     map.createTexture();
     hud.createTextures();
@@ -79,8 +88,8 @@ void drawScene(){
 
 
     skybox.drawSkyBox();
-
     drawFog();
+    drawRain();
 
     drawTargets();
     drawExtras();
@@ -166,6 +175,7 @@ void Timer(int value){
 
         updateGameTimer();
         updateBullets();
+        //updateRain();
 
         if(miliseconds%msecDisplayCallback == 0){ // só chama de dez em dez ciclos do physics timer
             glutPostRedisplay(); // flag que chama a função de display na próxima iteração

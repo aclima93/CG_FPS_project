@@ -10,9 +10,9 @@
 
 #define NUMGROUNDS 4
 
-const float mapWidth = 100; // 5
-const float mapLength = 500; // 10
-const float mapHeight = 25; // 1
+#define mapWidth 100
+#define mapLength 500
+#define mapHeight 25
 
 #define XSCALE 10
 #define YSCALE 20

@@ -12,7 +12,7 @@
 #include "Model.hpp"
 #include <vector>
 
-#define NUMTARGETS 21 //10
+#define NUMTARGETS 10 // terrorists
 #define NUMEXTRAS 3 // civillians
 #define NUMPOSSIBLE 24
 #define NUMBOUNDINGBOXES 6
