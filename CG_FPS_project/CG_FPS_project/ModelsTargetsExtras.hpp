@@ -28,7 +28,7 @@ float getCameraAngle(){
 }
 
 void drawPlayer(){
-     player.drawModel(xCamera-0.01, yCamera-0.5, zCamera-0.01, 0.1, 0.1, -0.1, getCameraAngle()+90, 1,1,1);
+     player.drawModel(xCamera, yCamera-0.50, zCamera, 0.1, 0.1, -0.1, getCameraAngle()+90, 1,1,1);
 }
 
 #define TARGET_HEIGHT 8

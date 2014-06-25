@@ -437,7 +437,9 @@ class Map{
 
 
 
-        Map(){
+        Map(){}
+
+        void Init(){
 
             //chão
             ground[0].Init(
@@ -612,9 +614,9 @@ class Map{
         void drawWalls(){
 
             for(int i=0; i<NUMWALLS; i++){
-                glPushMatrix();
-                glTranslatef(walls[i].x, walls[i].y, walls[i].z);
-                glRotatef(walls[i].rotation, 0, 1, 0);
+                //glPushMatrix();
+                //glTranslatef(walls[i].x, walls[i].y, walls[i].z);
+                //glRotatef(walls[i].rotation, 0, 1, 0);
                 walls[i].model.drawModel( walls[i].x, walls[i].y, walls[i].z,
                                           walls[i].xScale, walls[i].yScale, walls[i].zScale,
                                           walls[i].rotation,
@@ -623,7 +625,7 @@ class Map{
                 if(DEBUG_MODE){
                     walls[i].boundingBox.drawBoundingBox();
                 }
-                glPopMatrix();
+                //glPopMatrix();
             }
         }
 
@@ -636,13 +638,6 @@ class Map{
                 float halfL = mapLength*(0.05)/2;
 
                 if( isGlassActive[i] ){
-
-                    /*
-glass[i].model.drawModel( glass[i].x, glass[i].y, glass[i].z,
-glass[i].xScale, glass[i].yScale, glass[i].zScale,
-glass[i].rotation,
-glass[i].color[0], glass[i].color[1], glass[i].color[2] );
-*/
 
 
                     glEnable(GL_BLEND); /* Activar BLEND */

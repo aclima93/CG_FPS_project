@@ -55,6 +55,7 @@ void initGame(void){
 
 
     player.Init(ROBOT_OBJ, ROBOT_TEXTURE);
+    map.Init();
     createTargetsAndExtras();
 
     /* Sky Box */
