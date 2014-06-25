@@ -46,7 +46,9 @@ int extraValue = -750;
 RgbImage hudImag;
 GLuint  hudTexture[numImages];
 string hudImages[numImages] = {"textures\\esquerda.bmp", "textures\\central.bmp", "textures\\direita.bmp"};
+
 bool gameOver = false;
+bool paused = false;
 
 class HUD{
 
@@ -79,7 +81,7 @@ class HUD{
 
         void drawCrosshair(){
 
-            if(!gameOver){
+            if(!gameOver && !paused){
 
                 glPushMatrix();
                     glColor3f(HUDColor);
@@ -138,7 +140,7 @@ class HUD{
                 glPopMatrix();
 
             }
-            else{
+            else if(gameOver){
 
                 //GameOver segment in middle of screen
                 glEnable(GL_TEXTURE_2D);
@@ -167,6 +169,34 @@ class HUD{
                     desenhaTexto(gameOverText2, wCenterScreen - 100, hCenterScreen +20, 0);
                 glPopMatrix();
 
+            }
+            else if(paused){
+                //GameOver segment in middle of screen
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, hudTexture[1]);
+                glPushMatrix();
+                    glBegin(GL_QUADS);
+
+                    glColor4f(WHITE);
+                    glNormal3f(0.0f, 0.0f, 0.0f);
+                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen - heightHUDBlock/2);
+                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, hCenterScreen + heightHUDBlock/2);
+                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen + heightHUDBlock/2);
+                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, hCenterScreen - heightHUDBlock/2);
+
+                    glEnd();
+                glPopMatrix();
+
+                glPushMatrix();
+                    glColor3f(HUDColor);
+                    sprintf(gameOverText1,"Paused");
+                    desenhaTexto(gameOverText1, wCenterScreen - 35, hCenterScreen -10, 0);
+                glPopMatrix();
+                glPushMatrix();
+                    glColor3f(HUDColor);
+                    sprintf(gameOverText2,"Press P to continue");
+                    desenhaTexto(gameOverText2, wCenterScreen - 80, hCenterScreen +20, 0);
+                glPopMatrix();
             }
 
 

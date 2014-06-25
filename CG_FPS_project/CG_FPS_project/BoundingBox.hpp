@@ -32,7 +32,7 @@ class BoundingBox{
             y = yy;
             z = zz;
 
-            //if(r == 0){
+            if(r == 0){
                 w = ww;
                 h = hh;
                 l = ll;
@@ -40,7 +40,7 @@ class BoundingBox{
                 halfW = w/2;
                 halfH = h/2;
                 halfL = l/2;
-            /*}
+            }
             else if(r == 90 || r == -90){
                 w = ll;
                 h = hh;
@@ -49,7 +49,7 @@ class BoundingBox{
                 halfW = w/2;
                 halfH = h/2;
                 halfL = l/2;
-            }*/
+            }
 
             rotation = r;
 

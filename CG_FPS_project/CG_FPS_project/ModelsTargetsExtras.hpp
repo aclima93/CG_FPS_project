@@ -44,7 +44,7 @@ void initPositions(){
     possiblePositions[1][0] = -mapWidth*(0.475f); // -0.015
     possiblePositions[1][1] = TARGET_HEIGHT;
     possiblePositions[1][2] = -mapLength*(0.175f); // +0.025
-    possiblePositions[1][3] = 90;
+    possiblePositions[1][3] = 0;//90;
 
     // position 2
     possiblePositions[2][0] = -mapWidth*(0.875f);
@@ -55,7 +55,7 @@ void initPositions(){
     possiblePositions[3][0] = -mapWidth*(0.975f);
     possiblePositions[3][1] = TARGET_HEIGHT;
     possiblePositions[3][2] = -mapLength*(0.425f);
-    possiblePositions[3][3] = 90;
+    possiblePositions[3][3] = 0;//90;
 
     // position 3
     possiblePositions[4][0] = -mapWidth*(0.125f);
@@ -66,7 +66,7 @@ void initPositions(){
     possiblePositions[5][0] = -mapWidth*(0.025f);
     possiblePositions[5][1] = TARGET_HEIGHT;
     possiblePositions[5][2] = -mapLength*(0.375f);
-    possiblePositions[5][3] = 90;
+    possiblePositions[5][3] = 0;//90;
 
     // position 4
     possiblePositions[6][0] = -mapWidth*(0.875f);
@@ -77,7 +77,7 @@ void initPositions(){
     possiblePositions[7][0] = -mapWidth*(0.975f);
     possiblePositions[7][1] = TARGET_HEIGHT;
     possiblePositions[7][2] = -mapLength*(0.575f);
-    possiblePositions[7][3] = 90;
+    possiblePositions[7][3] = 0;//90;
 
     // position 5
     possiblePositions[8][0] = -mapWidth*(0.125f);
@@ -88,7 +88,7 @@ void initPositions(){
     possiblePositions[9][0] = -mapWidth*(0.025f);
     possiblePositions[9][1] = TARGET_HEIGHT;
     possiblePositions[9][2] = -mapLength*(0.675f);
-    possiblePositions[9][3] = 90;
+    possiblePositions[9][3] = 0;//90;
 
     // position 6
     possiblePositions[10][0] = -mapWidth*(0.375f);
@@ -99,7 +99,7 @@ void initPositions(){
     possiblePositions[11][0] = -mapWidth*(0.475f);
     possiblePositions[11][1] = TARGET_HEIGHT;
     possiblePositions[11][2] = -mapLength*(0.875f);
-    possiblePositions[11][3] = 90;
+    possiblePositions[11][3] = 0;//90;
 
     //do the other side by symmetry
     int half = NUMPOSSIBLE/2;

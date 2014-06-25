@@ -39,8 +39,6 @@ Map map;
 Sounds sounds;
 Model player;
 
-bool paused = false;
-
 float xStart = 0;
 float yStart = mapHeight/2;
 float zStart = -7.5;
