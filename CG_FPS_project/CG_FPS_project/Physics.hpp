@@ -179,7 +179,6 @@ void shootGun(){
         if( targetBBIndex != -1){
             score += targetValues[targetBBIndex];
 
-
             //play metalic hit sound
             sounds.playMetalSound();
         }
