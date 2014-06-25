@@ -32,7 +32,7 @@ class BoundingBox{
             y = yy;
             z = zz;
 
-            if(r == 0){
+            //if(r == 0){
                 w = ww;
                 h = hh;
                 l = ll;
@@ -40,7 +40,7 @@ class BoundingBox{
                 halfW = w/2;
                 halfH = h/2;
                 halfL = l/2;
-            }
+            /*}
             else if(r == 90 || r == -90){
                 w = ll;
                 h = hh;
@@ -49,7 +49,7 @@ class BoundingBox{
                 halfW = w/2;
                 halfH = h/2;
                 halfL = l/2;
-            }
+            }*/
 
             rotation = r;
 
@@ -61,7 +61,7 @@ class BoundingBox{
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
                 glPushMatrix();
 
-                    glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
+                    glBegin(GL_QUADS);	// Draw The Paralellogram Using quads
                     glColor3f(1, 0, 1);	// Color Pink
 
                         glVertex3f(x+ halfW, y+ halfH, z- halfL );	// Top Right Of The Quad (Top)
@@ -94,7 +94,7 @@ class BoundingBox{
                         glVertex3f(x+ halfW, y- halfH, z+ halfL);	// Bottom Left Of The Quad (Right)
                         glVertex3f(x+ halfW, y- halfH, z- halfL);	// Bottom Right Of The Quad (Right)
 
-                    glEnd();			// End Drawing The Paralellogram
+                    glEnd();	// End Drawing The Paralellogram
 
 
                 glPopMatrix();
@@ -103,7 +103,7 @@ class BoundingBox{
         }
 
         //bullet collisions detection
-        float checkCollision(float ox, float oy, float oz,  //origin of ray
+        float checkCollision(float ox, float oy, float oz, //origin of ray
                              float dx, float dy, float dz){ // direction of ray
 
             // AABB = Axis Aligned Bounding Box

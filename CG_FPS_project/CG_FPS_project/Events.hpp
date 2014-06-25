@@ -192,12 +192,12 @@ void keyboard(unsigned char key, int x, int y){
                 //--------------------------- up
                 case 'U':
                 case 'u':
-                    camera.Fly(g_translation_speed);
+                    if(DEBUG_MODE) camera.Fly(g_translation_speed);
                     break;
                 //--------------------------- down
                 case 'J':
                 case 'j':
-                    camera.Fly(-g_translation_speed);
+                    if(DEBUG_MODE) camera.Fly(-g_translation_speed);
                     break;
             }
         }

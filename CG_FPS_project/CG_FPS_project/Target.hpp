@@ -46,7 +46,7 @@ class Target{
             y = yy;
             z = zz;
 
-            if(rot == 0){
+            //if(rot == 0){
                 w = ww;
                 h = hh;
                 l = ll;
@@ -55,7 +55,7 @@ class Target{
                 halfH = 16/2;
                 halfL = 0.5/2;
 
-            }
+            /*}
 
             else if(rot == 90){
                 w = ll;
@@ -65,7 +65,7 @@ class Target{
                 halfW = 0.5/2;
                 halfH = 16/2;
                 halfL = 6/2;
-            }
+            }*/
 
             rotation = rot;
 
@@ -89,14 +89,14 @@ class Target{
 
             glPushMatrix();
                 glTranslatef(0, -y, 0);
-                model.drawModel(x, y, z, w, h, l, rotation, r, g, b );
+                model.drawModel(x, y, z, w, h, l, 0/*rotation*/, r, g, b );
             glPopMatrix();
 
             if(DEBUG_MODE){
                 glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // draw in wireframe
                 glPushMatrix();
 
-                    glBegin(GL_QUADS);		// Draw The Paralellogram Using quads
+                    glBegin(GL_QUADS);	// Draw The Paralellogram Using quads
 
                         glColor3f(1, 0, 0);	// Color RED
 
@@ -130,7 +130,7 @@ class Target{
                         glVertex3f(x+ halfW,y- halfH,z+ halfL);	// Bottom Left Of The Quad (Right)
                         glVertex3f(x+ halfW,y- halfH,z- halfL);	// Bottom Right Of The Quad (Right)
 
-                    glEnd();			// End Drawing The Paralellogram
+                    glEnd();	// End Drawing The Paralellogram
 
 
                 glPopMatrix();
@@ -141,17 +141,19 @@ class Target{
 
         void drawBoundingBoxes(){
 
-            glPushMatrix();
-                glTranslatef(x, y, z);
+
+            //glRotatef(rotation, 0, 1, 0);
+            //glTranslatef(0, 0, 0);
+
                 for(int i=0; i<numBoundingBoxes; i++){
                     boundingBoxes[i].drawBoundingBox();
                 }
-            glPopMatrix();
+
 
         }
 
 
-        float checkCollision(float ox, float oy, float oz,  //origin of ray
+        float checkCollision(float ox, float oy, float oz, //origin of ray
                              float dx, float dy, float dz){ // direction of ray
 
             // AABB = Axis Aligned Bounding Box

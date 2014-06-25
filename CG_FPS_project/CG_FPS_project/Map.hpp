@@ -16,14 +16,14 @@ const float mapHeight = 25; // 1
 
 #define XSCALE 75
 #define YSCALE 20
-#define ZSCALE 5
-#define wallScale  XSCALE, YSCALE, ZSCALE
+#define ZSCALE 2.5
+#define wallScale XSCALE, YSCALE, ZSCALE
 #define concreteWallModel "Test\\Wall\\Wall.obj"
 #define concreteWallTexture "Test\\Wall\\Wall_texture.bmp"
 #define groundTexture "textures\\ground_tex.bmp"
 
 
-GLuint  textureMap[1];
+GLuint textureMap[1];
 RgbImage imagMap;
 
 const float firstGlassStart = 0.40f;
@@ -47,7 +47,7 @@ float glassWalls[][numWallParams] = {
          XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
          wWallBB*2, hWallBB, lWallBB/4,
          90,
-         VIDRO                                                    // r g b a
+         VIDRO // r g b a
     },
     {
         //vidro esquerda2
@@ -55,7 +55,7 @@ float glassWalls[][numWallParams] = {
          XSCALE/4, YSCALE, ZSCALE*2,//wallScale,
          wWallBB*2, hWallBB, lWallBB/4,
          90,
-         VIDRO                                                    // r g b a
+         VIDRO // r g b a
     }
 };
 
@@ -71,7 +71,7 @@ float middleWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5f, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede central2
@@ -79,7 +79,7 @@ float middleWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5f, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede central3
@@ -87,7 +87,7 @@ float middleWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5f, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede central4
@@ -95,7 +95,7 @@ float middleWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5f, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     }
 };
 
@@ -110,7 +110,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.2
@@ -118,7 +118,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.3
@@ -126,7 +126,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.4
@@ -134,7 +134,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.5
@@ -142,7 +142,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.6
@@ -150,7 +150,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.7
@@ -158,7 +158,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda1.8
@@ -166,7 +166,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda2.1
@@ -174,7 +174,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                    // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda2.2
@@ -182,7 +182,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                    // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.1
@@ -190,7 +190,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.2
@@ -198,7 +198,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.3
@@ -206,7 +206,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.4
@@ -214,7 +214,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.5
@@ -222,7 +222,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.6
@@ -230,7 +230,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.7
@@ -238,7 +238,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda3.8
@@ -246,7 +246,7 @@ float verticalWalls[][numWallParams]= {
         XSCALE, YSCALE, ZSCALE*1.75f,//wallScale,
         wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                                // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda4.1
@@ -254,7 +254,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          -90,
-         WHITE                                                         // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda4.2
@@ -262,7 +262,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          -90,
-         WHITE                                                         // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda5.1
@@ -270,7 +270,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                              // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda5.2
@@ -278,7 +278,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                              // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda5.3
@@ -286,7 +286,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                              // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda5.4
@@ -294,7 +294,7 @@ float verticalWalls[][numWallParams]= {
          XSCALE, YSCALE, ZSCALE*1.75,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          90,
-         WHITE                                              // r g b a
+         WHITE // r g b a
     }
 };
 
@@ -309,7 +309,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          180,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda6.2
@@ -317,7 +317,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          180,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda7
@@ -325,7 +325,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.25, hWallBB, lWallBB,
          0,
-         WHITE                                                         // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda8
@@ -333,7 +333,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.25, hWallBB, lWallBB,
          180,
-         WHITE                                                         // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda9.1
@@ -341,7 +341,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda9.2
@@ -349,7 +349,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
 
     // --------------------------------------
@@ -362,7 +362,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda10.2
@@ -370,7 +370,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda11.1
@@ -378,7 +378,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda11.2
@@ -386,7 +386,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda12.1
@@ -394,7 +394,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda12.2
@@ -402,7 +402,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda13.1
@@ -410,7 +410,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     },
     {
         //parede esquerda13.2
@@ -418,7 +418,7 @@ float horizontalWalls[][numWallParams] = {
          XSCALE*1.75, YSCALE, ZSCALE,//wallScale,
          wWallBB*1.5, hWallBB, lWallBB,
          0,
-         WHITE                                                  // r g b a
+         WHITE // r g b a
     }
 };
 
@@ -442,30 +442,30 @@ class Map{
             //chão
             ground[0].Init(
                 -mapWidth/4, -mapLength/2, //center
-                 mapWidth/2, mapLength,    // w, l
-                 0, 1, 0,                  // normal
-                 WHITE,                    // r g b a
+                 mapWidth/2, mapLength, // w, l
+                 0, 1, 0, // normal
+                 WHITE, // r g b a
                  factor/2, factor*2
             );
             ground[1].Init(
                 -mapWidth*(0.75f), -mapLength/2, //center
-                 mapWidth/2, mapLength*(0.2f),  // w, l
-                 0, 1, 0,                        // normal
-                 WHITE,                          // r g b a
+                 mapWidth/2, mapLength*(0.2f), // w, l
+                 0, 1, 0, // normal
+                 WHITE, // r g b a
                  factor/2, factor*2
             );
             ground[2].Init(
                  mapWidth/4, -mapLength/2, //center
-                 mapWidth/2, mapLength,    // w, l
-                 0, 1, 0,                  // normal
-                 WHITE,                    // r g b a
+                 mapWidth/2, mapLength, // w, l
+                 0, 1, 0, // normal
+                 WHITE, // r g b a
                  factor/2, factor*2
             );
             ground[3].Init(
                  mapWidth*(0.75f), -mapLength/2, //center
-                 mapWidth/2, mapLength*(0.2f),   // w, l
-                 0, 1, 0,                        // normal
-                 WHITE,                          // r g b a
+                 mapWidth/2, mapLength*(0.2f), // w, l
+                 0, 1, 0, // normal
+                 WHITE, // r g b a
                  factor/2, factor*2
             );
 
@@ -581,7 +581,7 @@ class Map{
 
                 halfW = ground[i].wFactor/2;
                 halfL = ground[i].lFactor/2;
-                int counter  = 0;
+                int counter = 0;
                 limitX = ground[i].centerX + ground[i].width/2 ;//- ground[i].wFactor;
                 limitZ = ground[i].centerZ + ground[i].length/2 ;//- ground[i].lFactor;
 
@@ -612,6 +612,9 @@ class Map{
         void drawWalls(){
 
             for(int i=0; i<NUMWALLS; i++){
+                glPushMatrix();
+                glTranslatef(walls[i].x, walls[i].y, walls[i].z);
+                glRotatef(walls[i].rotation, 0, 1, 0);
                 walls[i].model.drawModel( walls[i].x, walls[i].y, walls[i].z,
                                           walls[i].xScale, walls[i].yScale, walls[i].zScale,
                                           walls[i].rotation,
@@ -620,6 +623,7 @@ class Map{
                 if(DEBUG_MODE){
                     walls[i].boundingBox.drawBoundingBox();
                 }
+                glPopMatrix();
             }
         }
 
@@ -633,13 +637,21 @@ class Map{
 
                 if( isGlassActive[i] ){
 
-                    glEnable(GL_BLEND); // Activar BLEND
+                    /*
+glass[i].model.drawModel( glass[i].x, glass[i].y, glass[i].z,
+glass[i].xScale, glass[i].yScale, glass[i].zScale,
+glass[i].rotation,
+glass[i].color[0], glass[i].color[1], glass[i].color[2] );
+*/
+
+
+                    glEnable(GL_BLEND); /* Activar BLEND */
                     /* GL_SRC_ALPHA: define para o peso da cor do objecto a desenhar o valor do alfa da sua cor
-                     * GL_ONE_MINUS_SRC_ALPHA: define para o peso da cor que já está desenhado no ecran é de (1 - alfa),
-                     * onde alfa é o nível de transparência do objecto que está a ser desenhado */
+* GL_ONE_MINUS_SRC_ALPHA: define para o peso da cor que já está desenhado no ecran é de (1 - alfa),
+* onde alfa é o nível de transparência do objecto que está a ser desenhado */
                     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-                    // Desenhar o quadrado em si
+                    /* Desenhar o quadrado em si */
                     glBegin (GL_QUADS);
 
                         glColor4f(VIDRO); // Defenir o nível de transparencia do vidro
@@ -678,7 +690,7 @@ class Map{
                         glVertex3f(glass[i].x+ halfW, glass[i].y- halfH, glass[i].z- halfL);	// Bottom Right Of The Quad (Right)
                     glEnd();
 
-                    glDisable(GL_BLEND); // Desactivar o BLEND
+                    glDisable(GL_BLEND); /* Desactivar o BLEND */
 
 
 
@@ -695,6 +707,7 @@ class Map{
         void drawMap(){
 
             drawGround();
+
             drawWalls();
             drawGlass();
 
@@ -703,4 +716,3 @@ class Map{
 };
 
 #endif
-
