@@ -24,16 +24,11 @@ void drawBullets(){
 
 
 float getCameraAngle(){
-    float x0=0, z0=1;
-    float x1=xCamera/*+dxCamera*/, z1=zCamera/*+dzCamera*/;
-
-    float res = acos( x0*x1 + z0*z1 / sqrt( (x0*x0 + z0*z0) * (x1*x1 + z1*z1) ));
-    std::cout << "z1:" << z1 << " - x1:" << x1 << " - res:" << res << std::endl;
-    return res;
+    return camera.getYaw()*180/M_PI;
 }
 
 void drawPlayer(){
-     player.drawModel(xCamera-0.01, yCamera-0.5, zCamera-0.01, 0.1, 0.1, -0.1, getCameraAngle(), 1,1,1);
+     player.drawModel(xCamera-0.01, yCamera-0.5, zCamera-0.01, 0.1, 0.1, -0.1, getCameraAngle()+90, 1,1,1);
 }
 
 #define TARGET_HEIGHT 8

@@ -113,6 +113,9 @@ class Camera{
 
             Refresh();
         }
+        float getYaw(){
+            return m_yaw;
+        }
 
     private:
         float m_x, m_y, m_z;   // Position

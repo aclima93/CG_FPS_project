@@ -633,14 +633,6 @@ class Map{
 
                 if( isGlassActive[i] ){
 
-                    /*
-                    glass[i].model.drawModel( glass[i].x, glass[i].y, glass[i].z,
-                                              glass[i].xScale, glass[i].yScale, glass[i].zScale,
-                                              glass[i].rotation,
-                                              glass[i].color[0], glass[i].color[1], glass[i].color[2] );
-                    */
-
-
                     glEnable(GL_BLEND); // Activar BLEND
                     /* GL_SRC_ALPHA: define para o peso da cor do objecto a desenhar o valor do alfa da sua cor
                      * GL_ONE_MINUS_SRC_ALPHA: define para o peso da cor que já está desenhado no ecran é de (1 - alfa),
