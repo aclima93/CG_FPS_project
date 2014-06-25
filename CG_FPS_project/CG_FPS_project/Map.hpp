@@ -8,6 +8,11 @@
 #include "Colors.hpp"
 #include <string.h>
 
+/* FIXME: MERDA LEO */
+#include "Reflexo.hpp"
+Reflexo reflexo;
+
+
 #define NUMGROUNDS 4
 
 const float mapWidth = 100; // 5
@@ -705,6 +710,8 @@ class Map{
             drawGround();
             drawWalls();
             drawGlass();
+
+            reflexo.drawMirror();
 
         }
 
