@@ -1,0 +1,13 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl 45ACP_Mats
+Ns 45.098039
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.699478 0.750000 0.315374
+Ni 1.000000
+d 0.000000
+illum 2
+map_Kd C:\Users\Da Vinci\Desktop\compressed files\compressed files\45 ACP Low Polygon Preview Model\SA_45ACP_Example_OBJ\SA_45ACP_Diffuse.tga
+map_Bump C:\\Users\\Da Vinci\\Desktop\\compressed files\\compressed files\\45 ACP Low Polygon Preview Model\\SA_45ACP_Example_OBJ\\SA_45ACP_Normals.tga
