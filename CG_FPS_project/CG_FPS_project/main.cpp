@@ -228,12 +228,12 @@ int main(int argc, char** argv){
     glutTimerFunc(msecCallback, Timer, 0);
 
     //mainMenu = glutCreateMenu(mainMenuEvents);
-
     //createMainMenu();
 
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboardUp);
     glutSpecialFunc(teclasNotAscii);
+
     glutMouseFunc(mouseClicks);
     glutMotionFunc(mouseMotion);
     glutPassiveMotionFunc(mouseMotion);

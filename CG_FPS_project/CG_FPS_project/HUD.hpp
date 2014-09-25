@@ -14,7 +14,7 @@ int miliseconds = 0;
 time_t timer;
 
 const int msecCallback = 150;//250;
-const int msecDisplayCallback = msecCallback * 50;
+const int msecDisplayCallback = msecCallback * 10;
 
 const float widthHUDBlock = 200;
 const float heightHUDBlock = 100;
@@ -308,10 +308,10 @@ class HUD{
 
                     glColor4f(WHITE_HUD);
                     glNormal3f(0.0f, 0.0f, 0.0f);
-                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
-                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
-                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
-                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
+                    glTexCoord2f(0.0f, 1.0f); glVertex2f(wCenterScreen + widthHUDBlock, 0.0);
+                    glTexCoord2f(0.0f, 0.0f); glVertex2f(wCenterScreen + widthHUDBlock, (2*heightHUDBlock)/3);
+                    glTexCoord2f(1.0f, 0.0f); glVertex2f(wCenterScreen - widthHUDBlock, (2*heightHUDBlock)/3);
+                    glTexCoord2f(1.0f, 1.0f); glVertex2f(wCenterScreen - widthHUDBlock, 0.0);
 
                     glEnd();
                 glPopMatrix();

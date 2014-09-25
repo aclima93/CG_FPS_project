@@ -43,7 +43,7 @@ float xStart = 0;
 float yStart = mapHeight/2;
 float zStart = -15;
 
-float playerRadius = 7.5;
+float playerRadius = 6;
 
 float xCamera;
 float yCamera;

@@ -31,7 +31,7 @@ void drawPlayer(){
      player.drawModel(xCamera, yCamera-0.50, zCamera, 0.3, 0.3, -0.3, getCameraAngle()+90, 1,1,1);
 }
 
-#define TARGET_HEIGHT 8
+#define TARGET_HEIGHT 9
 
 void initPositions(){
 
@@ -87,10 +87,10 @@ void initPositions(){
     possiblePositions[7][3] = 0;
 
     // position 9
-    possiblePositions[7][0] = -mapWidth*(0.65f);
-    possiblePositions[7][1] = TARGET_HEIGHT;
-    possiblePositions[7][2] = -mapLength*(0.44f);
-    possiblePositions[7][3] = 0;
+    possiblePositions[8][0] = -mapWidth*(0.65f);
+    possiblePositions[8][1] = TARGET_HEIGHT;
+    possiblePositions[8][2] = -mapLength*(0.44f);
+    possiblePositions[8][3] = 0;
 
 
     //do the other side by symmetry
